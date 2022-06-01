@@ -1,5 +1,6 @@
 // Installation permettant le traitement de requêtes du protocole http
 const http = require("http");
+const app = require("./app");
 
 //Création du serveur
 const server = http.createServer(app);
