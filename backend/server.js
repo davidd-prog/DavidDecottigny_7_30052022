@@ -3,7 +3,7 @@ const http = require("http");
 
 //Création du serveur
 const server = http.createServer((req, res) => {
-  res.end("Le serveur fonctionne !");
+  res.end("Le serveur fonctionne toujours !");
 });
 
 //Mise en place de la méthode permettant au serveur d'écouter via les ports disponibles
