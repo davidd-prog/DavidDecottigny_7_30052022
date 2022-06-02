@@ -1,12 +1,50 @@
-// Installation permettant le traitement de requêtes du protocole http
+// Serveur créé et paramétré
+
 const http = require("http");
 const app = require("./app");
 
-// Adresse des ports à l'application pour la renseigner sur quels ports elle va pouvoir tourner
-app.set("port", process.env.port || 3000);
+const normalizePort = (val) => {
+  const port = parseInt(val, 10);
 
-//Création du serveur
-const server = http.createServer(app);
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+const port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
-//Mise en place de la méthode permettant au serveur d'écouter via les ports disponibles
-server.listen(process.env.port || 3000);
+const errorHandler = (error) => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+  const address = server.address();
+  const bind =
+    typeof address === "string" ? "pipe " + address : "port: " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges.");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use.");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
+
+const server = http.createServer(app); // Gestion des requêtes par l'application express app.js
+
+server.on("error", errorHandler);
+server.on("listening", () => {
+  const address = server.address();
+  const bind = typeof address === "string" ? "pipe " + address : "port " + port;
+  console.log("Listening on " + bind);
+});
+
+server.listen(port);
