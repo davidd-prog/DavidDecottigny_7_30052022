@@ -1,19 +1,24 @@
 // Installation et import du framework express
 const express = require("express");
 
+const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/posts");
+
 // Création de l'application express
 const app = express();
-
-// Export de l'application afin de pouvoir notamment envoyer des requêtes au serveur
-module.exports = app;
 
 // Import de la mécanique de connexion à la base de données
 const database = require("./config/database");
 
-// Test de connexion à la base de donnée
-try {
-  database.authenticate();
-  console.log("Connection has been established successfully.");
-} catch (error) {
-  console.error("Unable to connect to the database:", error);
-}
+// Route utilisateur
+app.use("/api", userRoutes);
+
+// Route post
+app.use("/api", postRoutes);
+
+// Synchronisation avec les tables définies
+database.sync();
+
+// Export de l'application afin de pouvoir notamment envoyer des requêtes au serveur
+module.exports = app;
+

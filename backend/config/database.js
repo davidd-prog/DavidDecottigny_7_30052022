@@ -11,7 +11,7 @@ require("dotenv").config();
 // console.log("dotenvConfig");
 // console.log(dotenvConfig);
 
-module.exports = new Sequelize(
+const sequelize = new Sequelize(
   process.env.DB,
   process.env.USER,
   process.env.PASSWORD,
@@ -28,3 +28,13 @@ module.exports = new Sequelize(
     },
   }
 );
+
+// Test de connexion à la base de donnée
+try {
+  sequelize.authenticate();
+  console.log("=> Connection has been established successfully.");
+} catch (error) {
+  console.error("=> Unable to connect to the database:", error);
+}
+
+module.exports = sequelize;
