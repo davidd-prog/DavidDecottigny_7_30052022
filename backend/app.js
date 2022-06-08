@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 const database = require("./config/database");
 
 // Route utilisateur
-app.use("/api", userRoutes);
+app.use("/api/auth", userRoutes);
 
 // Route post
 app.use("/api/posts", postRoutes);
