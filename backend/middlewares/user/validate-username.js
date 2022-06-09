@@ -1,3 +1,4 @@
+// Validation du pseudonyme de l'utilisateur
 module.exports = (req, res, next) => {
   try {
     const userNamelValidate = (userName) => {
@@ -6,11 +7,11 @@ module.exports = (req, res, next) => {
       } else {
         next();
       }
-    }
-    userNamelValidate(req.body.userName)
+    };
+    userNamelValidate(req.body.userName);
   } catch {
     res.status(401).json({
-      message: "Votre nom d'utilisateur n'est pas valide !"
+      message: "Votre nom d'utilisateur n'est pas valide !",
     });
   }
 };

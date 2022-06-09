@@ -3,18 +3,17 @@ const database = require("../config/database");
 const User = database.define("user", {
   username: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true,
     validate: {
       notNull: true,
       notEmpty: true,
       min: 2,
       max: 20,
+      isAlphanumeric: true,
     },
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false,
     unique: true,
     validate: {
       notNull: true,
@@ -37,8 +36,5 @@ const User = database.define("user", {
     },
   },
   isadmin: { type: Sequelize.TINYINT, allowNull: false },
-
-  // createdAt: Sequelize.DATE,
-  // updatedAt: Sequelize.DATE,
 });
 module.exports = User;

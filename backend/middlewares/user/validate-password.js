@@ -1,12 +1,11 @@
+// Sécurisation par l'élaboration d'un mot de passe utilisateur fort
 const passwordValidator = require("password-validator");
 
 module.exports = (req, res, next) => {
   try {
     const passwordValidate = (password) => {
-      // Creation du schema
       const passwordSchema = new passwordValidator();
 
-      //Ajout des propriétés
       passwordSchema
         .is()
         .min(6)
