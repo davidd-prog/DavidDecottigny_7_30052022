@@ -19,7 +19,9 @@ const sequelize = new Sequelize(
     host: process.env.HOST,
     dialect: process.env.DIALECT,
     operatorsAliases: 0,
-
+    define: {
+      freezeTableName: true,
+    },
     pool: {
       max: 5,
       min: 0,
