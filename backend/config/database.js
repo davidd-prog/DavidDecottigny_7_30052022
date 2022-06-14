@@ -34,9 +34,9 @@ const sequelize = new Sequelize(
 // Test de connexion à la base de donnée
 try {
   sequelize.authenticate();
-  console.log("=> Connection has been established successfully.");
+  console.log("=> La connection a été établie avec succès.");
 } catch (error) {
-  console.error("=> Unable to connect to the database:", error);
+  console.error("=> Impossible de se connecter à la base de données:", error);
 }
 
 module.exports = sequelize;

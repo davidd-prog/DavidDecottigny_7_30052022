@@ -58,6 +58,13 @@ exports.getAllUsers = (req, res, next) => {
     .catch((err) => res.status(400).json({ error }));
 };
 
+// Récupérer un profil utilisateur
+exports.getUser = (req, res, next) => {
+  User.findOne({ id: req.params.id })
+    .then((user) => res.status(200).json(thing))
+    .catch((error) => res.status(404).json({ error }));
+};
+
 // Modifier un profil Utilisateur
 exports.updateUser = (req, res, next) => {};
 
