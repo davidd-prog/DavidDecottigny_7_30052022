@@ -66,7 +66,11 @@ exports.getUser = (req, res, next) => {
 };
 
 // Modifier un profil Utilisateur
-exports.updateUser = (req, res, next) => {};
+exports.updateUser = (req, res, next) => {
+  User.updateOne({ id: req.params.id }, { ...req.body, id: req.params.id })
+    .then(() => res.status(200).json({ message: "Utilisateur mis à jour" }))
+    .catch((error) => res.status(400).json({ error }));
+};
 
 // Supprimer un profil Utilisateur
 exports.deleteUser = (req, res, next) => {};
