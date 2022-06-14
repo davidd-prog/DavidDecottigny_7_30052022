@@ -73,4 +73,8 @@ exports.updateUser = (req, res, next) => {
 };
 
 // Supprimer un profil Utilisateur
-exports.deleteUser = (req, res, next) => {};
+exports.deleteUser = (req, res, next) => {
+  User.deleteOne({ id: req.params.id })
+    .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
+    .catch((error) => res.status(400).json({ error }));
+};
