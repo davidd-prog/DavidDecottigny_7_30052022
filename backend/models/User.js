@@ -33,4 +33,5 @@ const User = database.define("user", {
   },
   isadmin: { type: Sequelize.TINYINT, allowNull: false },
 });
+
 module.exports = User;

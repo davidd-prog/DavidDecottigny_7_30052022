@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const { post } = require("../routes/user");
 
 // Chargement des variables d'environnement
 require("dotenv").config();

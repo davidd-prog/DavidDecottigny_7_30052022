@@ -67,14 +67,40 @@ exports.getUser = (req, res, next) => {
 
 // Modifier un profil Utilisateur
 exports.updateUser = (req, res, next) => {
-  User.updateOne({ id: req.params.id }, { ...req.body, id: req.params.id })
-    .then(() => res.status(200).json({ message: "Utilisateur mis à jour" }))
+  User.findOne({ id: req.params.id }).then((user) => {
+    if (!user) {
+      return res.status(404).json({
+        error: new Error("Utilisateur non trouvé"),
+      });
+    }
+    if (user.id !== req.auth.userId) {
+      return res.status(403).json({
+        error: new Error("Requête non autorisée"),
+      });
+    }
+  });
+  User.updateOne({ id: req.params.id })
+    .then(() =>
+      res.status(200).json({ message: "Profil utilisateur mis à jour" })
+    )
     .catch((error) => res.status(400).json({ error }));
 };
 
 // Supprimer un profil Utilisateur
+
 exports.deleteUser = (req, res, next) => {
-  User.deleteOne({ id: req.params.id })
-    .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
-    .catch((error) => res.status(400).json({ error }));
+  User.findOne({ id: req.params.id })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          error: new Error("Utilisateur non trouvé"),
+        });
+      }
+      if (user.id !== req.auth.id) {
+        return res.status(403).json({
+          error: new Error("Requête non autorisée"),
+        });
+      }
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
