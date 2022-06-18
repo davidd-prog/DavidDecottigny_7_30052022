@@ -1,6 +1,5 @@
 // Validation de l'adresse email de l'utilisateur
 const emailValidator = require("email-validator");
-
 module.exports = (req, res, next) => {
   try {
     const emailValidate = (email) => {

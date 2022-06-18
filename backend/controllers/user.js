@@ -6,8 +6,10 @@ exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
+      if (req.body.isadmin == null) {
+        req.body.isadmin = 0;
+      }
       const user = new User({
-        id: req.body.id,
         email: req.body.email,
         username: req.body.username,
         isadmin: req.body.isadmin,
@@ -23,7 +25,7 @@ exports.signup = (req, res, next) => {
 
 // Mécanique de connexion de l'utilisateur
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Utilisateur non trouvé" });
@@ -36,6 +38,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user.id,
+            email: user.email,
             username: user.username,
             token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
               expiresIn: "24h",
@@ -50,9 +53,8 @@ exports.login = (req, res, next) => {
 
 // Récupérer tous les utilisateurs
 exports.getAllUsers = (req, res, next) => {
-  User.findAll()
+  User.findAll({ attributes: { exclude: ["password"] } })
     .then((users) => {
-      // console.log(users);
       res.status(200).json(users);
     })
     .catch((err) => res.status(400).json({ error }));
@@ -60,8 +62,12 @@ exports.getAllUsers = (req, res, next) => {
 
 // Récupérer un profil utilisateur
 exports.getUser = (req, res, next) => {
-  User.findOne({ id: req.params.id })
-    .then((user) => res.status(200).json(thing))
+  console.log(req.params);
+  User.findOne({
+    where: { id: req.params.id },
+    attributes: { exclude: ["password"] },
+  })
+    .then((user) => res.status(200).json(user))
     .catch((error) => res.status(404).json({ error }));
 };
 
@@ -79,7 +85,7 @@ exports.updateUser = (req, res, next) => {
       });
     }
   });
-  User.updateOne({ id: req.params.id })
+  User.update({ id: req.params.id })
     .then(() =>
       res.status(200).json({ message: "Profil utilisateur mis à jour" })
     )

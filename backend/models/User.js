@@ -28,7 +28,7 @@ const User = database.define("user", {
     validate: {
       notNull: true,
       notEmpty: true,
-      notIn: [["abcdef", "123456"]],
+      notIn: ["abcdef", "123456"],
     },
   },
   isadmin: { type: Sequelize.TINYINT, allowNull: false },
