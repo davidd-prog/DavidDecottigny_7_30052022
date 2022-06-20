@@ -73,19 +73,29 @@ exports.getUser = (req, res, next) => {
 
 // Modifier un profil Utilisateur
 exports.updateUser = (req, res, next) => {
-  User.findOne({ id: req.params.id }).then((user) => {
+  User.findOne({ where: { id: req.params.id } }).then((user) => {
     if (!user) {
       return res.status(404).json({
         error: new Error("Utilisateur non trouvé"),
       });
     }
-    if (user.id !== req.auth.userId) {
-      return res.status(403).json({
-        error: new Error("Requête non autorisée"),
-      });
-    }
+    // if (user.id !== req.auth.userId) {
+    //   return res.status(403).json({
+    //     error: new Error("Requête non autorisée"),
+    //   });
+    // }
   });
-  User.update({ id: req.params.id })
+  User.update(
+    {
+      username: req.body.username,
+      email: req.body.email,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
     .then(() =>
       res.status(200).json({ message: "Profil utilisateur mis à jour" })
     )
