@@ -79,11 +79,11 @@ exports.updateUser = (req, res, next) => {
         error: new Error("Utilisateur non trouvé"),
       });
     }
-    // if (user.id !== req.auth.userId) {
-    //   return res.status(403).json({
-    //     error: new Error("Requête non autorisée"),
-    //   });
-    // }
+    if (user.id !== req.auth.userId) {
+      return res.status(403).json({
+        error: new Error("Requête non autorisée"),
+      });
+    }
   });
   User.update(
     {
