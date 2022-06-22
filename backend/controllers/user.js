@@ -116,13 +116,13 @@ exports.deleteUser = (req, res, next) => {
           error: new Error("user non trouvé"),
         });
       }
-      if (user.id !== req.auth.userId) {
+      if (user.id !== req.auth.userId || user.isadmin != 1) {
         console.log("ça tombe ici");
         return res.status(403).json({
           error: new Error("Requête non autorisée !"),
         });
       }
-      User.destroy({ where: { id: req.params.id } })
+      User.destroy({ where: { id: req.body.id } })
         .then(() =>
           res.status(200).json({
             message: "Utilisateur supprimé !",
