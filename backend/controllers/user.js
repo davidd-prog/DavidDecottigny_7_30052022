@@ -40,9 +40,14 @@ exports.login = (req, res, next) => {
             userId: user.id,
             email: user.email,
             username: user.username,
-            token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
-              expiresIn: "24h",
-            }),
+            userAdmin: user.isadmin,
+            token: jwt.sign(
+              { userId: user.id, userAdmin: user.isadmin },
+              "RANDOM_TOKEN_SECRET",
+              {
+                expiresIn: "24h",
+              }
+            ),
             message: "Utilisateur connecté !",
           });
         })
@@ -62,7 +67,6 @@ exports.getAllUsers = (req, res, next) => {
 
 // Récupérer un profil utilisateur
 exports.getUser = (req, res, next) => {
-  console.log(req.params);
   User.findOne({
     where: { id: req.params.id },
     attributes: { exclude: ["password"] },
@@ -79,44 +83,89 @@ exports.updateUser = (req, res, next) => {
         error: new Error("Utilisateur non trouvé"),
       });
     }
-    if (user.id !== req.auth.userId) {
+    if (user.id !== req.auth.userId || user.isadmin != 1) {
       return res.status(403).json({
         error: new Error("Requête non autorisée"),
       });
     }
-  });
-  User.update(
-    {
-      username: req.body.username,
-      email: req.body.email,
-    },
-    {
-      where: {
-        id: req.params.id,
+    User.update(
+      {
+        username: req.body.username,
+        email: req.body.email,
       },
-    }
-  )
-    .then(() =>
-      res.status(200).json({ message: "Profil utilisateur mis à jour" })
+      {
+        where: {
+          id: req.body.id,
+        },
+      }
     )
-    .catch((error) => res.status(400).json({ error }));
+      .then(() =>
+        res.status(200).json({ message: "Profil utilisateur mis à jour" })
+      )
+      .catch((error) => res.status(400).json({ error }));
+  });
 };
 
 // Supprimer un profil Utilisateur
 
 exports.deleteUser = (req, res, next) => {
-  User.findOne({ id: req.params.id })
+  User.findOne({ where: { id: req.params.id } })
     .then((user) => {
       if (!user) {
         return res.status(404).json({
-          error: new Error("Utilisateur non trouvé"),
+          error: new Error("user non trouvé"),
         });
       }
-      if (user.id !== req.auth.id) {
+      if (user.id !== req.auth.userId) {
+        console.log("ça tombe ici");
         return res.status(403).json({
-          error: new Error("Requête non autorisée"),
+          error: new Error("Requête non autorisée !"),
         });
       }
+      User.destroy({ where: { id: req.params.id } })
+        .then(() =>
+          res.status(200).json({
+            message: "Utilisateur supprimé !",
+          })
+        )
+        .catch((error) =>
+          res.status(400).json({
+            error,
+          })
+        );
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+// exports.deleteUser = (req, res, next) => {
+//   User.findOne({ where: { id: req.params.id } })
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(404).json({
+//           error: new Error("Utilisateur non trouvé"),
+//         });
+//       }
+//       if (user.id !== req.auth.userId) {
+//         return res.status(403).json({
+//           error: new Error("Requête non autorisée"),
+//         });
+//       } else {
+//         User.destroy({
+//           where: {
+//             id: req.params.id,
+//           },
+//         })
+//           .then(() =>
+//             res.status(200).json({
+//               message: "Utilisateur supprimé",
+//             })
+//           )
+//           .catch((error) =>
+//             res.status(400).json({
+//               error,
+//             })
+//           );
+//       }
+//     })
+//     .catch((error) => res.status(500).json({ error }));
+// };
