@@ -1,3 +1,4 @@
+// Routing des requêtes utilisateur
 const express = require("express");
 const router = express.Router();
 const userCtrl = require("../controllers/user");
@@ -15,7 +16,7 @@ router.post(
 );
 router.post("/login", userCtrl.login);
 router.get("/", userCtrl.getAllUsers);
-router.get("/:id", auth, userCtrl.getUser);
+router.get("/:id", userCtrl.getUser);
 router.put("/:id", auth, userCtrl.updateUser);
 router.delete("/:id", auth, userCtrl.deleteUser);
 
