@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+
 // mécanique d'enregistrement d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
   bcrypt
@@ -119,7 +120,7 @@ exports.deleteUser = (req, res, next) => {
           error: new Error("Requête non autorisée !"),
         });
       }
-      User.destroy({ where: { id: req.body.id } })
+      User.destroy({ where: { id: req.params.id } })
         .then(() =>
           res.status(200).json({
             message: "Utilisateur supprimé !",

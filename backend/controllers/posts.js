@@ -1,16 +1,66 @@
+const Post = require("../models/Post");
 const post = require("../models/Post");
 
 // Mécanique de création d'un post
-exports.createPost = (req, res, next) => {};
+exports.createPost = (req, res, next) => {
+  const postObject = JSON.parse(req.body.post);
+
+  const post = new Post({
+    ...postObject,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
+  });
+  post
+    .save()
+    .then(() => res.status(201).json({ message: "Post enregistré" }))
+    .catch((error) => res.status(400).json({ error }));
+};
 
 // Mécanique de récupération de tous les posts
-exports.getAllPosts = (req, res, next) => {};
+exports.getAllPosts = (req, res, next) => {
+  Post.findAll()
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
 
 // Mécanique de récupération d'un seul post
-exports.getOnePost = (req, res, next) => {};
+exports.getOnePost = (req, res, next) => {
+  Post.findOne({
+    where: { id: req.params.id },
+  })
+    .then((post) => res.status(200).json(post))
+    .catch((error) => res.status(400).json({ error }));
+};
 
 // Mécanique de modification d'un post
-exports.updateOnePost = (req, res, next) => {};
+exports.updateOnePost = (req, res, next) => {
+  Post.findOne({
+    where: { id: req.params.id },
+  }).then((post) => {
+    if (!post) {
+      return res.status(403).json({
+        error: new Error("Requête non autorisée"),
+      });
+    }
+  });
+  const postObject = req.file
+    ? {
+        ...JSON.parse(req.body.post),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+  Post.update(
+    { where: { id: req.params.id } },
+    { ...postObject, where: { id: req.params.id } }
+  )
+    .then(() => res.status(200).json({ message: "Post mis à jour" }))
+    .catch((error) => res.status(400).json({ error }));
+};
 
 // Mécanique de suppression d'un post
 exports.deleteOnePost = (req, res, next) => {};

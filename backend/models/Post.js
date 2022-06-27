@@ -1,3 +1,5 @@
+const { post } = require("../routes/posts");
+
 // Modèle pour la table post
 module.exports = (sequelize, Sequelize) => {
   const post = sequelize.define("post", {

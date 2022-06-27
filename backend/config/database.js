@@ -1,3 +1,4 @@
+// Configuration de la base de données
 const Sequelize = require("sequelize");
 const { post } = require("../routes/user");
 
