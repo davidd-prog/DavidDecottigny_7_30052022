@@ -1,5 +1,6 @@
 // Installation et import du framework express
 const express = require("express");
+const path = require("path");
 
 const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/posts");
@@ -26,6 +27,9 @@ app.use((req, res, next) => {
 
 // Import de la mécanique de connexion à la base de données
 const database = require("./config/database");
+
+// Gestion des fichiers statiques
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Route utilisateur
 app.use("/api/auth", userRoutes);

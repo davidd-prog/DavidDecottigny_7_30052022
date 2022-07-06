@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const User = require("../models/User");
 
 // mécanique d'enregistrement d'un nouvel utilisateur
@@ -10,18 +11,23 @@ exports.signup = (req, res, next) => {
       if (req.body.isadmin == null) {
         req.body.isadmin = 0;
       }
+      console.log(req.body.email, req.body.username, req.body.isadmin, hash);
       const user = new User({
         email: req.body.email,
         username: req.body.username,
         isadmin: req.body.isadmin,
         password: hash,
       });
+      console.log(user);
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
         .catch((error) => res.status(400).json({ error }));
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error) => {
+      console.log("ça s'arrête ici");
+      res.status(500).json({ error });
+    });
 };
 
 // Mécanique de connexion de l'utilisateur
@@ -78,9 +84,7 @@ exports.getUser = (req, res, next) => {
 
 // Modifier un profil Utilisateur
 exports.updateUser = (req, res, next) => {
-  console.log(req.query);
   User.findOne({ where: { id: req.params.id } }).then((user) => {
-    console.log(user);
     if (!user) {
       return res.status(404).json({
         error: new Error("Utilisateur non trouvé"),
@@ -112,12 +116,6 @@ exports.deleteUser = (req, res, next) => {
       if (!user) {
         return res.status(404).json({
           error: new Error("user non trouvé"),
-        });
-      }
-      if (user.id !== req.auth.userId || user.isadmin != 1) {
-        console.log("ça tombe ici");
-        return res.status(403).json({
-          error: new Error("Requête non autorisée !"),
         });
       }
       User.destroy({ where: { id: req.params.id } })

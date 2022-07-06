@@ -1,5 +1,6 @@
 // Configuration de la base de données
 const Sequelize = require("sequelize");
+
 const { post } = require("../routes/user");
 
 // Chargement des variables d'environnement
@@ -33,15 +34,20 @@ try {
   console.error("=> Impossible de se connecter à la base de données:", error);
 }
 
-const db = {};
+// const db = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+// // Récupération de la connexion à la base de données et du package Sequelize
+// db.Sequelize = Sequelize;
+// db.sequelize = sequelize;
 
-db.user = require("../models/User")(sequelize, Sequelize);
-db.post = require("../models/Post")(sequelize, Sequelize);
+// // Récupération des modèles de la base de données
+// db.user = require("../models/User")(sequelize, Sequelize);
+// db.post = require("../models/Post")(sequelize, Sequelize);
 
-db.user.hasMany(db.post);
-db.post.belongsTo(db.user, { onDelete: "CASCADE" });
+// // Mise en relation des tables User et Post
+// db.user.hasMany(db.post);
+// db.post.belongsTo(db.user, { onDelete: "CASCADE" });
+// db.sequelize.sync();
 
-module.exports = sequelize;
+// module.exports = db;
+ module.exports = sequelize;

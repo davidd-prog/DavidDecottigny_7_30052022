@@ -8,7 +8,6 @@ module.exports = (req, res, next) => {
     const userId = decodedToken.userId;
     const userAdmin = decodedToken.userAdmin;
     req.auth = { userId, userAdmin };
-    console.log((req.params.id && req.params.id !== userId) || userAdmin != 1);
     if (req.params.id == userId || userAdmin == 1) {
       next();
     } else {

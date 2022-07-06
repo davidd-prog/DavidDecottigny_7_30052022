@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
     };
     emailValidate(req.body.email);
   } catch {
+    console.log("ça tombe bien ici");
     res.status(401).json({
       message: "Votre mail n'est pas valide !",
     });

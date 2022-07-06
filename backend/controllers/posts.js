@@ -1,19 +1,20 @@
 const Post = require("../models/Post");
-const post = require("../models/Post");
+const fs = require("fs");
 
 // Mécanique de création d'un post
 exports.createPost = (req, res, next) => {
-  const postObject = JSON.parse(req.body.post);
+  console.log(req.body);
+  const postObject = req.body;
+
+  // postObject = JSON.parse(req.body);
 
   const post = new Post({
     ...postObject,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`,
+    image: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
   });
   post
     .save()
-    .then(() => res.status(201).json({ message: "Post enregistré" }))
+    .then(() => res.status(201).json({ message: "Post enregistré !" }))
     .catch((error) => res.status(400).json({ error }));
 };
 
