@@ -1,13 +1,20 @@
 const Post = require("../models/Post");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 // Mécanique de création d'un post
 exports.createPost = (req, res, next) => {
   console.log(req.body);
   const postObject = req.body;
 
-  // postObject = JSON.parse(req.body);
+  // Contrôle d'authentification du user
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+  const userId = decodedToken.userId;
 
+  postObject.userId = userId;
+
+  // Création du post
   const post = new Post({
     ...postObject,
     image: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
@@ -38,30 +45,64 @@ exports.getOnePost = (req, res, next) => {
 
 // Mécanique de modification d'un post
 exports.updateOnePost = (req, res, next) => {
-  Post.findOne({
-    where: { id: req.params.id },
-  }).then((post) => {
-    if (!post) {
-      return res.status(403).json({
-        error: new Error("Requête non autorisée"),
-      });
-    }
-  });
   const postObject = req.file
     ? {
-        ...JSON.parse(req.body.post),
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+        ...req.body,
+        image: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
       }
     : { ...req.body };
-  Post.update(
-    { where: { id: req.params.id } },
-    { ...postObject, where: { id: req.params.id } }
-  )
-    .then(() => res.status(200).json({ message: "Post mis à jour" }))
-    .catch((error) => res.status(400).json({ error }));
+
+  console.log(postObject);
+
+  Post.findOne({ where: { id: req.params.id } })
+    .then((post) => {
+      if (post) {
+        Post.update(
+          // { where: { id: req.params.id } },
+          {
+            ...postObject,
+          },
+          { where: { id: req.params.id } }
+        )
+          .then(() => res.status(200).json({ message: "Post mis à jour" }))
+          .catch((error) => res.status(401).json({ error }));
+      }
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
 };
+// exports.updateOnePost = (req, res, next) => {
+//   Post.findOne({
+//     where: { id: req.params.id },
+//   }).then((post) => {
+//     if (!post) {
+//       return res.status(403).json({
+//         error: new Error("Post non trouvé"),
+//       });
+//     }
+//   });
+//   const postObject = req.file
+//     ? {
+//         // ...JSON.parse(req.body.post),
+//         // imageUrl: `${req.protocol}://${req.get("host")}/images/${
+//         //   req.file.filename
+//         // }`,
+//         ...req.body,
+//         image: `${req.protocol}://${req.get("host")}/images/${
+//           req.file.filename
+//         }`,
+//       }
+//     : { ...req.body };
+//   Post.update(
+//     { where: { id: req.params.id } },
+//     { ...postObject, where: { id: req.params.id } }
+//   )
+//     .then(() => res.status(200).json({ message: "Post mis à jour" }))
+//     .catch((error) => res.status(400).json({ error }));
+// };
 
 // Mécanique de suppression d'un post
 exports.deleteOnePost = (req, res, next) => {
