@@ -132,3 +132,21 @@ exports.deleteUser = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+// Fonction d'authentification
+function auth(req, res) {
+  let isAuth = false;
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+  const userId = decodedToken.userId;
+  const userAdmin = decodedToken.userAdmin;
+  // console.log(userId, userAdmin, req.body);
+  if (req.body.userId == userId || userAdmin == 1) {
+    isAuth = true;
+  } else {
+    isAuth = false;
+  }
+
+  return isAuth;
+}
