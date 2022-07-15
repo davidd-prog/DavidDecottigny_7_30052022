@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const { post } = require("../routes/user");
 
 // Mécanique de création d'un post
 exports.createPost = (req, res, next) => {
@@ -66,36 +67,84 @@ exports.getOnePost = (req, res, next) => {
 // Mécanique de modification d'un post
 exports.updateOnePost = (req, res, next) => {
   const isAuth = auth(req, res);
-  if (isAuth) {
-    const postObject = req.file
-      ? {
-          ...req.body,
-          image: `${req.protocol}://${req.get("host")}/images/${
-            req.file.filename
-          }`,
-        }
-      : { ...req.body };
 
-    Post.findOne({ where: { id: req.params.id } })
-      .then((post) => {
-        if (post) {
-          Post.update(
-            {
-              ...postObject,
-            },
-            { where: { id: req.params.id } }
-          )
-            .then(() => res.status(200).json({ message: "Post mis à jour" }))
-            .catch((error) => res.status(401).json({ error }));
-        }
-      })
-      .catch((error) => {
-        res.status(400).json({ error });
-      });
+  if (isAuth) {
+    Post.findOne({
+      where: { id: req.params.id },
+    }).then((post) => {
+      if (!post) {
+        return res.status(404).json({
+          error: new Error("Post non trouvé !"),
+        });
+      }
+      console.log(post.userId);
+      console.log(req.auth.userId);
+      if (post.userId !== req.auth.userId) {
+        return res.status(403).json({
+          error: new Error("Requête non autorisée !"),
+        });
+      } else {
+        const postObject = req.file
+          ? {
+              ...req.body,
+              image: `${req.protocol}://${req.get("host")}/images/${
+                req.file.filename
+              }`,
+            }
+          : { ...req.body };
+        Post.update(
+          {
+            ...postObject,
+          },
+          { where: { id: req.params.id } }
+        )
+          .then(() => res.status(200).json({ message: "Post mis à jour" }))
+          .catch((error) => res.status(401).json({ error }));
+      }
+    });
   } else {
     res.status(401).json({ error: "Requête non authentifiée !" });
   }
 };
+
+// exports.updateOnePost = (req, res, next) => {
+//   const isAuth = auth(req, res);
+//   if (isAuth) {
+//     console.log(req.body.userId);
+//     if (req.body.userId !== req.auth.userId) {
+//       return res.status(403).json({
+//         error: new Error("Requête non autorisée !"),
+//       });
+//     }
+//     const postObject = req.file
+//       ? {
+//           ...req.body,
+//           image: `${req.protocol}://${req.get("host")}/images/${
+//             req.file.filename
+//           }`,
+//         }
+//       : { ...req.body };
+
+//     Post.findOne({ where: { id: req.params.id } })
+//       .then((post) => {
+//         if (post) {
+//           Post.update(
+//             {
+//               ...postObject,
+//             },
+//             { where: { id: req.params.id } }
+//           )
+//             .then(() => res.status(200).json({ message: "Post mis à jour" }))
+//             .catch((error) => res.status(401).json({ error }));
+//         }
+//       })
+//       .catch((error) => {
+//         res.status(404).json({ error: new Error("Post non trouvé !") });
+//       });
+//   } else {
+//     res.status(401).json({ error: "Requête non authentifiée !" });
+//   }
+// };
 
 // Mécanique de suppression d'un post
 
@@ -132,6 +181,7 @@ function auth(req, res) {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const userId = decodedToken.userId;
+  req.auth = { userId };
   const userAdmin = decodedToken.userAdmin;
 
   if (req.body.userId == userId || userAdmin == 1) {
