@@ -67,6 +67,8 @@ exports.getOnePost = (req, res, next) => {
 // Mécanique de modification d'un post
 exports.updateOnePost = (req, res, next) => {
   const isAuth = auth(req, res);
+  const postObject = req.file;
+  // console.log(req.file);
 
   if (isAuth) {
     Post.findOne({
@@ -77,22 +79,43 @@ exports.updateOnePost = (req, res, next) => {
           error: new Error("Post non trouvé !"),
         });
       }
-      console.log(post.userId);
-      console.log(req.auth.userId);
-      console.log(req.auth.userAdmin);
-      if (post.userId !== req.auth.userId || req.auth.userAdmin == 0) {
+      if (post.userId !== req.auth.userId && req.auth.userAdmin == 0) {
+        // console.log(post.userId);
+        // console.log(req.auth.userId);
+        // console.log(req.auth.userAdmin);
         return res.status(403).json({
           error: new Error("Requête non autorisée !"),
         });
-      } else {
+      } else if (post.userId == req.auth.userId || req.auth.userAdmin == 1) {
+        // switch (req) {
+        //   case req.body.content:
+        //     Post.update(postObject.content);
+
+        //   // break;
+
+        //   case req.body.likes:
+        //     Post.update(postObject.likes);
+
+        //   // break;
+
+        //   case req.image:
+        //     Post.update(postObject.image);
+
+        //     break;
+
+        //   default:
+        //     Post.update(postObject);
+        // }
+
         const postObject = req.file
           ? {
-              ...req.body,
+              content: req.body.content,
               image: `${req.protocol}://${req.get("host")}/images/${
                 req.file.filename
               }`,
             }
-          : { ...req.body };
+          : { content: req.body.content };
+
         Post.update(
           {
             ...postObject,
@@ -147,7 +170,7 @@ function auth(req, res) {
 
   req.auth = { userId, userAdmin };
 
-  if (req.body.userId == userId || userAdmin == 1) {
+  if (req.body.userId == userId) {
     isAuth = true;
   } else {
     isAuth = false;
