@@ -67,8 +67,6 @@ exports.getOnePost = (req, res, next) => {
 // Mécanique de modification d'un post
 exports.updateOnePost = (req, res, next) => {
   const isAuth = auth(req, res);
-  const postObject = req.file;
-  // console.log(req.file);
 
   if (isAuth) {
     Post.findOne({
@@ -80,54 +78,67 @@ exports.updateOnePost = (req, res, next) => {
         });
       }
       if (post.userId !== req.auth.userId && req.auth.userAdmin == 0) {
-        // console.log(post.userId);
-        // console.log(req.auth.userId);
-        // console.log(req.auth.userAdmin);
+        console.log("ici");
         return res.status(403).json({
           error: new Error("Requête non autorisée !"),
         });
       } else if (post.userId == req.auth.userId || req.auth.userAdmin == 1) {
-        // switch (req) {
-        //   case req.body.content:
-        //     Post.update(postObject.content);
-
-        //   // break;
-
-        //   case req.body.likes:
-        //     Post.update(postObject.likes);
-
-        //   // break;
-
-        //   case req.image:
-        //     Post.update(postObject.image);
-
-        //     break;
-
-        //   default:
-        //     Post.update(postObject);
-        // }
-
-        const postObject = req.file
-          ? {
+        console.log("ici aussi");
+        if (req.file) {
+          console.log("mais aussi ici");
+          const filename = post.image.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {
+            const postObject = {
               content: req.body.content,
               image: `${req.protocol}://${req.get("host")}/images/${
                 req.file.filename
               }`,
-            }
-          : { content: req.body.content };
-
-        Post.update(
-          {
-            ...postObject,
-          },
-          { where: { id: req.params.id } }
-        )
-          .then(() => res.status(200).json({ message: "Post mis à jour" }))
-          .catch((error) => res.status(401).json({ error }));
+            };
+            Post.update(
+              {
+                ...postObject,
+              },
+              { where: { id: req.params.id } }
+            )
+              .then(() => res.status(200).json({ message: "Post mis à jour" }))
+              .catch((error) => res.status(401).json({ error }));
+          });
+        } else if (post.image == req.body.image) {
+          console.log("et là");
+          const contentPost = req.body;
+          const oldImage = post.image;
+          contentPost.image = oldImage;
+          Post.update(
+            {
+              ...contentPost,
+            },
+            { where: { id: req.params.id } }
+          )
+            .then(() => res.status(200).json({ message: "Post mis à jour" }))
+            .catch((error) => res.status(401).json({ error }));
+        } else {
+          console.log("ou encore ici");
+          const filename = post.image.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {
+            const postObject = {
+              content: req.body.content,
+              image: req.body.image,
+            };
+            Post.update(
+              {
+                ...postObject,
+              },
+              { where: { id: req.params.id } }
+            )
+              .then(() => res.status(200).json({ message: "Post mis à jour" }))
+              .catch((error) => res.status(401).json({ error }));
+          });
+        }
+      } else {
+        console.log("mais aussi là");
+        res.status(401).json({ error: "Requête non authentifiée !" });
       }
     });
-  } else {
-    res.status(401).json({ error: "Requête non authentifiée !" });
   }
 };
 
