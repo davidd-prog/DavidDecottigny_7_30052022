@@ -38,7 +38,7 @@ exports.createPost = (req, res, next) => {
 // Mécanique de récupération de tous les posts
 exports.getAllPosts = (req, res, next) => {
   const isAuth = auth(req, res);
-  // console.log(isAuth);
+
   if (isAuth) {
     Post.findAll()
       .then((posts) => {
@@ -53,6 +53,7 @@ exports.getAllPosts = (req, res, next) => {
 // Mécanique de récupération d'un seul post
 exports.getOnePost = (req, res, next) => {
   const isAuth = auth(req, res);
+
   if (isAuth) {
     Post.findOne({
       where: { id: req.params.id },
@@ -134,37 +135,53 @@ exports.updateOnePost = (req, res, next) => {
               .catch((error) => res.status(401).json({ error }));
           });
         }
-      } else {
-        console.log("mais aussi là");
-        res.status(401).json({ error: "Requête non authentifiée !" });
       }
     });
+  } else {
+    console.log("mais aussi là");
+    res.status(401).json({ error: "Requête non authentifiée !" });
   }
 };
 
 // Mécanique de suppression d'un post
 
 exports.deleteOnePost = (req, res, next) => {
-  Post.findOne({ where: { id: req.params.id } })
-    .then((post) => {
-      if (!post.image) {
-        Post.destroy({ where: { id: req.params.id } })
-          .then(() =>
-            res.status(200).json({ message: "Post sans image supprimé" })
-          )
-          .catch((error) => res.status(400).json({ error }));
-      } else {
-        const filename = post.image.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-          Post.destroy({ where: { id: req.params.id } })
-            .then(() =>
-              res.status(200).json({ message: "Post avec image supprimé" })
-            )
-            .catch((error) => res.status(400).json({ error }));
-        });
-      }
-    })
-    .catch((error) => res.status(500).json({ error }));
+  const isAuth = auth(req, res);
+  if (isAuth) {
+    Post.findOne({ where: { id: req.params.id } })
+      .then((post) => {
+        if (!post) {
+          return res.status(404).json({
+            error: new Error("Post non trouvé !"),
+          });
+        }
+        if (post.userId !== req.auth.userId && req.auth.userAdmin == 0) {
+          return res.status(403).json({
+            error: new Error("Requête non autorisée !"),
+          });
+        } else if (post.userId == req.auth.userId || req.auth.userAdmin == 1) {
+          if (!post.image) {
+            Post.destroy({ where: { id: req.params.id } })
+              .then(() =>
+                res.status(200).json({ message: "Post sans image supprimé" })
+              )
+              .catch((error) => res.status(400).json({ error }));
+          } else {
+            const filename = post.image.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+              Post.destroy({ where: { id: req.params.id } })
+                .then(() =>
+                  res.status(200).json({ message: "Post avec image supprimé" })
+                )
+                .catch((error) => res.status(400).json({ error }));
+            });
+          }
+        }
+      })
+      .catch((error) => res.status(500).json({ error }));
+  } else {
+    res.status(401).json({ error: "Requête non authentifiée !" });
+  }
 };
 
 // Mécanique d'évaluation d'un post
