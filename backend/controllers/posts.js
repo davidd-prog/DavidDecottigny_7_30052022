@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const Like = require("../models/Like");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const { post } = require("../routes/user");
