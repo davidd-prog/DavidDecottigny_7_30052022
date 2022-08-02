@@ -186,7 +186,85 @@ exports.deleteOnePost = (req, res, next) => {
 };
 
 // Mécanique d'évaluation d'un post
-exports.likePost = (req, res, next) => {};
+
+exports.likePost = (req, res, next) => {
+  const isAuth = auth(req, res);
+  const like = req.body.likes;
+  const likes = post.likes;
+
+  if (isAuth) {
+    Post.findOne({ where: { id: req.params.id } })
+      .then((post) => {
+        console.log(post.likes);
+        if (!post) {
+          return res.status(404).json({
+            error: new Error("Post non trouvé !"),
+          });
+        } else {
+          console.log("niveau passé");
+        }
+        if (like == 1) {
+          // Vérifier que l'userId n'existe pas encore dans la table postlike
+          console.log(like, req.params.id);
+          Post.update(
+            {
+              likes: post.likes + 1,
+            },
+            { where: { id: req.params.id } }
+          )
+            .then(() => {
+              Like.create({
+                userId: req.body.userId,
+                postId: req.params.id,
+              })
+                .then(() => res.status(201).json({ message: "post liké" }))
+                .catch((error) => res.status(400).json({ error }));
+            })
+            .catch((error) => res.status(401).json({ error })),
+            console.log("erreur ici");
+        }
+        if (like == 0) {
+          Like.findOne({
+            where: { userId: req.body.userId, postId: req.params.id },
+          })
+            .then(() => {
+              if ({ userId: req.body.userId, postId: req.params.id }) {
+                Like.destroy({
+                  where: { userId: req.body.userId, postId: req.params.id },
+                })
+                  .then(
+                    Post.update(
+                      {
+                        likes: post.likes - 1,
+                      },
+                      { where: { id: req.params.id } }
+                    )
+                      .then(res.status(200).json({ message: "Like supprimé" }))
+                      .catch()
+                  )
+                  .catch((error) => {
+                    console.log("ici");
+                    res.status(404).json({
+                      error: new Error("Erreur de mise à jour des like"),
+                    });
+                  });
+              }
+            })
+            .catch((error) => {
+              console.log("là");
+              res
+                .status(404)
+                .json({ error: new Error("Utilisateur non trouvé !") });
+            });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ error }), console.log("toto");
+      });
+  } else {
+    res.status(401).json({ error: "Requête non authentifiée !" });
+  }
+};
 
 // Fonction d'authentification
 function auth(req, res) {

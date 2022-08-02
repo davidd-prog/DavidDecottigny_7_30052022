@@ -18,14 +18,12 @@ exports.signup = (req, res, next) => {
         isadmin: req.body.isadmin,
         password: hash,
       });
-      console.log(user);
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
         .catch((error) => res.status(400).json({ error }));
     })
     .catch((error) => {
-      console.log("ça s'arrête ici");
       res.status(500).json({ error });
     });
 };
