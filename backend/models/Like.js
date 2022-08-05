@@ -10,3 +10,4 @@ module.exports = Like;
 
 Like.belongsTo(User, { onDelete: "CASCADE" });
 Like.belongsTo(Post, { onDelete: "CASCADE" });
+Post.hasMany(Like);
