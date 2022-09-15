@@ -3,15 +3,26 @@
 const Sequelize = require("sequelize");
 const database = require("../config/database");
 const User = database.define("user", {
-  username: {
+  firstname: {
     type: Sequelize.STRING,
-    unique: true,
+    unique: false,
     allowNull: false,
     validate: {
       notNull: true,
       notEmpty: true,
       len: [2, 20],
-      isAlphanumeric: true,
+      isAlpha: true,
+    },
+  },
+  lastname: {
+    type: Sequelize.STRING,
+    unique: false,
+    allowNull: false,
+    validate: {
+      notNull: true,
+      notEmpty: true,
+      len: [2, 20],
+      isAlpha: true,
     },
   },
   email: {
@@ -33,7 +44,7 @@ const User = database.define("user", {
       notIn: ["abcdef", "123456"],
     },
   },
-  isadmin: { type: Sequelize.TINYINT, allowNull: false },
+  isadmin: { type: Sequelize.TINYINT, defaultValue: 0 },
 });
 
 module.exports = User;

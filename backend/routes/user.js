@@ -4,12 +4,14 @@ const router = express.Router();
 const userCtrl = require("../controllers/user");
 const validateEmail = require("../middlewares/user/validate-email");
 const validatePassword = require("../middlewares/user/validate-password");
-const validateUsername = require("../middlewares/user/validate-username");
+const validateFirstname = require("../middlewares/user/validate-firstname");
+const validateLastname = require("../middlewares/user/validate-lastname");
 
 router.post(
   "/signup",
   validateEmail,
-  validateUsername,
+  validateFirstname,
+  validateLastname,
   validatePassword,
   userCtrl.signup
 );

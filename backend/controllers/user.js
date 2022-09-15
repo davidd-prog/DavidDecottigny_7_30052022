@@ -8,20 +8,28 @@ exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
-      if (req.body.isadmin == null) {
+      if (
+        req.body.isadmin == null ||
+        req.body.isadmin == undefined ||
+        req.body.isadmin != 1
+      ) {
         req.body.isadmin = 0;
       }
-      console.log(req.body.email, req.body.username, req.body.isadmin, hash);
+      // console.log(req.body, hash);
       const user = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: req.body.email,
-        username: req.body.username,
-        isadmin: req.body.isadmin,
         password: hash,
+        isadmin: req.body.isadmin,
       });
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        .catch((error) => res.status(400).json({ error }));
+        .catch(
+          (error) => res.status(400).json({ message: error })
+          //  res.status(400).json({ message: error.errors[0].message })
+        );
     })
     .catch((error) => {
       res.status(500).json({ error });
@@ -43,8 +51,9 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
             email: user.email,
-            username: user.username,
             userAdmin: user.isadmin,
             token: jwt.sign(
               { userId: user.id, userAdmin: user.isadmin },
@@ -90,7 +99,6 @@ exports.updateUser = (req, res, next) => {
     }
     User.update(
       {
-        username: req.body.username,
         email: req.body.email,
       },
       {

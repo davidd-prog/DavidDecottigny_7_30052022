@@ -25,19 +25,52 @@
             <div class="connect__section__form__items">
               <div class="namesBox" v-if="loginSession">
                 <label for="firstname"></label>
-                <input type="text" placeholder="Prénom" required />
+                <input
+                  v-model="firstname"
+                  class="firstnameField"
+                  type="text"
+                  placeholder="Prénom"
+                  required
+                />
                 <!-- <p class="emptyErrorMessage"></p> -->
 
                 <label for="name"></label>
-                <input type="text" placeholder="Nom" required />
+                <input
+                  v-model="lastname"
+                  class="lastnameField"
+                  type="text"
+                  placeholder="Nom"
+                  required
+                />
                 <!-- <p class="emptyErrorMessage"></p> -->
               </div>
               <div class="connectionBox">
                 <label for="email"></label>
-                <input type="email" placeholder="Email" required />
+                <input
+                  v-model="email"
+                  class="emailField"
+                  type="email"
+                  placeholder="Email"
+                  required
+                />
                 <!-- <p class="emptyErrorMessage"></p> -->
                 <label for="password"></label>
-                <input type="password" placeholder="Password" required />
+                <input
+                  v-model="password"
+                  class="passwordField"
+                  type="password"
+                  placeholder="Mot de passe"
+                  required
+                />
+                <!-- <p class="emptyErrorMessage"></p> -->
+                <label for="checkPassword"></label>
+                <input
+                  class="checkPasswordField"
+                  v-if="loginSession"
+                  type="password"
+                  placeholder="Vérifier mot de passe"
+                  required
+                />
                 <!-- <p class="emptyErrorMessage"></p> -->
               </div>
             </div>
@@ -151,6 +184,7 @@ textarea {
 .connect__section__form__items input[type="email"],
 input[type="password"],
 input[type="text"] {
+  width: 80%;
   padding: 0.9em;
   border-radius: 10px;
   border: none;

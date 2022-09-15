@@ -1,0 +1,17 @@
+// Validation du nom de l'utilisateur
+module.exports = (req, res, next) => {
+  try {
+    const lastnameValidate = (lastname) => {
+      if (!lastname || "" == lastname || undefined == lastname) {
+        throw "Firstname invalide";
+      } else {
+        next();
+      }
+    };
+    lastnameValidate(req.body.lastname);
+  } catch {
+    res.status(401).json({
+      message: "Votre nom n'est pas valide !",
+    });
+  }
+};
