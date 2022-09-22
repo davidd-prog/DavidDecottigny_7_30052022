@@ -20,10 +20,10 @@
         <!--Formulaire d'inscription ou de connexion-->
         <div id="connect__section">
           <form method="get" class="connect__section__form">
-            <h1 v-if="loginSession">S'inscrire</h1>
+            <h1 v-if="signinSession">S'inscrire</h1>
             <h1 v-else>Se connecter</h1>
             <div class="connect__section__form__items">
-              <div class="namesBox" v-if="loginSession">
+              <div class="namesBox" v-if="signinSession">
                 <label for="firstname"></label>
                 <input
                   v-model="firstname"
@@ -32,7 +32,7 @@
                   placeholder="Prénom"
                   required
                 />
-                <!-- <p class="emptyErrorMessage"></p> -->
+                <p class="firstnameErrorMessage"></p>
 
                 <label for="name"></label>
                 <input
@@ -42,7 +42,7 @@
                   placeholder="Nom"
                   required
                 />
-                <!-- <p class="emptyErrorMessage"></p> -->
+                <p class="lastnameErrorMessage"></p>
               </div>
               <div class="connectionBox">
                 <label for="email"></label>
@@ -53,7 +53,7 @@
                   placeholder="Email"
                   required
                 />
-                <!-- <p class="emptyErrorMessage"></p> -->
+                <p class="emailErrorMessage"></p>
                 <label for="password"></label>
                 <input
                   v-model="password"
@@ -62,36 +62,48 @@
                   placeholder="Mot de passe"
                   required
                 />
-                <!-- <p class="emptyErrorMessage"></p> -->
+                <p class="passwordErrorMessage"></p>
                 <label for="checkPassword"></label>
                 <input
                   class="checkPasswordField"
-                  v-if="loginSession"
+                  v-if="signinSession"
                   type="password"
                   placeholder="Vérifier mot de passe"
                   required
                 />
-                <!-- <p class="emptyErrorMessage"></p> -->
+                <p class="checkPasswordErrorMessage"></p>
               </div>
             </div>
             <div class="connect__order__form__submit">
-              <p v-if="loginSession">
+              <p v-if="signinSession">
                 <input type="checkbox" />J'ai lu et j'accepte les conditions
                 générales d'utilisation.
               </p>
               <button
-                v-if="loginSession"
+                @click="registerAction"
+                v-if="signinSession"
                 type="submit"
-                value="Login"
+                value="Signin"
                 id="connectionButton"
               >
                 S'incrire
               </button>
-              <button v-else type="submit" value="Login" id="connectionButton">
-                Se connecter
+              <button
+                @click="connectAction"
+                v-else
+                type="submit"
+                value="Login"
+                id="connectionButton"
+              >
+                <span v-if="status == 'loading'">Connexion en cours ...</span>
+                <span v-else-if="status == 'loggedin'"
+                  >Vous êtes connectés !</span
+                >
+                <span v-else>Connexion</span>
               </button>
             </div>
-            <p v-if="loginSession" class="inscription">
+            <div class="userStatus" v-if="signinSession"></div>
+            <p v-if="signinSession" class="inscription">
               J'ai déjà un compte,
               <span @click="login" class="signinLink">je me connecte !</span>
             </p>
@@ -117,20 +129,58 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "LoginView",
   data() {
     return {
       link: "/homeview",
-      loginSession: false,
+      signinSession: false,
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
     };
   },
+  computed: mapState([
+    // map this.count to store.state.count
+    "status",
+  ]),
   methods: {
     login: function () {
-      this.loginSession = false;
+      this.signinSession = false;
     },
     signin: function () {
-      this.loginSession = true;
+      this.signinSession = true;
+    },
+    registerAction: function () {
+      this.$store
+        .dispatch("registerAction", {
+          firstname: this.firstname,
+          lastname: this.lastname,
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    connectAction: function () {
+      this.$store
+        .dispatch("connectAction", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
