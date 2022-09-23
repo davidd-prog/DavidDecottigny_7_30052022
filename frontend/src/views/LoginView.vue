@@ -27,51 +27,71 @@
                 <label for="firstname"></label>
                 <input
                   v-model="firstname"
+                  @change="firstNameInputChecking"
                   class="firstnameField"
                   type="text"
                   placeholder="Prénom"
                   required
                 />
-                <p class="firstnameErrorMessage"></p>
+                <span class="inputErrorMessage" v-if="firstnameErrorDisplay">
+                  {{ firstNameErrorMessage }}
+                </span>
 
                 <label for="name"></label>
                 <input
                   v-model="lastname"
+                  @change="lastNameInputChecking"
                   class="lastnameField"
                   type="text"
                   placeholder="Nom"
                   required
                 />
-                <p class="lastnameErrorMessage"></p>
+                <span class="inputErrorMessage" v-if="lastnameErrorDisplay">
+                  {{ lastNameErrorMessage }}
+                </span>
               </div>
               <div class="connectionBox">
                 <label for="email"></label>
                 <input
                   v-model="email"
+                  @change="emailInputChecking"
                   class="emailField"
                   type="email"
                   placeholder="Email"
                   required
                 />
-                <p class="emailErrorMessage"></p>
+                <span class="inputErrorMessage" v-if="emailErrorDisplay">
+                  {{ emailErrorMessage }}
+                </span>
+
                 <label for="password"></label>
                 <input
                   v-model="password"
+                  @change="passwordInputChecking"
                   class="passwordField"
                   type="password"
                   placeholder="Mot de passe"
                   required
                 />
-                <p class="passwordErrorMessage"></p>
+                <span class="inputErrorMessage" v-if="passwordErrorDisplay">
+                  {{ passwordErrorMessage }}
+                </span>
                 <label for="checkPassword"></label>
                 <input
+                  v-model="checkPassword"
+                  @change="checkPasswordInputChecking"
                   class="checkPasswordField"
                   v-if="signinSession"
                   type="password"
                   placeholder="Vérifier mot de passe"
                   required
                 />
-                <p class="checkPasswordErrorMessage"></p>
+                <span
+                  class="inputErrorMessage"
+                  v-if="checkPasswordErrorDisplay"
+                >
+                  {{ checkPasswordErrorMessage }}
+                </span>
               </div>
             </div>
             <div class="connect__order__form__submit">
@@ -150,6 +170,17 @@ export default {
       lastname: "",
       email: "",
       password: "",
+      checkPassword: "",
+      firstNameErrorMessage: "",
+      firstnameErrorDisplay: false,
+      lastNameErrorMessage: "",
+      lastnameErrorDisplay: false,
+      emailErrorMessage: "",
+      emailErrorDisplay: false,
+      passwordErrorMessage: "",
+      passwordErrorDisplay: false,
+      checkPasswordErrorMessage: "",
+      checkPasswordErrorDisplay: false,
     };
   },
   computed: mapState([
@@ -191,6 +222,66 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    firstNameInputChecking: function () {
+      const firstNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$";
+      if (this.firstname.match(firstNameRegex)) {
+        (this.firstNameErrorMessage = "Prénom valide"),
+          (this.firstnameErrorDisplay = true);
+      } else if (this.firstname == "") {
+        this.firstnameErrorDisplay = false;
+      } else {
+        (this.firstNameErrorMessage = "Veuillez saisir votre prénom"),
+          (this.firstnameErrorDisplay = true);
+      }
+    },
+    lastNameInputChecking: function () {
+      const lastNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç ,.'-]{1,25}$";
+      if (this.lastname.match(lastNameRegex)) {
+        (this.lastNameErrorMessage = "Nom valide"),
+          (this.lastnameErrorDisplay = true);
+      } else if (this.lastname == "") {
+        this.lastnameErrorDisplay = false;
+      } else {
+        (this.lastNameErrorMessage = "Veuillez saisir votre Nom"),
+          (this.lastnameErrorDisplay = true);
+      }
+    },
+    emailInputChecking: function () {
+      const emailRegex =
+        "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$";
+      if (this.email.match(emailRegex)) {
+        (this.emailErrorMessage = "email valide"),
+          (this.emailErrorDisplay = true);
+      } else if (this.email == "") {
+        this.emailErrorDisplay = false;
+      } else {
+        (this.emailErrorMessage = "Veuillez saisir votre email"),
+          (this.emailErrorDisplay = true);
+      }
+    },
+    passwordInputChecking: function () {
+      const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]){2,}(?=.{6,})";
+      if (this.password.match(passwordRegex)) {
+        (this.passwordErrorMessage = "Mot de passe valide"),
+          (this.passwordErrorDisplay = true);
+      } else if (this.password == "") {
+        this.passwordErrorDisplay = false;
+      } else {
+        (this.passwordErrorMessage = "Veuillez saisir votre mot de passe"),
+          (this.passwordErrorDisplay = true);
+      }
+    },
+    checkPasswordInputChecking: function () {
+      if (this.checkPassword === this.password) {
+        (this.checkPasswordErrorMessage = "Mot de passe confirmé"),
+          (this.checkPasswordErrorDisplay = true);
+      } else if (this.checkPassword == "") {
+        this.checkPasswordErrorDisplay = false;
+      } else {
+        (this.checkPasswordErrorMessage = "Le mot de passe est différent"),
+          (this.checkPasswordErrorDisplay = true);
+      }
     },
   },
 };
