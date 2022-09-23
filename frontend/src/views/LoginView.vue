@@ -88,6 +88,7 @@
               >
                 S'incrire
               </button>
+
               <button
                 @click="connectAction"
                 v-else
@@ -101,6 +102,9 @@
                 >
                 <span v-else>Connexion</span>
               </button>
+              <div class="loginFailure" v-if="status == 'failLogin'">
+                Adresse mail ou mot de passe invalide
+              </div>
             </div>
             <div class="userStatus" v-if="signinSession"></div>
             <p v-if="signinSession" class="inscription">
@@ -154,6 +158,7 @@ export default {
     signin: function () {
       this.signinSession = true;
     },
+
     registerAction: function () {
       this.$store
         .dispatch("registerAction", {
@@ -176,7 +181,7 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          console.log(response);
+          (response = response.ok), this.$router.push("/");
         })
         .catch((error) => {
           console.log(error);
@@ -240,6 +245,10 @@ input[type="text"] {
   border: none;
   outline: none;
   margin: 1em;
+}
+
+.loginFailure {
+  color: red;
 }
 
 .signinLink {
