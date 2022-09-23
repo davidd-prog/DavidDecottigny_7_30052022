@@ -29,6 +29,7 @@ export default createStore({
   },
   actions: {
     registerAction: ({ commit }, { firstname, lastname, email, password }) => {
+      commit("setStatus", "loading");
       return new Promise((resolve, reject) => {
         commit;
         instance

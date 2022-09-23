@@ -86,7 +86,9 @@
                 value="Signin"
                 id="connectionButton"
               >
-                S'incrire
+                <span v-if="status == 'loading'">Inscription en cours ...</span>
+                <span v-else-if="status == 'created'">Vous êtes inscrit !</span>
+                <span v-else>S'inscrire</span>
               </button>
 
               <button
@@ -104,6 +106,9 @@
               </button>
               <div class="loginFailure" v-if="status == 'failLogin'">
                 Adresse mail ou mot de passe invalide
+              </div>
+              <div class="signinFailure" v-if="status == 'failCreate'">
+                Adresse mail déjà utilisée !
               </div>
             </div>
             <div class="userStatus" v-if="signinSession"></div>
@@ -168,7 +173,7 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          console.log(response);
+          (response = response.ok), this.login();
         })
         .catch((error) => {
           console.log(error);
@@ -245,6 +250,10 @@ input[type="text"] {
   border: none;
   outline: none;
   margin: 1em;
+}
+
+.signinFailure {
+  color: red;
 }
 
 .loginFailure {
