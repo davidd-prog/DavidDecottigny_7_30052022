@@ -33,9 +33,9 @@
                   placeholder="Prénom"
                   required
                 />
-                <span class="inputErrorMessage" v-if="firstnameErrorDisplay">
+                <small class="inputErrorMessage" v-if="firstnameErrorDisplay">
                   {{ firstNameErrorMessage }}
-                </span>
+                </small>
 
                 <label for="name"></label>
                 <input
@@ -46,9 +46,9 @@
                   placeholder="Nom"
                   required
                 />
-                <span class="inputErrorMessage" v-if="lastnameErrorDisplay">
+                <small class="inputErrorMessage" v-if="lastnameErrorDisplay">
                   {{ lastNameErrorMessage }}
-                </span>
+                </small>
               </div>
               <div class="connectionBox">
                 <label for="email"></label>
@@ -60,12 +60,12 @@
                   placeholder="Email"
                   required
                 />
-                <span
+                <small
                   class="inputErrorMessage"
                   v-if="emailErrorDisplay && signinSession"
                 >
                   {{ emailErrorMessage }}
-                </span>
+                </small>
 
                 <label for="password"></label>
                 <input
@@ -76,12 +76,12 @@
                   placeholder="Mot de passe"
                   required
                 />
-                <span
+                <small
                   class="inputErrorMessage"
                   v-if="passwordErrorDisplay && signinSession"
                 >
                   {{ passwordErrorMessage }}
-                </span>
+                </small>
                 <label for="checkPassword"></label>
                 <input
                   v-model="checkPassword"
@@ -92,19 +92,28 @@
                   placeholder="Vérifier mot de passe"
                   required
                 />
-                <span
+                <small
                   class="inputErrorMessage"
                   v-if="checkPasswordErrorDisplay && signinSession"
                 >
                   {{ checkPasswordErrorMessage }}
-                </span>
+                </small>
               </div>
             </div>
             <div class="connect__order__form__submit">
               <p v-if="signinSession">
-                <input type="checkbox" />J'ai lu et j'accepte les conditions
-                générales d'utilisation.
+                <input
+                  @click="isBoxChecked"
+                  v-model="generalConditions"
+                  type="checkbox"
+                />J'ai lu et j'accepte les conditions générales d'utilisation.
               </p>
+              <span
+                class="inputErrorMessage"
+                v-if="checkConditionsErrorDisplay"
+              >
+                {{ conditionsErrorMessage }}
+              </span>
               <button
                 @click="registerAction"
                 v-if="signinSession"
@@ -183,6 +192,7 @@ export default {
       email: "",
       password: "",
       checkPassword: "",
+      generalConditions: false,
       firstNameErrorMessage: "",
       firstnameErrorDisplay: false,
       lastNameErrorMessage: "",
@@ -193,6 +203,8 @@ export default {
       passwordErrorDisplay: false,
       checkPasswordErrorMessage: "",
       checkPasswordErrorDisplay: false,
+      conditionsErrorMessage: "",
+      checkConditionsErrorDisplay: false,
     };
   },
   computed: mapState([
@@ -258,55 +270,68 @@ export default {
     },
     checkPasswordInputChecking: function () {
       if (this.checkPassword === this.password) {
-        (this.checkPasswordErrorMessage = "Mot de passe confirmé"),
-          (this.checkPasswordErrorDisplay = true);
-      } else if (this.checkPassword == "") {
+        // (this.checkPasswordErrorMessage = "Mot de passe confirmé"),
         this.checkPasswordErrorDisplay = false;
       } else {
         (this.checkPasswordErrorMessage = "Le mot de passe est différent"),
           (this.checkPasswordErrorDisplay = true);
       }
     },
+    isBoxChecked: function () {
+      if (this.generalConditions == false) {
+        (this.conditionsErrorMessage = "Conditions générales acceptées"),
+          (this.checkConditionsErrorDisplay = true),
+          (this.generalConditions = true);
+      } else if (this.generalConditions == "") {
+        (this.checkConditionsErrorDisplay = false),
+          (this.generalConditions = false);
+      } else {
+        (this.conditionsErrorMessage =
+          "Les conditions générales doivent être acceptées"),
+          (this.checkConditionsErrorDisplay = true),
+          (this.generalConditions = false);
+      }
+    },
 
-    submitForm: function () {
+    registerAction: function () {
       let validFirstname = this.firstNameInputChecking;
       let validLastname = this.lastNameInputChecking;
       let validEmail = this.emailInputChecking;
       let validPassword = this.passwordInputChecking;
-      let validCheckPassword = this.checkPasswordInputChecking;
+      let validCheckPassword = this.checkPasswordErrorDisplay == false;
+      let validConditions = this.isBoxChecked;
 
       if (
         validFirstname &&
         validLastname &&
         validEmail &&
         validPassword &&
-        validCheckPassword
+        validCheckPassword &&
+        validConditions
       ) {
-        this.registerAction;
+        console.log(this.checkPasswordErrorDisplay);
+        this.$store
+          .dispatch("registerAction", {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password,
+          })
+          .then((response) => {
+            (response = response.ok),
+              this.login(),
+              (this.email = ""),
+              (this.password = "");
+          })
+          .catch((error) => {
+            alert(
+              "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
+            );
+            console.log(error);
+          });
       }
     },
 
-    registerAction: function () {
-      this.$store
-        .dispatch("registerAction", {
-          firstname: this.firstname,
-          lastname: this.lastname,
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          (response = response.ok),
-            this.login(),
-            (this.email = ""),
-            (this.password = "");
-        })
-        .catch((error) => {
-          alert(
-            "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
-          );
-          console.log(error);
-        });
-    },
     connectAction: function () {
       this.$store
         .dispatch("connectAction", {

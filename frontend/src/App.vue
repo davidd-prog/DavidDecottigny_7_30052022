@@ -58,4 +58,8 @@ h2 {
   display: block;
   text-align: center;
 }
+
+small {
+  color: red;
+}
 </style>
