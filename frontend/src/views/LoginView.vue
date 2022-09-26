@@ -60,7 +60,10 @@
                   placeholder="Email"
                   required
                 />
-                <span class="inputErrorMessage" v-if="emailErrorDisplay">
+                <span
+                  class="inputErrorMessage"
+                  v-if="emailErrorDisplay && signinSession"
+                >
                   {{ emailErrorMessage }}
                 </span>
 
@@ -73,7 +76,10 @@
                   placeholder="Mot de passe"
                   required
                 />
-                <span class="inputErrorMessage" v-if="passwordErrorDisplay">
+                <span
+                  class="inputErrorMessage"
+                  v-if="passwordErrorDisplay && signinSession"
+                >
                   {{ passwordErrorMessage }}
                 </span>
                 <label for="checkPassword"></label>
@@ -88,7 +94,7 @@
                 />
                 <span
                   class="inputErrorMessage"
-                  v-if="checkPasswordErrorDisplay"
+                  v-if="checkPasswordErrorDisplay && signinSession"
                 >
                   {{ checkPasswordErrorMessage }}
                 </span>
@@ -124,11 +130,17 @@
                 >
                 <span v-else>Connexion</span>
               </button>
-              <div class="loginFailure" v-if="status == 'failLogin'">
+              <div
+                class="loginFailure"
+                v-if="signinSession == false && status == 'failLogin'"
+              >
                 Adresse mail ou mot de passe invalide
               </div>
-              <div class="signinFailure" v-if="status == 'failCreate'">
-                Adresse mail déjà utilisée !
+              <div
+                class="signinFailure"
+                v-if="signinSession && status == 'failCreate'"
+              >
+                Connexion impossible !
               </div>
             </div>
             <div class="userStatus" v-if="signinSession"></div>
@@ -195,34 +207,6 @@ export default {
       this.signinSession = true;
     },
 
-    registerAction: function () {
-      this.$store
-        .dispatch("registerAction", {
-          firstname: this.firstname,
-          lastname: this.lastname,
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          (response = response.ok), this.login();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    connectAction: function () {
-      this.$store
-        .dispatch("connectAction", {
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          (response = response.ok), this.$router.push("/");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     firstNameInputChecking: function () {
       const firstNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$";
       if (this.firstname.match(firstNameRegex)) {
@@ -282,6 +266,59 @@ export default {
         (this.checkPasswordErrorMessage = "Le mot de passe est différent"),
           (this.checkPasswordErrorDisplay = true);
       }
+    },
+
+    submitForm: function () {
+      let validFirstname = this.firstNameInputChecking;
+      let validLastname = this.lastNameInputChecking;
+      let validEmail = this.emailInputChecking;
+      let validPassword = this.passwordInputChecking;
+      let validCheckPassword = this.checkPasswordInputChecking;
+
+      if (
+        validFirstname &&
+        validLastname &&
+        validEmail &&
+        validPassword &&
+        validCheckPassword
+      ) {
+        this.registerAction;
+      }
+    },
+
+    registerAction: function () {
+      this.$store
+        .dispatch("registerAction", {
+          firstname: this.firstname,
+          lastname: this.lastname,
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          (response = response.ok),
+            this.login(),
+            (this.email = ""),
+            (this.password = "");
+        })
+        .catch((error) => {
+          alert(
+            "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
+          );
+          console.log(error);
+        });
+    },
+    connectAction: function () {
+      this.$store
+        .dispatch("connectAction", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          (response = response.ok), this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
