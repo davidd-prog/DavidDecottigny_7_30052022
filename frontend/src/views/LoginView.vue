@@ -108,12 +108,12 @@
                   type="checkbox"
                 />J'ai lu et j'accepte les conditions générales d'utilisation.
               </p>
-              <span
+              <small
                 class="inputErrorMessage"
-                v-if="checkConditionsErrorDisplay"
+                v-if="checkConditionsErrorDisplay && signinSession"
               >
                 {{ conditionsErrorMessage }}
-              </span>
+              </small>
               <button
                 @click="registerAction"
                 v-if="signinSession"
@@ -222,9 +222,6 @@ export default {
     firstNameInputChecking: function () {
       const firstNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$";
       if (this.firstname.match(firstNameRegex)) {
-        (this.firstNameErrorMessage = "Prénom valide"),
-          (this.firstnameErrorDisplay = true);
-      } else if (this.firstname == "") {
         this.firstnameErrorDisplay = false;
       } else {
         (this.firstNameErrorMessage = "Veuillez saisir votre prénom"),
@@ -234,9 +231,6 @@ export default {
     lastNameInputChecking: function () {
       const lastNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç ,.'-]{1,25}$";
       if (this.lastname.match(lastNameRegex)) {
-        (this.lastNameErrorMessage = "Nom valide"),
-          (this.lastnameErrorDisplay = true);
-      } else if (this.lastname == "") {
         this.lastnameErrorDisplay = false;
       } else {
         (this.lastNameErrorMessage = "Veuillez saisir votre Nom"),
@@ -247,9 +241,6 @@ export default {
       const emailRegex =
         "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$";
       if (this.email.match(emailRegex)) {
-        (this.emailErrorMessage = "email valide"),
-          (this.emailErrorDisplay = true);
-      } else if (this.email == "") {
         this.emailErrorDisplay = false;
       } else {
         (this.emailErrorMessage = "Veuillez saisir votre email"),
@@ -259,9 +250,6 @@ export default {
     passwordInputChecking: function () {
       const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]){2,}(?=.{6,})";
       if (this.password.match(passwordRegex)) {
-        (this.passwordErrorMessage = "Mot de passe valide"),
-          (this.passwordErrorDisplay = true);
-      } else if (this.password == "") {
         this.passwordErrorDisplay = false;
       } else {
         (this.passwordErrorMessage = "Veuillez saisir votre mot de passe"),
@@ -279,12 +267,8 @@ export default {
     },
     isBoxChecked: function () {
       if (this.generalConditions == false) {
-        (this.conditionsErrorMessage = "Conditions générales acceptées"),
-          (this.checkConditionsErrorDisplay = true),
-          (this.generalConditions = true);
-      } else if (this.generalConditions == "") {
         (this.checkConditionsErrorDisplay = false),
-          (this.generalConditions = false);
+          (this.generalConditions = true);
       } else {
         (this.conditionsErrorMessage =
           "Les conditions générales doivent être acceptées"),
@@ -294,12 +278,12 @@ export default {
     },
 
     registerAction: function () {
-      let validFirstname = this.firstNameInputChecking;
-      let validLastname = this.lastNameInputChecking;
-      let validEmail = this.emailInputChecking;
-      let validPassword = this.passwordInputChecking;
+      let validFirstname = this.firstnameErrorDisplay == false;
+      let validLastname = this.lastnameErrorDisplay == false;
+      let validEmail = this.emailErrorDisplay == false;
+      let validPassword = this.passwordErrorDisplay == false;
       let validCheckPassword = this.checkPasswordErrorDisplay == false;
-      let validConditions = this.isBoxChecked;
+      let validConditions = this.checkConditionsErrorDisplay == false;
 
       if (
         validFirstname &&
@@ -309,7 +293,6 @@ export default {
         validCheckPassword &&
         validConditions
       ) {
-        console.log(this.checkPasswordErrorDisplay);
         this.$store
           .dispatch("registerAction", {
             firstname: this.firstname,
@@ -320,6 +303,9 @@ export default {
           .then((response) => {
             (response = response.ok),
               this.login(),
+              (this.firstname = ""),
+              (this.lastname = ""),
+              (this.checkPassword = ""),
               (this.email = ""),
               (this.password = "");
           })
@@ -329,6 +315,8 @@ export default {
             );
             console.log(error);
           });
+      } else {
+        alert("Une erreur est survenue, veuillez reessayer ultérieurement ");
       }
     },
 
