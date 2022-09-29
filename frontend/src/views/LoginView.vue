@@ -192,17 +192,17 @@ export default {
       email: "",
       password: "",
       checkPassword: "",
-      generalConditions: false,
+      generalConditions: true,
       firstNameErrorMessage: "",
-      firstnameErrorDisplay: false,
+      firstnameErrorDisplay: true,
       lastNameErrorMessage: "",
-      lastnameErrorDisplay: false,
+      lastnameErrorDisplay: true,
       emailErrorMessage: "",
-      emailErrorDisplay: false,
+      emailErrorDisplay: true,
       passwordErrorMessage: "",
-      passwordErrorDisplay: false,
+      passwordErrorDisplay: true,
       checkPasswordErrorMessage: "",
-      checkPasswordErrorDisplay: false,
+      checkPasswordErrorDisplay: true,
       conditionsErrorMessage: "",
       checkConditionsErrorDisplay: false,
     };
@@ -224,8 +224,8 @@ export default {
       if (this.firstname.match(firstNameRegex)) {
         this.firstnameErrorDisplay = false;
       } else {
-        (this.firstNameErrorMessage = "Veuillez saisir votre prénom"),
-          (this.firstnameErrorDisplay = true);
+        this.firstNameErrorMessage = "Veuillez saisir votre prénom";
+        this.firstnameErrorDisplay = true;
       }
     },
     lastNameInputChecking: function () {
@@ -233,8 +233,8 @@ export default {
       if (this.lastname.match(lastNameRegex)) {
         this.lastnameErrorDisplay = false;
       } else {
-        (this.lastNameErrorMessage = "Veuillez saisir votre Nom"),
-          (this.lastnameErrorDisplay = true);
+        this.lastNameErrorMessage = "Veuillez saisir votre Nom";
+        this.lastnameErrorDisplay = true;
       }
     },
     emailInputChecking: function () {
@@ -243,8 +243,8 @@ export default {
       if (this.email.match(emailRegex)) {
         this.emailErrorDisplay = false;
       } else {
-        (this.emailErrorMessage = "Veuillez saisir votre email"),
-          (this.emailErrorDisplay = true);
+        this.emailErrorMessage = "Veuillez saisir votre email";
+        this.emailErrorDisplay = true;
       }
     },
     passwordInputChecking: function () {
@@ -252,8 +252,8 @@ export default {
       if (this.password.match(passwordRegex)) {
         this.passwordErrorDisplay = false;
       } else {
-        (this.passwordErrorMessage = "Veuillez saisir votre mot de passe"),
-          (this.passwordErrorDisplay = true);
+        this.passwordErrorMessage = "Veuillez saisir votre mot de passe";
+        this.passwordErrorDisplay = true;
       }
     },
     checkPasswordInputChecking: function () {
@@ -261,37 +261,37 @@ export default {
         // (this.checkPasswordErrorMessage = "Mot de passe confirmé"),
         this.checkPasswordErrorDisplay = false;
       } else {
-        (this.checkPasswordErrorMessage = "Le mot de passe est différent"),
-          (this.checkPasswordErrorDisplay = true);
+        this.checkPasswordErrorMessage = "Le mot de passe est différent";
+        this.checkPasswordErrorDisplay = true;
       }
     },
     isBoxChecked: function () {
-      if (this.generalConditions == false) {
-        (this.checkConditionsErrorDisplay = false),
-          (this.generalConditions = true);
+      console.log(this.generalConditions);
+      if (this.generalConditions == true) {
+        this.checkConditionsErrorDisplay = true;
+        this.generalConditions = false;
+        this.conditionsErrorMessage =
+          "Les conditions générales doivent être acceptées";
       } else {
-        (this.conditionsErrorMessage =
-          "Les conditions générales doivent être acceptées"),
-          (this.checkConditionsErrorDisplay = true),
-          (this.generalConditions = false);
+        this.checkConditionsErrorDisplay = false;
+        this.generalConditions = true;
       }
     },
 
     registerAction: function () {
-      let validFirstname = this.firstnameErrorDisplay == false;
-      let validLastname = this.lastnameErrorDisplay == false;
-      let validEmail = this.emailErrorDisplay == false;
-      let validPassword = this.passwordErrorDisplay == false;
-      let validCheckPassword = this.checkPasswordErrorDisplay == false;
-      let validConditions = this.checkConditionsErrorDisplay == false;
+      this.firstNameInputChecking();
+      this.lastNameInputChecking();
+      this.emailInputChecking();
+      this.passwordInputChecking();
+      this.checkPasswordInputChecking();
 
       if (
-        validFirstname &&
-        validLastname &&
-        validEmail &&
-        validPassword &&
-        validCheckPassword &&
-        validConditions
+        !this.firstnameErrorDisplay &&
+        !this.lastnameErrorDisplay &&
+        !this.emailErrorDisplay &&
+        !this.passwordErrorDisplay &&
+        !this.checkPasswordErrorDisplay &&
+        !this.checkConditionsErrorDisplay
       ) {
         this.$store
           .dispatch("registerAction", {
@@ -315,8 +315,6 @@ export default {
             );
             console.log(error);
           });
-      } else {
-        alert("Une erreur est survenue, veuillez reessayer ultérieurement ");
       }
     },
 
