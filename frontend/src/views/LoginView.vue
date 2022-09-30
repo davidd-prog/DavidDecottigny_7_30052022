@@ -122,7 +122,7 @@
                 id="connectionButton"
               >
                 <span v-if="status == 'loading'">Inscription en cours ...</span>
-                <span v-else-if="status == 'created'">Vous êtes inscrit !</span>
+                <!-- <span v-else-if="status == 'created'">Vous êtes inscrit !</span> -->
                 <span v-else>S'inscrire</span>
               </button>
 
@@ -180,6 +180,8 @@
 
 <script>
 import { mapState } from "vuex";
+import { useToast } from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
 
 export default {
   name: "LoginView",
@@ -279,6 +281,8 @@ export default {
     },
 
     registerAction: function () {
+      const $toast = useToast();
+
       this.firstNameInputChecking();
       this.lastNameInputChecking();
       this.emailInputChecking();
@@ -301,8 +305,8 @@ export default {
             password: this.password,
           })
           .then((response) => {
-            (response = response.ok),
-              this.login(),
+            (response = response.ok), $toast.success("Vous êtes enregistré !");
+            this.login(),
               (this.firstname = ""),
               (this.lastname = ""),
               (this.checkPassword = ""),
@@ -319,16 +323,22 @@ export default {
     },
 
     connectAction: function () {
+      const $toast = useToast();
+      // let instance = $toast.success("Vous êtes connecté !");
+
       this.$store
         .dispatch("connectAction", {
           email: this.email,
           password: this.password,
         })
         .then((response) => {
-          (response = response.ok), this.$router.push("/");
+          console.log("ça passe ici"),
+            (response = response.ok),
+            this.$router.push("/");
+          $toast.success("Vous êtes connecté !");
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error, "et là");
         });
     },
   },
