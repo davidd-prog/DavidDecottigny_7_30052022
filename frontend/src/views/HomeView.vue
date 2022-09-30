@@ -17,7 +17,8 @@
               <ul>
                 <li class="talkUserMenu">
                   <a class="profileAvatar" href="profile.html">
-                    <i class="fas fa-user"></i>
+                    <!-- <i class="fas fa-user"></i> -->
+                    <fa icon="user" />
                   </a>
                   <ul class="subTalkMenu">
                     <li>
@@ -141,6 +142,9 @@
         </div>
       </section>
     </div>
+    <footer>
+      <p>Groupomania</p>
+    </footer>
   </body>
 </template>
 
@@ -158,8 +162,8 @@
 
 <style>
 #talkPage {
-  width: 100%;
-  /* max-width: 1300px; */
+  width: 95%;
+  margin: auto;
 }
 
 .infoHeaderTalkSection {

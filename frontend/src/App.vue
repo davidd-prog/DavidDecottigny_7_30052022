@@ -25,7 +25,7 @@
 
 body {
   margin: auto;
-  width: 95%;
+  width: 100%;
   max-width: 1024px;
   font-size: 1em;
   font-family: "lato-regular", Arial, serif;
@@ -61,5 +61,13 @@ h2 {
 
 small {
   color: red;
+}
+
+footer {
+  width: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  color: antiquewhite;
 }
 </style>

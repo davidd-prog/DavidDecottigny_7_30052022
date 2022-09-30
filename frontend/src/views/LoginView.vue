@@ -164,11 +164,11 @@
           </form>
         </div>
       </section>
-
-      <footer class="footer">
-        <p>Groupomania</p>
-      </footer>
     </div>
+    <footer class="footer">
+      <p>Groupomania</p>
+    </footer>
+
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/index.js"></script>
     <script
@@ -351,6 +351,15 @@ textarea {
   box-shadow: 0px 3px 4px grey;
 }
 
+#page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  margin: auto;
+}
+
 .headerSection {
   margin-top: 2em;
   display: flex;
@@ -420,10 +429,13 @@ input[type="text"] {
   background: white;
 }
 
-.footer {
-  background: black;
-  display: flex;
-  justify-content: center;
-  color: antiquewhite;
+@media only screen and (max-width: 315px) {
+  #page {
+    width: 90%;
+  }
+  #logo img {
+    width: 260px;
+    object-fit: cover;
+  }
 }
 </style>
