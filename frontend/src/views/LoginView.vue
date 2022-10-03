@@ -24,7 +24,7 @@
             <h1 v-else>Se connecter</h1>
             <div class="connect__section__form__items">
               <div class="namesBox" v-if="signinSession">
-                <label for="firstname"></label>
+                <!-- <label for="firstname"></label> -->
                 <input
                   v-model="firstname"
                   @change="firstNameInputChecking"
@@ -37,7 +37,7 @@
                   {{ firstNameErrorMessage }}
                 </small>
 
-                <label for="name"></label>
+                <!-- <label for="name"></label> -->
                 <input
                   v-model="lastname"
                   @change="lastNameInputChecking"
@@ -51,7 +51,7 @@
                 </small>
               </div>
               <div class="connectionBox">
-                <label for="email"></label>
+                <!-- <label for="email"></label> -->
                 <input
                   v-model="email"
                   @change="emailInputChecking"
@@ -67,7 +67,7 @@
                   {{ emailErrorMessage }}
                 </small>
 
-                <label for="password"></label>
+                <!-- <label for="password"></label> -->
                 <input
                   v-model="password"
                   @change="passwordInputChecking"
@@ -82,7 +82,7 @@
                 >
                   {{ passwordErrorMessage }}
                 </small>
-                <label for="checkPassword"></label>
+                <!-- <label for="checkPassword"></label> -->
                 <input
                   v-model="checkPassword"
                   @change="checkPasswordInputChecking"
@@ -119,7 +119,7 @@
                 v-if="signinSession"
                 type="submit"
                 value="Signin"
-                id="connectionButton"
+                class="connectionButton"
               >
                 <span v-if="status == 'loading'">Inscription en cours ...</span>
                 <!-- <span v-else-if="status == 'created'">Vous êtes inscrit !</span> -->
@@ -131,7 +131,7 @@
                 v-else
                 type="submit"
                 value="Login"
-                id="connectionButton"
+                class="connectionButton"
               >
                 <span v-if="status == 'loading'">Connexion en cours ...</span>
                 <span v-else-if="status == 'loggedin'"
@@ -424,7 +424,7 @@ input[type="text"] {
   color: blue;
 }
 
-#connectionButton {
+.connectionButton {
   padding: 0.9em 2em;
   background: white;
 }
