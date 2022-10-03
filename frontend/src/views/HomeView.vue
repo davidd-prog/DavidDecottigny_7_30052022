@@ -2,50 +2,7 @@
   <body>
     <div id="talkPage">
       <header>
-        <div class="headerTalkSection">
-          <div class="infoHeaderTalkSection">
-            <div id="talkLogo">
-              <a class="logoTalkCliquable" href="index.html">
-                <img
-                  class="firmLogo"
-                  src="../assets/icon-left-font-definitive.webp"
-                  alt="Logo de la société"
-                />
-              </a>
-            </div>
-            <nav id="talkMenu">
-              <ul>
-                <li class="talkUserMenu">
-                  <a class="profileAvatar" href="profile.html">
-                    <!-- <i class="fas fa-user"></i> -->
-                    <fa icon="user" />
-                  </a>
-                  <ul class="subTalkMenu">
-                    <li>
-                      <a class="profileLink" href="profile.html">Mon profil</a>
-                    </li>
-                    <li>
-                      <a class="logOutLink" href="index.html">Deconnexion</a>
-                    </li>
-                    <li>
-                      <a class="allUsersLink" href="users.html"
-                        >Profils utilisateurs</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a
-                    class="userFirstname"
-                    href="profile.html"
-                    title="Utilisateur"
-                    >David</a
-                  >
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+        <AppHeader />
         <!-- <a class="backLink" @click="backHome">
           <i class="fas fa-angle-left"></i>
           back
@@ -102,6 +59,7 @@
 // // @ is an alias to /src
 import PostForm from "@/components/PostForm.vue";
 import IndividualPost from "@/components/IndividualPost.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 export default {
   name: "HomeView",
@@ -112,6 +70,7 @@ export default {
   components: {
     PostForm,
     IndividualPost,
+    AppHeader,
   },
 };
 </script>

@@ -346,11 +346,6 @@ export default {
 </script>
 
 <style>
-textarea {
-  border-radius: 10px;
-  box-shadow: 0px 3px 4px grey;
-}
-
 #page {
   display: flex;
   flex-direction: column;

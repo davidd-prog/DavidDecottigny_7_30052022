@@ -32,6 +32,11 @@ body {
   font-weight: 400;
 }
 
+textarea {
+  border-radius: 10px;
+  box-shadow: 0px 3px 4px grey;
+}
+
 a {
   text-decoration: none;
 }
