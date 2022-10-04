@@ -75,10 +75,7 @@ export default {
   /* border-radius: 2.1em; */
 }
 
-textarea {
-  border-radius: 10px;
-  box-shadow: 0px 3px 4px grey;
-}
+
 
 .tchatBoxWrite button {
   background: white;

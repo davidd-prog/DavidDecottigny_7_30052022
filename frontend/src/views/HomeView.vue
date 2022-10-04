@@ -49,9 +49,7 @@
         </div> -->
       </section>
     </div>
-    <footer>
-      <p>Groupomania</p>
-    </footer>
+    <AppFooter />
   </body>
 </template>
 
@@ -60,6 +58,7 @@
 import PostForm from "@/components/PostForm.vue";
 import IndividualPost from "@/components/IndividualPost.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 
 export default {
   name: "HomeView",
@@ -71,6 +70,7 @@ export default {
     PostForm,
     IndividualPost,
     AppHeader,
+    AppFooter,
   },
 };
 </script>

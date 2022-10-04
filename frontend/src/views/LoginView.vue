@@ -165,9 +165,7 @@
         </div>
       </section>
     </div>
-    <footer class="footer">
-      <p>Groupomania</p>
-    </footer>
+    <AppFooter />
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/index.js"></script>
@@ -182,6 +180,7 @@
 import { mapState } from "vuex";
 import { useToast } from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
+import AppFooter from "@/components/AppFooter.vue";
 
 export default {
   name: "LoginView",
@@ -214,6 +213,7 @@ export default {
     "status",
   ]),
   methods: {
+    components: AppFooter,
     login: function () {
       this.signinSession = false;
     },
