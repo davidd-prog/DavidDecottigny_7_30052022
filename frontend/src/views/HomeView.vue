@@ -9,7 +9,7 @@
         </a> -->
       </header>
       <section id="tchatSection">
-        <h1>Bienvenue David !</h1>
+        <h1>Bienvenue {{ firstname }} !</h1>
         <!-- <div class="hiddenWrite">
           <button class="hidePosting" >Cacher le champ</button
           ><button class="showPosting" @click="open">Montrer le champ</button>
@@ -63,7 +63,9 @@ import AppFooter from "@/components/AppFooter.vue";
 export default {
   name: "HomeView",
   data() {
-    return {};
+    return {
+      firstname: "",
+    };
   },
   methods: {},
   components: {
@@ -72,6 +74,8 @@ export default {
     AppHeader,
     AppFooter,
   },
+
+  userData: function () {},
 };
 </script>
 

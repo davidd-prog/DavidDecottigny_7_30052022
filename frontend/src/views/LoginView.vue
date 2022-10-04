@@ -213,7 +213,6 @@ export default {
     "status",
   ]),
   methods: {
-    components: AppFooter,
     login: function () {
       this.signinSession = false;
     },
@@ -332,7 +331,7 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          console.log("ça passe ici"),
+          console.log("this.firstname"),
             (response = response.ok),
             this.$router.push("/");
           $toast.success("Vous êtes connecté !");
@@ -342,6 +341,7 @@ export default {
         });
     },
   },
+  components: { AppFooter },
 };
 </script>
 
