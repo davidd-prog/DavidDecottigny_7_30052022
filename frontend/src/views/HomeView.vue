@@ -59,14 +59,69 @@ import PostForm from "@/components/PostForm.vue";
 import IndividualPost from "@/components/IndividualPost.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
-
+// import { mapState } from "vuex";
+// import { postsService } from "@/_services";
+import axios from "axios";
 export default {
   name: "HomeView",
+  mounted() {
+    // postsService
+    //   .getAllPosts()
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
+
+    // let url = "http://localhost:3000/api/posts";
+    // let options = {
+    //   headers: {
+    //     Authorization: "Bearer " + localStorage.getItem("token"),
+    //   },
+    // };
+    // axios
+    // .get(url, options, {
+    //   userId: localStorage.getItem("userid"),
+    // })
+    // .then((data) => {
+    //   console.log(data);
+    //   this.posts = data.data;
+    // })
+    // .catch((error) => console.log(error));
+    // axios({
+    //   method: "get",
+    //   url: url,
+    //   headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    //   data: {
+    //     userId: localStorage.getItem("userid"),
+    //   },
+    // });
+
+    let data = JSON.stringify({
+      userId: localStorage.getItem("userid"),
+    });
+    console.log(data);
+    let config = {
+      method: "get",
+      url: "http://localhost:3000/api/posts/",
+      data: data,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios(config)
+      .then((data) => {
+        console.log(data);
+        this.posts = data.data;
+      })
+      .catch((error) => console.log(error));
+  },
+
   data() {
     return {
       firstname: "",
     };
   },
+
   methods: {},
   components: {
     PostForm,

@@ -1,13 +1,8 @@
 import { createStore } from "vuex";
-const axios = require("axios");
-
-const instance = axios.create({
-  baseURL: "http://localhost:3000/api/auth/",
-});
+// const axios = require("axios");
 
 export default createStore({
   state: {
-    status: "",
     user: {
       userId: "",
       token: "",
@@ -17,58 +12,53 @@ export default createStore({
       userAdmin: "",
       message: "",
     },
+    posts: [],
+    users: [],
   },
+
   getters: {},
+
   mutations: {
-    setStatus: function (state, status) {
-      state.status = status;
-    },
-    loggedUser: function (state, user) {
-      state.user = user;
-    },
+    // loggedUser: function (state, user) {
+    //   state.user = user;
+    // },
   },
   actions: {
-    registerAction: ({ commit }, { firstname, lastname, email, password }) => {
-      commit("setStatus", "loading");
-      return new Promise((resolve, reject) => {
-        commit;
-        instance
-          .post("/signup", {
-            firstname,
-            lastname,
-            email,
-            password,
-          })
-          .then((response) => {
-            commit("setStatus", "created");
-            resolve(response);
-          })
-          .catch((error) => {
-            commit("setStatus", "failCreate");
-            reject(error);
-          });
-      });
-    },
-
-    connectAction: ({ commit }, { email, password }) => {
-      commit("setStatus", "loading");
-      return new Promise((resolve, reject) => {
-        instance
-          .post("/login", {
-            email,
-            password,
-          })
-          .then((response) => {
-            commit("setStatus", "loggedin");
-            commit("loggedUser", response.data);
-            resolve(response);
-          })
-          .catch((error) => {
-            commit("setStatus", "failLogin");
-            reject(error);
-          });
-      });
-    },
+    // getAllPosts: () => {
+    //   // console.log(`Bearer ${token}`);
+    //   // console.log(response.user.token);
+    //   let userValidToken = localStorage.getItem("userToken");
+    //   let userValidId = localStorage.getItem("userId");
+    //   // let userValidAdmin = localStorage.getItem("userAdmin");
+    //   let validToken = JSON.parse(userValidToken);
+    //   let validId = JSON.parse(userValidId);
+    //   // let validAdmin = JSON.parse(userValidAdmin);
+    //   console.log(validToken, validId);
+    //   instance
+    //     .get("/posts", {
+    //       headers: {
+    //         Authorization: "Bearer " + validToken,
+    //       },
+    //       // headers: {
+    //       //   Authorization:
+    //       //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI1LCJ1c2VyQWRtaW4iOjAsImlhdCI6MTY2NTM5NTU2OSwiZXhwIjoxNjY1NDgxOTY5fQ.97FtdLNw7W2QDs76CeO9t_p1ZB1CRTsf2nxCW1M6kSk",
+    //       //   "Content-Type": "application/json",
+    //       // },
+    //       // headers: {
+    //       //   Authorization:
+    //       //     "Bearer " +
+    //       //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI1LCJ1c2VyQWRtaW4iOjAsImlhdCI6MTY2NTM5NTU2OSwiZXhwIjoxNjY1NDgxOTY5fQ.97FtdLNw7W2QDs76CeO9t_p1ZB1CRTsf2nxCW1M6kSk",
+    //       //   "Content-Type": "application/json",
+    //       // },
+    //     })
+    //     .then((response) => {
+    //       // console.log(response);
+    //       console.log(response);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
   },
   modules: {},
 });

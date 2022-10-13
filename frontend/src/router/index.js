@@ -25,6 +25,30 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/LoginView.vue"),
   },
+  {
+    path: "/signup",
+    name: "signup",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/SignupView.vue"),
+  },
+  {
+    path: "/users",
+    name: "UserIndex",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/UsersList.vue"),
+  },
+  {
+    path: "/:pathMatch(.*)",
+    name: "NotFound",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/NotFound.vue"),
+  },
 ];
 
 const router = createRouter({
