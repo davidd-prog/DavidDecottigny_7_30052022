@@ -39,7 +39,7 @@ exports.createPost = (req, res, next) => {
 // Mécanique de récupération de tous les posts
 exports.getAllPosts = (req, res, next) => {
   const isAuth = auth(req, res);
-
+  console.log(isAuth);
   if (isAuth) {
     Post.findAll()
       .then((posts) => {
@@ -518,12 +518,14 @@ function auth(req, res) {
   let isAuth = false;
 
   const token = req.headers.authorization.split(" ")[1];
+  console.log(token);
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+  console.log(decodedToken);
   const userId = decodedToken.userId;
   const userAdmin = decodedToken.userAdmin;
 
   req.auth = { userId, userAdmin };
-
+  console.log(req.body);
   if (req.body.userId == userId) {
     isAuth = true;
   } else {
