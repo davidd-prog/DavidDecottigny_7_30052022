@@ -6,183 +6,106 @@ const { post } = require("../routes/user");
 
 // Mécanique de création d'un post
 exports.createPost = (req, res, next) => {
-  const isAuth = auth(req, res);
-
-  if (isAuth) {
-    const postObject = req.body;
-
-    // Contrôle d'authentification du user
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
-    const userId = decodedToken.userId;
-
-    postObject.userId = userId;
-
-    // Création du post
-    const post = new Post({
-      ...postObject,
-    });
-    if (req.file) {
-      post.image = `${req.protocol}://${req.get("host")}/images/${
-        req.file.filename
-      }`;
-    }
-    post
-      .save()
-      .then(() => res.status(201).json({ message: "Post enregistré !" }))
-      .catch((error) => res.status(400).json({ error }));
-  } else {
-    res.status(401).json({ error: "Requête non authentifiée !" });
+  // Création du post
+  const post = new Post({
+    ...req.body,
+    userId: req.auth.userId,
+    likes: req.body.likes || 0,
+  });
+  if (req.file) {
+    post.image = `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`;
   }
+  post
+    .save()
+    .then(() => res.status(201).json({ message: "Post enregistré !" }))
+    .catch((error) => res.status(400).json({ error }));
 };
 
 // Mécanique de récupération de tous les posts
 exports.getAllPosts = (req, res, next) => {
-  const isAuth = auth(req, res);
-  console.log(isAuth);
-  if (isAuth) {
-    Post.findAll()
-      .then((posts) => {
-        res.status(200).json(posts);
-      })
-      .catch((error) => res.status(400).json({ error }));
-  } else {
-    res.status(401).json({ error: "Requête non authentifiée !" });
-  }
+  Post.findAll()
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => res.status(400).json({ error }));
 };
 
 // Mécanique de récupération d'un seul post
 exports.getOnePost = (req, res, next) => {
-  const isAuth = auth(req, res);
-
-  if (isAuth) {
-    Post.findOne({
-      where: { id: req.params.id },
-    })
-      .then((post) => res.status(200).json(post))
-      .catch((error) => res.status(400).json({ error }));
-  } else {
-    res.status(401).json({ error: "Requête non authentifiée !" });
-  }
+  Post.findOne({
+    where: { id: req.params.id },
+  })
+    .then((post) => res.status(200).json(post))
+    .catch((error) => res.status(400).json({ error }));
 };
 
 // Mécanique de modification d'un post
 exports.updateOnePost = (req, res, next) => {
-  const isAuth = auth(req, res);
-
-  if (isAuth) {
-    Post.findOne({
-      where: { id: req.params.id },
-    }).then((post) => {
-      if (!post) {
-        return res.status(404).json({
-          error: new Error("Post non trouvé !"),
-        });
-      }
-      if (post.userId !== req.auth.userId && req.auth.userAdmin == 0) {
-        console.log("ici");
-        return res.status(403).json({
-          error: new Error("Requête non autorisée !"),
-        });
-      } else if (post.userId == req.auth.userId || req.auth.userAdmin == 1) {
-        console.log("ici aussi");
-        if (req.file) {
-          console.log("mais aussi ici");
+  Post.findOne({
+    where: { id: req.params.id },
+  }).then((post) => {
+    if (!post) {
+      return res.status(404).json({
+        error: new Error("Post non trouvé !"),
+      });
+    }
+    if (post.userId === req.auth.userId || req.auth.isAdmin) {
+      if (req.file) {
+        if (post.image) {
           const filename = post.image.split("/images/")[1];
-          fs.unlink(`images/${filename}`, () => {
-            const postObject = {
-              content: req.body.content,
-              image: `${req.protocol}://${req.get("host")}/images/${
-                req.file.filename
-              }`,
-            };
-            Post.update(
-              {
-                ...postObject,
-              },
-              { where: { id: req.params.id } }
-            )
-              .then(() => res.status(200).json({ message: "Post mis à jour" }))
-              .catch((error) => res.status(401).json({ error }));
-          });
-        } else if (post.image == req.body.image) {
-          console.log("et là");
-          const contentPost = req.body;
-          const oldImage = post.image;
-          contentPost.image = oldImage;
-          Post.update(
-            {
-              ...contentPost,
-            },
-            { where: { id: req.params.id } }
-          )
-            .then(() => res.status(200).json({ message: "Post mis à jour" }))
-            .catch((error) => res.status(401).json({ error }));
-        } else {
-          console.log("ou encore ici");
-          const filename = post.image.split("/images/")[1];
-          fs.unlink(`images/${filename}`, () => {
-            const postObject = {
-              content: req.body.content,
-              image: req.body.image,
-            };
-            Post.update(
-              {
-                ...postObject,
-              },
-              { where: { id: req.params.id } }
-            )
-              .then(() => res.status(200).json({ message: "Post mis à jour" }))
-              .catch((error) => res.status(401).json({ error }));
-          });
+          fs.unlink(`images/${filename}`, () => {});
         }
+        Post.update(
+          {
+            ...req.body,
+            image: `${req.protocol}://${req.get("host")}/images/${
+              req.file.filename
+            }`,
+          },
+          { where: { id: req.params.id } }
+        )
+          .then(() => res.status(200).json({ message: "Post mis à jour" }))
+          .catch((error) => res.status(401).json({ error }));
+      } else {
+        Post.update({ ...req.body }, { where: { id: req.params.id } })
+          .then(() => res.status(200).json({ message: "Post mis à jour" }))
+          .catch((error) => res.status(401).json({ error }));
       }
-    });
-  } else {
-    console.log("mais aussi là");
-    res.status(401).json({ error: "Requête non authentifiée !" });
-  }
+    } else {
+      return res.status(403).json({
+        error: new Error("Requête non autorisée !"),
+      });
+    }
+  });
 };
 
 // Mécanique de suppression d'un post
 
 exports.deleteOnePost = (req, res, next) => {
-  const isAuth = auth(req, res);
-  if (isAuth) {
-    Post.findOne({ where: { id: req.params.id } })
-      .then((post) => {
-        if (!post) {
-          return res.status(404).json({
-            error: new Error("Post non trouvé !"),
-          });
+  Post.findOne({ where: { id: req.params.id } })
+    .then((post) => {
+      if (!post) {
+        return res.status(404).json({
+          error: new Error("Post non trouvé !"),
+        });
+      }
+      if (post.userId === req.auth.userId || req.auth.isAdmin) {
+        if (post.image) {
+          const filename = post.image.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {});
         }
-        if (post.userId !== req.auth.userId && req.auth.userAdmin == 0) {
-          return res.status(403).json({
-            error: new Error("Requête non autorisée !"),
-          });
-        } else if (post.userId == req.auth.userId || req.auth.userAdmin == 1) {
-          if (!post.image) {
-            Post.destroy({ where: { id: req.params.id } })
-              .then(() =>
-                res.status(200).json({ message: "Post sans image supprimé" })
-              )
-              .catch((error) => res.status(400).json({ error }));
-          } else {
-            const filename = post.image.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
-              Post.destroy({ where: { id: req.params.id } })
-                .then(() =>
-                  res.status(200).json({ message: "Post avec image supprimé" })
-                )
-                .catch((error) => res.status(400).json({ error }));
-            });
-          }
-        }
-      })
-      .catch((error) => res.status(500).json({ error }));
-  } else {
-    res.status(401).json({ error: "Requête non authentifiée !" });
-  }
+        Post.destroy({ where: { id: req.params.id } })
+          .then(() => res.status(200).json({ message: "Post sans supprimé" }))
+          .catch((error) => res.status(400).json({ error }));
+      } else {
+        return res.status(403).json({
+          error: new Error("Requête non autorisée !"),
+        });
+      }
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
 
 // Mécanique d'évaluation d'un post
