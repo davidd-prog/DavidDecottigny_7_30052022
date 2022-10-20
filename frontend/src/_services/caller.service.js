@@ -1,4 +1,5 @@
 import axios from "axios";
+import { accountService } from "./account.service";
 // import { accountService } from "./account.service";
 
 const Axios = axios.create({
@@ -6,7 +7,7 @@ const Axios = axios.create({
 });
 
 Axios.interceptors.request.use((request) => {
-  let token = localStorage.getItem("token");
+  let token = accountService.getToken();
   console.log(localStorage.getItem("token"));
 
   if (token) {

@@ -2,7 +2,10 @@
   <div>
     <nav>
       <router-link to="/">Accueil</router-link> |
-      <router-link to="/login">connexion</router-link>
+      <router-link to="/login">Connexion</router-link> |
+      <router-link to="/signup">Inscription</router-link> |
+      <router-link to="/users">Liste des utilisateurs</router-link> |
+      <router-link to="/users/:id">Profil Utilisateur</router-link>
     </nav>
     <router-view />
   </div>
