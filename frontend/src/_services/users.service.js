@@ -1,9 +1,9 @@
 import Axios from "./caller.service";
 
 let getAllUsers = () => {
-  return Axios.get("/");
+  return Axios.get("/auth");
 };
 
-export const userService = {
+export const usersService = {
   getAllUsers,
 };
