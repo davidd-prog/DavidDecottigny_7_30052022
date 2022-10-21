@@ -1,5 +1,6 @@
 import axios from "axios";
 import { accountService } from "./account.service";
+// require("dotenv").config();
 // import { accountService } from "./account.service";
 
 const Axios = axios.create({

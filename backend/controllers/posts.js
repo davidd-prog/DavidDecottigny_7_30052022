@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 const Like = require("../models/Like");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
@@ -25,7 +26,7 @@ exports.createPost = (req, res, next) => {
 
 // Mécanique de récupération de tous les posts
 exports.getAllPosts = (req, res, next) => {
-  Post.findAll()
+  Post.findAll({ include: User })
     .then((posts) => {
       res.status(200).json(posts);
     })
