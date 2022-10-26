@@ -9,7 +9,7 @@ export default {
   mounted() {
     usersService
       .getAllUsers()
-      .then((res) => console.log(res))
+      .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   },
 };

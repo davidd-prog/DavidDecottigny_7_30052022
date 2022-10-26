@@ -26,6 +26,11 @@
 <script>
 export default {
   name: "IndividualPost",
+  data() {
+    return {
+      post: []
+    }
+  }
 };
 </script>
 <style>

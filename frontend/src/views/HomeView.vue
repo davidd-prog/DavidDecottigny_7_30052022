@@ -66,7 +66,7 @@ export default {
   mounted() {
     postsService
       .getAllPosts()
-      .then((res) => console.log(res))
+      .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
   },
 

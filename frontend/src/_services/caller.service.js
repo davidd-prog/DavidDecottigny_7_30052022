@@ -8,11 +8,15 @@ const Axios = axios.create({
 });
 
 Axios.interceptors.request.use((request) => {
-  let token = accountService.getToken();
-  console.log(localStorage.getItem("token"));
+  // let token = accountService.getToken();
+  // console.log(localStorage.getItem("token"));
 
-  if (token) {
-    request.headers.Authorization = "Bearer " + token;
+  // if (token) {
+  //   request.headers.Authorization = "Bearer " + token;
+  // }
+
+  if (accountService.isLogged() == true) {
+    request.headers.Authorization = "Bearer " + accountService.getToken();
   }
 
   return request;

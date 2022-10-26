@@ -14,24 +14,14 @@
 <script></script>
 
 <style>
-/* @font-face {
-  font-family: "lato-regular";
-  src: local(lato-regular),
-    url("./fonts/lato-regular-webfont.woff2") format("web open font format");
-}
-
-@font-face {
-  font-family: "lato-bold";
-  src: local(lato-bold),
-    url("./fonts/lato-bold-webfont.woff2") format("web open font format");
-} */
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
 
 body {
   margin: auto;
   width: 100%;
   max-width: 1024px;
   font-size: 1em;
-  font-family: "lato-regular", Arial, serif;
+  font-family: "lato", Arial, serif;
   font-weight: 400;
 }
 
@@ -58,7 +48,7 @@ h1 {
   font-size: 2em;
   display: block;
   text-align: center;
-  font-family: "lato-bold", Arial, serif;
+  font-family: "lato", Arial, serif;
   font-weight: 700;
 }
 

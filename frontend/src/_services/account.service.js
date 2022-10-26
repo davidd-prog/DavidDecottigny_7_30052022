@@ -24,7 +24,7 @@ let saveUserId = (userId) => {
   localStorage.setItem("userid", userId);
 };
 
-let islogged = () => {
+let isLogged = () => {
   let token = localStorage.getItem("token");
   return !!token;
 };
@@ -35,6 +35,6 @@ export const accountService = {
   getUserId,
   saveUserId,
   saveToken,
-  islogged,
+  isLogged,
   registerAction,
 };
