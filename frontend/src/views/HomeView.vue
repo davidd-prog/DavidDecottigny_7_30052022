@@ -9,7 +9,7 @@
         </a> -->
       </header>
       <section id="tchatSection">
-        <h1>Bienvenue {{ firstname }} !</h1>
+        <h1>Bienvenue !</h1>
         <!-- <div class="hiddenWrite">
           <button class="hidePosting" >Cacher le champ</button
           ><button class="showPosting" @click="open">Montrer le champ</button>
@@ -60,20 +60,12 @@ import IndividualPost from "@/components/IndividualPost.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
 // import { mapState } from "vuex";
-import { postsService } from "@/_services";
+
 export default {
   name: "HomeView",
-  mounted() {
-    postsService
-      .getAllPosts()
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  },
 
   data() {
-    return {
-      firstname: "",
-    };
+    return {};
   },
 
   methods: {},
