@@ -104,10 +104,11 @@ export default {
       accountService
         .connectAction(this.user)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           $toast.success("Vous êtes connecté !");
           accountService.saveToken(res.data.token);
           accountService.saveUserId(res.data.userId);
+          accountService.saveUserFirstname(res.data.firstname);
           this.$router.push("/");
         })
         .catch((err) => console.log(err));

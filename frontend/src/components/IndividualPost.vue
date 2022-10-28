@@ -2,13 +2,16 @@
   <div id="postContainer">
     <div v-for="post in posts" :key="post.id" class="individualPost">
       <div class="postInfos">
-        <div class="postUser">Julie Dupont</div>
+        <div class="postUser">
+          {{ post.user.firstname }} {{ post.user.lastname }}
+        </div>
         <div class="postDate"></div>
       </div>
       <div class="postContent">
         <img
+          v-if="post.image != null"
           class="postPhoto"
-          src="../assets/Louvre_photo.jpg"
+          :src="`${post.image}`"
           alt="Photo du musée du Louvre"
         />
         <div class="postSentence">{{ post.content }}</div>
@@ -19,7 +22,7 @@
           <button class="postDelete">Supprimer</button>
         </div>
         <div class="postLikes">
-          9 <fa class="fa-thumbs-up" icon="thumbs-up" />
+          {{ post.likes }} <fa class="fa-thumbs-up" icon="thumbs-up" />
         </div>
       </div>
     </div>
@@ -48,9 +51,10 @@ export default {
   mounted() {
     postsService
       .getAllPosts()
-      .then((res) => {
-        (this.posts = res.data), console.log(res);
-      })
+      .then(
+        (res) => (this.posts = res.data)
+        // console.log(res);
+      )
       .catch((err) => console.log(err));
   },
 

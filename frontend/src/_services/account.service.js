@@ -16,6 +16,10 @@ let getUserId = () => {
   return localStorage.getItem("userid");
 };
 
+let getUserFirstname = () => {
+  return localStorage.getItem("firstname");
+};
+
 let saveToken = (token) => {
   localStorage.setItem("token", token);
 };
@@ -24,7 +28,11 @@ let saveUserId = (userId) => {
   localStorage.setItem("userid", userId);
 };
 
-let isLogged = () => {
+let saveUserFirstname = (firstname) => {
+  localStorage.setItem("firstname", firstname);
+};
+
+let islogged = () => {
   let token = localStorage.getItem("token");
   return !!token;
 };
@@ -33,8 +41,10 @@ export const accountService = {
   connectAction,
   getToken,
   getUserId,
+  getUserFirstname,
   saveUserId,
+  saveUserFirstname,
   saveToken,
-  isLogged,
+  islogged,
   registerAction,
 };
