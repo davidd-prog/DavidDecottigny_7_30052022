@@ -17,12 +17,12 @@
         <div class="postSentence">{{ post.content }}</div>
       </div>
       <div class="postStats">
-        <div class="postAdmin">
-          <button class="postUpdate">Modifier</button>
-          <button class="postDelete">Supprimer</button>
-        </div>
         <div class="postLikes">
           {{ post.likes }} <fa class="fa-thumbs-up" icon="thumbs-up" />
+        </div>
+        <div v-if="post.userId == userId || userIsAdmin == 1" class="postAdmin">
+          <button class="postUpdate">Modifier</button>
+          <button class="postDelete">Supprimer</button>
         </div>
       </div>
     </div>
@@ -31,6 +31,8 @@
 
 <script>
 import { postsService } from "@/_services";
+import { accountService } from "@/_services";
+
 export default {
   name: "IndividualPost",
   props: {},
@@ -45,6 +47,8 @@ export default {
         createdAt: "",
       },
       posts: [],
+      userId: "",
+      userIsAdmin: "",
     };
   },
 
@@ -56,6 +60,19 @@ export default {
         // console.log(res);
       )
       .catch((err) => console.log(err));
+
+    let importUserId = () => {
+      this.userId = accountService.getUserId();
+      // console.log(this.userId);
+    };
+    // return importUserId();
+
+    let importUserIsAdmin = () => {
+      this.userIsAdmin = accountService.getUserIsAdmin();
+      // console.log(this.userIsAdmin);
+    };
+
+    return importUserId(), importUserIsAdmin();
   },
 
   methods: {},
@@ -79,6 +96,10 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
+.postUser {
+  font-size: 1.2em;
+  font-weight: bold;
+}
 .postContent {
   display: flex;
   flex-direction: column;
@@ -96,12 +117,12 @@ export default {
   /* width: 50%; */
   color: black;
 }
-.postStats {
+.postLikes {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 .fa-thumbs-up {
+  margin-left: 0.5em;
   cursor: pointer;
   color: green;
 }

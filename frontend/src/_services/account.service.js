@@ -20,6 +20,10 @@ let getUserFirstname = () => {
   return localStorage.getItem("firstname");
 };
 
+let getUserIsAdmin = () => {
+  return localStorage.getItem("userAdmin");
+};
+
 let saveToken = (token) => {
   localStorage.setItem("token", token);
 };
@@ -32,6 +36,10 @@ let saveUserFirstname = (firstname) => {
   localStorage.setItem("firstname", firstname);
 };
 
+let saveUserIsAdmin = (userAdmin) => {
+  localStorage.setItem("userAdmin", userAdmin);
+};
+
 let islogged = () => {
   let token = localStorage.getItem("token");
   return !!token;
@@ -42,8 +50,10 @@ export const accountService = {
   getToken,
   getUserId,
   getUserFirstname,
+  getUserIsAdmin,
   saveUserId,
   saveUserFirstname,
+  saveUserIsAdmin,
   saveToken,
   islogged,
   registerAction,

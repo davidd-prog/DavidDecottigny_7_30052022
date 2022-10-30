@@ -109,6 +109,8 @@ export default {
           accountService.saveToken(res.data.token);
           accountService.saveUserId(res.data.userId);
           accountService.saveUserFirstname(res.data.firstname);
+          accountService.saveUserIsAdmin(res.data.userAdmin);
+
           this.$router.push("/");
         })
         .catch((err) => console.log(err));

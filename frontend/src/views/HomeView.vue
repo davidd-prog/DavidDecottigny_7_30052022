@@ -67,6 +67,7 @@ export default {
     return {
       userId: "",
       userFirstname: "",
+      userIsAdmin: "",
     };
   },
 
@@ -81,7 +82,13 @@ export default {
       this.userFirstname = accountService.getUserFirstname();
       // console.log(this.userFirstname, this.userId);
     };
-    return importUserId(), importUserFirstname();
+
+    let importUserIsAdmin = () => {
+      this.userIsAdmin = accountService.getUserIsAdmin();
+      console.log(this.userIsAdmin);
+    };
+
+    return importUserId(), importUserFirstname(), importUserIsAdmin();
   },
 
   methods: {},
