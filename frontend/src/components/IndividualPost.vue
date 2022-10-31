@@ -1,6 +1,6 @@
 <template>
   <div id="postContainer">
-    <div v-for="post in posts" :key="post.id" class="individualPost">
+    <div v-for="(post, index) in posts" :key="post.id" class="individualPost">
       <div class="postInfos">
         <div class="postUser">
           {{ post.user.firstname }} {{ post.user.lastname }}
@@ -22,7 +22,7 @@
         </div>
         <div v-if="post.userId == userId || userIsAdmin == 1" class="postAdmin">
           <button class="postUpdate">Modifier</button>
-          <button class="postDelete">Supprimer</button>
+          <button @click="deletion(index)" class="postDelete">Supprimer</button>
         </div>
       </div>
     </div>
@@ -53,13 +53,7 @@ export default {
   },
 
   mounted() {
-    postsService
-      .getAllPosts()
-      .then(
-        (res) => (this.posts = res.data)
-        // console.log(res);
-      )
-      .catch((err) => console.log(err));
+    this.getAllPosts();
 
     let importUserId = () => {
       this.userId = accountService.getUserId();
@@ -75,7 +69,43 @@ export default {
     return importUserId(), importUserIsAdmin();
   },
 
-  methods: {},
+  methods: {
+    getAllPosts() {
+      postsService
+        .getAllPosts()
+        .then((res) => {
+          this.posts = res.data;
+        })
+        .catch((err) => console.log(err));
+    },
+
+    deletion(index) {
+      if (
+        window.confirm(
+          "Veuillez confirmer vouloir supprimer définitivement ce post"
+        )
+      ) {
+        postsService
+          .deletePost(this.posts[index].id)
+          .then(() => {
+            alert("Votre post est définitivement supprimé !");
+            this.getAllPosts();
+            // this.postsService.getAllPosts();
+            // this.$router.push("/");
+            // Window.location.reload();
+          })
+          .catch(() =>
+            alert(
+              "Votre post n'a pu être supprimé, veuillez réessayer ultérieurement "
+            )
+          );
+      } else {
+        alert(
+          "Votre requête n'a pas pu aboutir, veuillez réessayer ultérieurement"
+        );
+      }
+    },
+  },
 };
 </script>
 
