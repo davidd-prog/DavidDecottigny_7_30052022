@@ -112,85 +112,48 @@ exports.deleteOnePost = (req, res, next) => {
 // Mécanique d'évaluation d'un post
 
 exports.likePost = (req, res, next) => {
-  const isAuth = auth(req, res);
-  const likes = req.body.likes;
-
-  if (isAuth) {
-    // console.log("authentifié");
-    Post.findOne({ where: { id: req.params.id } })
-      .then((post) => {
-        // console.log(post.id);
-        if (likes == 1) {
-          // console.log(likes),
-          Like.findOne({
-            where: { userId: req.body.userId, postId: req.params.id },
-          })
-            .then((liker) => {
-              // console.log(liker);
-              if (!liker) {
-                // console.log("Ok ! On peut constituer un endroit pour ce liker");
-                Post.update(
-                  {
-                    likes: post.likes + 1,
-                  },
-                  { where: { id: req.params.id } }
-                ).then(
-                  Like.create({
-                    userId: req.body.userId,
-                    postId: req.params.id,
-                  })
-                    .then(() => res.status(201).json({ message: "post liké" }))
-                    .catch((error) =>
-                      res
-                        .status(401)
-                        .json({ message: "impossible de liker le post" })
-                    )
-                );
-              } else {
-                res.status(400).json({ error: "Requête impossible" });
-              }
+  Post.findOne({ where: { id: req.params.id } })
+    .then((post) => {
+      Like.findOne({
+        where: { userId: req.auth.userId, postId: req.params.id },
+      }).then((liker) => {
+        if (!liker) {
+          Post.update(
+            {
+              likes: post.likes + 1,
+            },
+            { where: { id: req.params.id } }
+          ).then(
+            Like.create({
+              userId: req.auth.userId,
+              postId: req.params.id,
             })
-            .catch((error) =>
-              res.status(404).json({ message: "Aucun liker trouvé" })
-            );
-        } else if (likes == 0) {
-          Like.findOne({
-            where: { userId: req.body.userId, postId: req.params.id },
-          })
-            .then((liker) => {
-              if (liker) {
-                console.log("Ok ! On peut retirer ce liker");
-                Post.update(
-                  {
-                    likes: post.likes - 1,
-                  },
-                  { where: { id: req.params.id } }
-                ).then(
-                  Like.destroy({
-                    where: { userId: req.body.userId, postId: req.params.id },
-                  })
-                    .then(() =>
-                      res.status(201).json({ message: "like supprimé" })
-                    )
-                    .catch((error) =>
-                      res
-                        .status(401)
-                        .json({ message: "impossible de supprimer le like" })
-                    )
-                );
-              } else {
-                res.status(400).json({ error: "Requête impossible" });
-              }
+              .then(() => res.status(201).json({ message: "post liké" }))
+              .catch((error) =>
+                res.status(401).json({ message: "impossible de liker le post" })
+              )
+          );
+        } else {
+          Post.update(
+            {
+              likes: post.likes - 1,
+            },
+            { where: { id: req.params.id } }
+          ).then(
+            Like.destroy({
+              where: { userId: req.auth.userId, postId: req.params.id },
             })
-            .catch((error) =>
-              res.status(404).json({ message: "Aucun liker trouvé" })
-            );
+              .then(() => res.status(201).json({ message: "like supprimé" }))
+              .catch((error) =>
+                res
+                  .status(401)
+                  .json({ message: "impossible de supprimer le like" })
+              )
+          );
         }
-      })
-      .catch((error) => res.status(500).json({ error }));
-  } else {
-    console.log("non authentifié");
-  }
+      });
+    })
+    .catch((error) => res.status(500).json({ error }));
 };
 
 // exports.likePost = (req, res, next) => {

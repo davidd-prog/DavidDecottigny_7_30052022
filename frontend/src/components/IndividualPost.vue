@@ -17,7 +17,7 @@
         <div class="postSentence">{{ post.content }}</div>
       </div>
       <div class="postStats">
-        <div class="postLikes">
+        <div @click="postLike(index)" class="postLikes">
           {{ post.likes }} <fa class="fa-thumbs-up" icon="thumbs-up" />
         </div>
         <div v-if="post.userId == userId || userIsAdmin == 1" class="postAdmin">
@@ -32,6 +32,8 @@
 <script>
 import { postsService } from "@/_services";
 import { accountService } from "@/_services";
+import { useToast } from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
 
 export default {
   name: "IndividualPost",
@@ -80,6 +82,7 @@ export default {
     },
 
     deletion(index) {
+      const $toast = useToast();
       if (
         window.confirm(
           "Veuillez confirmer vouloir supprimer définitivement ce post"
@@ -88,7 +91,8 @@ export default {
         postsService
           .deletePost(this.posts[index].id)
           .then(() => {
-            alert("Votre post est définitivement supprimé !");
+            $toast.info("Votre post est définitivement supprimé !");
+            // alert("Votre post est définitivement supprimé !");
             this.getAllPosts();
             // this.postsService.getAllPosts();
             // this.$router.push("/");
@@ -104,6 +108,20 @@ export default {
           "Votre requête n'a pas pu aboutir, veuillez réessayer ultérieurement"
         );
       }
+    },
+
+    postLike(index) {
+      // console.log("ça fonctionne");
+      postsService
+        .likePost(this.posts[index].id)
+        .then((res) => {
+          console.log(res.data.message), this.getAllPosts();
+        })
+        .catch((err) => console.log(err));
+      // postsService
+      //   .likePost(this.posts[index].id)
+      //   .then(() => console.log(this.posts[index].id))
+      //   .catch((err) => console.log(err));
     },
   },
 };
