@@ -82,7 +82,12 @@ export default {
       if (this.post.content != "" || undefined) {
         postsService
           .createPost(this.post)
-          .then((res) => console.log(res))
+          .then((res) => {
+            console.log(res);
+            // this.getAllPosts();
+            location.reload();
+          })
+          // console.log(res))
           .catch((err) => console.log(err));
       } else {
         alert("Votre publication ne peut pas être vide de contenu");
