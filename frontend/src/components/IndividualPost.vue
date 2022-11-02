@@ -5,7 +5,7 @@
         <div class="postUser">
           {{ post.user.firstname }} {{ post.user.lastname }}
         </div>
-        <div class="postDate"></div>
+        <div class="postDate">{{ dateFormat[index] }}</div>
       </div>
       <div class="postContent">
         <img
@@ -34,6 +34,7 @@ import { postsService } from "@/_services";
 import { accountService } from "@/_services";
 import { useToast } from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
+import moment from "moment";
 
 export default {
   name: "IndividualPost",
@@ -69,6 +70,14 @@ export default {
     };
 
     return importUserId(), importUserIsAdmin();
+  },
+
+  computed: {
+    dateFormat() {
+      return this.posts.map((p) =>
+        moment(p.createdAt).format("[le] DD MMMM YYYY [à] HH:mm")
+      );
+    },
   },
 
   methods: {
