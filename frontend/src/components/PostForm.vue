@@ -2,23 +2,38 @@
   <div id="tchatBox">
     <div class="tchatBoxWrite">
       <h2 id="postCreate" @click="open">Créer un post</h2>
-      <div class="hiddenPostForm" v-show="success">
+      <form class="hiddenPostForm" v-show="success">
         <!-- <i class="far fa-window-close" @click="close"></i> -->
         <fa class="fa-window-close" icon="window-close" @click="close" />
         <div class="postWriting">
           <p class="postContainer">Contenu:</p>
-          <textarea id="text" name="post" rows="5" cols="33" v-model="message">
+          <textarea
+            id="text"
+            name="post"
+            rows="5"
+            cols="33"
+            v-model="post.content"
+          >
           </textarea>
         </div>
         <div class="imageToSend">
-          <p>Image:</p>
-          <button class="addImage">Ajouter une image</button>
+          <!-- <p>Image:</p> -->
+          <label for="image" aria-label="Image:"></label>
+          <input
+            name="image"
+            type="file"
+            class="addImage"
+            accept="image/jpg, image/jpeg, image/png, image/gif, image.webp"
+            @change="imageSelection"
+          />
         </div>
         <div class="postValidate">
-          <button class="postSubmit">Soumettre</button>
+          <button type="submit" class="postSubmit" @click="createPost">
+            Soumettre
+          </button>
           <button class="postCancel">Annuler</button>
         </div>
-      </div>
+      </form>
     </div>
     <div class="newPost" v-show="success">
       <h2 class="postView">Aperçu du post</h2>
@@ -32,19 +47,27 @@
                 src="/Groupomania_Logos_(update_2022)/running.jpg"
                 alt="Photo d'un joggeur"
               /> -->
-        <div class="postSentence">{{ message }}</div>
+        <div class="postSentence">
+          {{ post.content }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { postsService } from "@/_services";
+
 export default {
   name: "PostForm",
   data() {
     return {
       success: false,
-      message: "",
+      post: {
+        content: "",
+        image: "",
+        likes: "",
+      },
     };
   },
   methods: {
@@ -53,6 +76,22 @@ export default {
     },
     open: function () {
       this.success = true;
+    },
+    createPost: function () {
+      console.log(this.post);
+      if (this.post.content != "" || undefined) {
+        postsService
+          .createPost(this.post)
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      } else {
+        alert("Votre publication ne peut pas être vide de contenu");
+      }
+    },
+
+    imageSelection: function (event) {
+      console.log(event);
+      this.post.image = event.target.files[0] || event.dataTransfer.files;
     },
   },
 };
@@ -74,8 +113,6 @@ export default {
 
   /* border-radius: 2.1em; */
 }
-
-
 
 .tchatBoxWrite button {
   background: white;
