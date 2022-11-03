@@ -77,26 +77,52 @@ export default {
     open: function () {
       this.success = true;
     },
-    createPost: function () {
-      console.log(this.post);
-      if (this.post.content != "" || undefined) {
-        postsService
-          .createPost(this.post)
-          .then((res) => {
-            console.log(res);
-            // this.getAllPosts();
-            location.reload();
-          })
-          // console.log(res))
-          .catch((err) => console.log(err));
-      } else {
-        alert("Votre publication ne peut pas être vide de contenu");
-      }
-    },
+
+    // getFile() {
+    //   const file = this.$refs.file.files[0];
+    //   this.post.image = file;
+    // },
 
     imageSelection: function (event) {
       console.log(event);
       this.post.image = event.target.files[0] || event.dataTransfer.files;
+    },
+
+    createPost: function () {
+      console.log(this.post);
+
+      const formData = new FormData();
+      formData.append("content", this.post.content);
+      formData.append("image", this.post.image);
+
+      // if (!this.post.image) {
+      //   this.post.image = null;
+      // }
+
+      if (this.post.image == "") {
+        this.post.image = null;
+      }
+
+      formData.forEach((value, key) => {
+        console.log(key + " " + value);
+      });
+
+      if (this.post.content != "" || undefined) {
+        postsService
+          .createPost(this.post, formData)
+          .then((res) => {
+            console.log(res);
+            console.log("ça fonctionne");
+            // this.getAllPosts();
+            location.reload(false);
+          })
+          // console.log(res))
+          .catch((err) => console.log(err.message));
+        location.reload(false);
+        console.log("ça ne fonctionne pas");
+      } else {
+        alert("Votre publication ne peut pas être vide de contenu");
+      }
     },
   },
 };

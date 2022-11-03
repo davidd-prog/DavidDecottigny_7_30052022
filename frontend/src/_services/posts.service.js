@@ -1,11 +1,19 @@
 import Axios from "./caller.service";
+import { accountService } from "./account.service";
+
+let token = accountService.getToken();
 
 let getAllPosts = () => {
   return Axios.get("/posts");
 };
 
-let createPost = (post) => {
-  return Axios.post("/posts", post);
+let createPost = (FormData) => {
+  return Axios.post("/posts", FormData, {
+    headers: {
+      Authorization: "Bearer " + token,
+      "content-type": "multipart/form-data",
+    },
+  });
 };
 
 let deletePost = (id) => {

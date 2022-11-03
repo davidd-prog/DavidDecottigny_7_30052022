@@ -9,7 +9,7 @@
       </div>
       <div class="postContent">
         <img
-          v-if="post.image != null"
+          v-if="post.image != null || undefined"
           class="postPhoto"
           :src="`${post.image}`"
           alt="Photo du musée du Louvre"
@@ -87,7 +87,7 @@ export default {
         .then((res) => {
           this.posts = res.data;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.message));
     },
 
     deletion(index) {
