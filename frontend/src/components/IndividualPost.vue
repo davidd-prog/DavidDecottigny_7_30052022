@@ -21,7 +21,7 @@
           {{ post.likes }} <fa class="fa-thumbs-up" icon="thumbs-up" />
         </div>
         <div v-if="post.userId == userId || userIsAdmin == 1" class="postAdmin">
-          <button class="postUpdate">Modifier</button>
+          <button @click="modPage(index)" class="postUpdate">Modifier</button>
           <button @click="deletion(index)" class="postDelete">Supprimer</button>
         </div>
       </div>
@@ -88,6 +88,10 @@ export default {
           this.posts = res.data;
         })
         .catch((err) => console.log(err.message));
+    },
+
+    modPage(index) {
+      this.$router.push("/postupdate/" + this.posts[index].id);
     },
 
     deletion(index) {

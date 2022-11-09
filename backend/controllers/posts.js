@@ -28,7 +28,7 @@ exports.createPost = (req, res, next) => {
 
 // Mécanique de récupération de tous les posts
 exports.getAllPosts = (req, res, next) => {
-  Post.findAll({ include: User })
+  Post.findAll({ order: [["createdAt", "DESC"]], include: User })
     .then((posts) => {
       res.status(200).json(posts);
     })
