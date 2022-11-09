@@ -253,6 +253,7 @@ export default {
           .then((res) => {
             console.log(res);
             $toast.success("Vous êtes enregistré !");
+            this.$router.push("/login");
           })
           .catch((err) => console.log(err));
 
