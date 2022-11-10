@@ -22,7 +22,9 @@
                 <a class="profileLink" href="profile.html">Mon profil</a>
               </li>
               <li>
-                <a class="logOutLink" href="index.html">Deconnexion</a>
+                <a @click="logout" class="logOutLink" href="index.html"
+                  >Deconnexion</a
+                >
               </li>
               <li>
                 <a class="allUsersLink" href="users.html"
@@ -44,6 +46,15 @@
 <script>
 export default {
   name: "AppHeader",
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("firstname");
+      localStorage.removeItem("userid");
+      localStorage.removeItem("userAdmin");
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 <style></style>
