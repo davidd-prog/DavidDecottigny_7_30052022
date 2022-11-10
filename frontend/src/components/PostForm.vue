@@ -88,7 +88,8 @@ export default {
       this.post.image = event.target.files[0] || event.dataTransfer.files;
     },
 
-    createPost: function () {
+    createPost: function (event) {
+      event.preventDefault();
       console.log(this.post);
 
       const formData = new FormData();
@@ -113,8 +114,8 @@ export default {
           .then((res) => {
             console.log(res);
             console.log("ça fonctionne");
+            // location.reload(false);
             // this.getAllPosts();
-            location.reload(false);
           })
           // console.log(res))
           .catch((err) => console.log(err.message));
