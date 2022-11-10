@@ -224,7 +224,8 @@ export default {
       }
     },
 
-    registerAction: function () {
+    registerAction: function (event) {
+      event.preventDefault();
       const $toast = useToast();
 
       this.firstNameInputChecking();

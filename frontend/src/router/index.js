@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import { accountService } from "@/_services";
 
 const routes = [
   {
@@ -63,6 +64,20 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach(async (to) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  const publicPages = ["/login", "/signup"];
+  const authRequired = !publicPages.includes(to.path);
+  const token = accountService.getToken();
+  const user = accountService.getUserId();
+  const auth = { token, user };
+
+  if (authRequired && !auth.token) {
+    auth.returnUrl = to.fullPath;
+    return "/login";
+  }
 });
 
 router.afterEach;

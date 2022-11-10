@@ -97,7 +97,8 @@ export default {
   },
 
   methods: {
-    connectAction: function () {
+    connectAction: function (event) {
+      event.preventDefault();
       const $toast = useToast();
       // let instance = $toast.success("Vous êtes connecté !");
 
