@@ -27,16 +27,19 @@
                 >
               </li>
               <li>
-                <a class="allUsersLink" href="users.html"
-                  >Profils utilisateurs</a
+                <a
+                  v-if="userIsAdmin == 1"
+                  class="allUsersLink"
+                  href="users.html"
+                  >Listing utilisateurs</a
                 >
               </li>
             </ul>
           </li>
           <li>
-            <a class="userFirstname" href="profile.html" title="Utilisateur"
-              >David</a
-            >
+            <a class="userFirstname" href="profile.html" title="Utilisateur">{{
+              userFirstname
+            }}</a>
           </li>
         </ul>
       </nav>
@@ -44,8 +47,31 @@
   </div>
 </template>
 <script>
+import { accountService } from "@/_services";
+
 export default {
   name: "AppHeader",
+  data() {
+    return {
+      userFirstname: "",
+      userIsAdmin: "",
+    };
+  },
+
+  mounted() {
+    let importUserFirstname = () => {
+      this.userFirstname = accountService.getUserFirstname();
+      // console.log(this.userFirstname, this.userId);
+    };
+
+    let importUserIsAdmin = () => {
+      this.userIsAdmin = accountService.getUserIsAdmin();
+      console.log(this.userIsAdmin);
+    };
+
+    return importUserFirstname(), importUserIsAdmin();
+  },
+
   methods: {
     logout() {
       localStorage.removeItem("token");
