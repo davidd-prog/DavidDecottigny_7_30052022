@@ -13,6 +13,7 @@
 </template>
 <script>
 import { usersService } from "@/_services";
+import { accountService } from "@/_services";
 // import axios from "axios";
 
 export default {
@@ -23,30 +24,51 @@ export default {
     };
   },
   mounted() {
-    usersService
-      .getAllUsers()
-      .then((res) => {
-        console.log(res.data);
-        this.users = res.data;
-        console.log(this.users);
-      })
-      .catch((err) => console.log(err));
+    this.getAllUsers();
+
+    let importUserIsAdmin = () => {
+      this.userIsAdmin = accountService.getUserIsAdmin();
+      console.log(this.userIsAdmin);
+    };
+
+    return importUserIsAdmin();
   },
   methods: {
+    getAllUsers() {
+      usersService
+        .getAllUsers()
+        .then((res) => {
+          console.log(res.data);
+          this.users = res.data;
+          console.log(this.users);
+        })
+        .catch((err) => console.log(err));
+    },
+
     del(index) {
       console.log(index);
       console.log(this.users[index].id);
-      // if (this.users.useradmin == 1) {
-      usersService
-        .deleteUser(this.users[index].id)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+      if (this.userIsAdmin == 1) {
+        usersService
+          .deleteUser(this.users[index].id)
+          .then(() => {
+            this.getAllUsers();
+          })
+
+          .catch((err) => console.log(err));
+      } else {
+        alert("Vous n'êtes pas autorisé à effectuer cette action !");
+      }
+
+      // this.users.splice(index);
     },
   },
   computed: {
     usersNumber() {
       if (this.users.length == 0) {
         return "Il n'y a aucun membre dans notre réseau social";
+      } else if (this.users.length == 1) {
+        return `Notre réseau social compte ${this.users.length} membre.`;
       } else {
         return `Notre réseau social compte ${this.users.length} membres`;
       }

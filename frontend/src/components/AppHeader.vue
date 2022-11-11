@@ -14,7 +14,6 @@
         <ul>
           <li class="talkUserMenu">
             <a class="profileAvatar" href="profile.html">
-              <!-- <i class="fas fa-user"></i> -->
               <fa icon="user" />
             </a>
             <ul class="subTalkMenu">
@@ -28,6 +27,7 @@
               </li>
               <li>
                 <a
+                  @click="admin"
                   v-if="userIsAdmin == 1"
                   class="allUsersLink"
                   href="users.html"
@@ -79,6 +79,11 @@ export default {
       localStorage.removeItem("userid");
       localStorage.removeItem("userAdmin");
       this.$router.push("/login");
+    },
+
+    admin(event) {
+      event.preventDefault();
+      this.$router.push("/users");
     },
   },
 };
