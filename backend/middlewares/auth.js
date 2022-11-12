@@ -6,14 +6,14 @@ module.exports = (req, res, next) => {
 
     if (undefined === bearToken) {
       return res
-        .status(500)
+        .status(401)
         .json({ error: new Error("Le token est introuvable !") });
     } else {
       const tokenSplice = bearToken.split(" ");
 
       if (undefined === tokenSplice[1]) {
         return res
-          .status(500)
+          .status(401)
           .json({ error: new Error("Le token est introuvable !") });
       } else {
         const token = tokenSplice[1];
@@ -28,7 +28,7 @@ module.exports = (req, res, next) => {
     }
     next();
   } catch (error) {
-    return res.status(500).json({
+    return res.status(401).json({
       error: new Error(
         "Une erreur inattendue s'est produite lors de la vérification du token."
       ),
