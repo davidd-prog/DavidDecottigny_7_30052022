@@ -59,7 +59,7 @@ exports.login = (req, res, next) => {
               { userId: user.id, userAdmin: user.isadmin },
               "RANDOM_TOKEN_SECRET",
               {
-                expiresIn: "10s",
+                expiresIn: "24h",
               }
             ),
             message: "Utilisateur connecté !",

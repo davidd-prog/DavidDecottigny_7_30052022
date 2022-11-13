@@ -2,7 +2,7 @@
   <div id="postContainer">
     <div v-for="(post, index) in posts" :key="post.id" class="individualPost">
       <div class="postInfos">
-        <div @click="userProfile(userId)" class="postUser">
+        <div @click="userProfile(index)" class="postUser">
           {{ post.user.firstname }} {{ post.user.lastname }}
         </div>
         <div class="postDate">{{ dateFormat[index] }}</div>
@@ -137,9 +137,12 @@ export default {
       //   .catch((err) => console.log(err));
     },
 
-    userProfile(userId) {
-      console.log(userId);
-      this.$router.push("/user/" + userId);
+    userProfile(index) {
+      // console.log(this.posts[index].user.id);
+      console.log(this.userId, this.posts[index].user.id, this.userIsAdmin);
+      if (this.userId == this.posts[index].user.id || this.userIsAdmin == 1) {
+        this.$router.push("/user/" + this.posts[index].user.id);
+      }
     },
   },
 };
