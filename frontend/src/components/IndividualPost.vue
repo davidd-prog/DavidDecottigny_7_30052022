@@ -2,7 +2,7 @@
   <div id="postContainer">
     <div v-for="(post, index) in posts" :key="post.id" class="individualPost">
       <div class="postInfos">
-        <div class="postUser">
+        <div @click="userProfile(userId)" class="postUser">
           {{ post.user.firstname }} {{ post.user.lastname }}
         </div>
         <div class="postDate">{{ dateFormat[index] }}</div>
@@ -136,6 +136,11 @@ export default {
       //   .then(() => console.log(this.posts[index].id))
       //   .catch((err) => console.log(err));
     },
+
+    userProfile(userId) {
+      console.log(userId);
+      this.$router.push("/user/" + userId);
+    },
   },
 };
 </script>
@@ -160,6 +165,7 @@ export default {
 .postUser {
   font-size: 1.2em;
   font-weight: bold;
+  cursor: pointer;
 }
 .postContent {
   display: flex;
