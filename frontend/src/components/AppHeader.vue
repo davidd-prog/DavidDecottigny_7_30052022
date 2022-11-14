@@ -18,7 +18,9 @@
             </a>
             <ul class="subTalkMenu">
               <li>
-                <a class="profileLink" href="profile.html">Mon profil</a>
+                <a @click="userProfile(userId)" class="profileLink"
+                  >Mon profil</a
+                >
               </li>
               <li>
                 <a @click="logout" class="logOutLink" href="index.html"
@@ -37,9 +39,12 @@
             </ul>
           </li>
           <li>
-            <a class="userFirstname" href="profile.html" title="Utilisateur">{{
-              userFirstname
-            }}</a>
+            <a
+              @click="userProfile(userId)"
+              class="userFirstname"
+              title="Utilisateur"
+              >{{ userFirstname }}</a
+            >
           </li>
         </ul>
       </nav>
@@ -55,6 +60,7 @@ export default {
     return {
       userFirstname: "",
       userIsAdmin: "",
+      userId: "",
     };
   },
 
@@ -69,7 +75,12 @@ export default {
       console.log(this.userIsAdmin);
     };
 
-    return importUserFirstname(), importUserIsAdmin();
+    let importUserId = () => {
+      this.userId = accountService.getUserId();
+      console.log(this.userId);
+    };
+
+    return importUserFirstname(), importUserIsAdmin(), importUserId();
   },
 
   methods: {
@@ -85,7 +96,22 @@ export default {
       event.preventDefault();
       this.$router.push("/users");
     },
+
+    userProfile(userId) {
+      console.log(userId);
+      this.$router.push("/user/" + userId);
+    },
   },
 };
 </script>
-<style></style>
+<style>
+.userFirstname {
+  cursor: pointer;
+}
+.profileLink {
+  cursor: pointer;
+}
+.allUsersLink {
+  cursor: pointer;
+}
+</style>
