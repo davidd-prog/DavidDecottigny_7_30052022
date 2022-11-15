@@ -8,6 +8,13 @@ let connectAction = (credentials) => {
   return Axios.post("/auth/login", credentials);
 };
 
+let logOut = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("firstname");
+  localStorage.removeItem("userid");
+  localStorage.removeItem("userAdmin");
+};
+
 let getToken = () => {
   return localStorage.getItem("token");
 };
@@ -47,6 +54,7 @@ let islogged = () => {
 
 export const accountService = {
   connectAction,
+  logOut,
   getToken,
   getUserId,
   getUserFirstname,

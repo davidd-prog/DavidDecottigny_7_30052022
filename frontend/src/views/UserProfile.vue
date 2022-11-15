@@ -24,6 +24,7 @@
 
 <script>
 import Axios from "@/_services/caller.service";
+import { accountService } from "@/_services";
 import { usersService } from "@/_services";
 
 export default {
@@ -48,6 +49,7 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
     update() {
       // console.log(this.user);
       usersService
@@ -63,14 +65,21 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    delAccount() {
+      console.log(this.user);
+      usersService.deleteUser(this.user.id).then((res) => {
+        console.log(res);
+        alert("Votre compte vient d'être supprimé !");
+        accountService.logOut();
+        this.$router.push("/login");
+      });
+    },
   },
 };
 </script>
 
 <style>
-/* #profileList {
-  margin: auto;
-} */
 .userUpdateForm {
   display: flex;
   align-items: center;

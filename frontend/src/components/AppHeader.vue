@@ -85,10 +85,7 @@ export default {
 
   methods: {
     logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("firstname");
-      localStorage.removeItem("userid");
-      localStorage.removeItem("userAdmin");
+      accountService.logOut();
       this.$router.push("/login");
     },
 
