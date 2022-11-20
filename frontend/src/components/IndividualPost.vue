@@ -105,7 +105,7 @@ export default {
           .deletePost(this.posts[index].id)
           .then(() => {
             $toast.info("Votre post est définitivement supprimé !");
-            // alert("Votre post est définitivement supprimé !");
+
             this.getAllPosts();
             // this.postsService.getAllPosts();
             // this.$router.push("/");

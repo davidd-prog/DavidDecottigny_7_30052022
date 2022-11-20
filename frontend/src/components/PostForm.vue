@@ -114,8 +114,8 @@ export default {
           .then((res) => {
             console.log(res);
             console.log("ça fonctionne");
-            // location.reload(false);
-            // this.getAllPosts();
+            location.reload(false);
+            this.getAllPosts();
           })
           // console.log(res))
           .catch((err) => console.log(err.message));
