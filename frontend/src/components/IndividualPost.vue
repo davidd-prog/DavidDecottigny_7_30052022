@@ -127,8 +127,9 @@ export default {
       // console.log("ça fonctionne");
       postsService
         .likePost(this.posts[index].id)
-        .then((res) => {
-          console.log(res.data.message), this.getAllPosts();
+        .then(() => {
+          // console.log(res.data.message),
+          this.getAllPosts();
         })
         .catch((err) => console.log(err));
       // postsService

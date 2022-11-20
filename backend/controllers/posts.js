@@ -45,42 +45,6 @@ exports.getOnePost = (req, res, next) => {
 };
 
 // Mécanique de modification d'un post
-// exports.updateOnePost = (req, res, next) => {
-//   Post.findOne({
-//     where: { id: req.params.id },
-//   }).then((post) => {
-//     if (!post) {
-//       return res.status(404).json({
-//         error: new Error("Post non trouvé !"),
-//       });
-//     }
-//     if (post.userId === req.auth.userId || req.auth.isAdmin) {
-//       console.log(req.file, req.body.file, post.image, req.body.content);
-//       if (req.file && !req.body.content) {
-//         if (post.image) {
-//           const filename = post.image.split("/images/")[1];
-//           fs.unlink(`images/${filename}`, () => {});
-//         }
-//         Post.update(
-//           {
-//             image: `${req.protocol}://${req.get("host")}/images/${
-//               req.file.filename
-//             }`,
-//           },
-//           { where: { id: req.params.id } }
-//         )
-//           .then(() => {
-//             console.log("Ca fonctionne");
-//             res.status(200).json({ message: "Post mis à jour" });
-//           })
-//           .catch((error) => {
-//             console.log("ça ne fonctionne pas");
-//             res.status(401).json({ error });
-//           });
-//       }
-//     }
-//   });
-// };
 
 exports.updateOnePost = (req, res, next) => {
   Post.findOne({
@@ -108,6 +72,22 @@ exports.updateOnePost = (req, res, next) => {
         )
           .then(() => res.status(200).json({ message: "Post mis à jour" }))
           .catch((error) => res.status(401).json({ error }));
+      } else if (req.file && req.body.content) {
+        if (post.image) {
+          const filename = post.image.split("/images/")[1];
+          fs.unlink(`images/${filename}`, () => {});
+        }
+        Post.update(
+          {
+            ...req.body,
+            image: `${req.protocol}://${req.get("host")}/images/${
+              req.file.filename
+            }`,
+          },
+          { where: { id: req.params.id } }
+        )
+          .then(() => res.status(200).json({ message: "Post mis à jour" }))
+          .catch((error) => res.status(401).json({ error }));
       } else {
         Post.update(
           { ...req.body, image: post.image },
@@ -123,6 +103,48 @@ exports.updateOnePost = (req, res, next) => {
     }
   });
 };
+
+// exports.updateOnePost = (req, res, next) => {
+//   Post.findOne({
+//     where: { id: req.params.id },
+//   }).then((post) => {
+//     if (!post) {
+//       return res.status(404).json({
+//         error: new Error("Post non trouvé !"),
+//       });
+//     }
+//     if (post.userId === req.auth.userId || req.auth.isAdmin) {
+//       console.log(req.file);
+//       if (req.file && !req.body.content) {
+//         if (post.image) {
+//           const filename = post.image.split("/images/")[1];
+//           fs.unlink(`images/${filename}`, () => {});
+//         }
+//         Post.update(
+//           {
+//             image: `${req.protocol}://${req.get("host")}/images/${
+//               req.file.filename
+//             }`,
+//           },
+//           { where: { id: req.params.id } }
+//         )
+//           .then(() => res.status(200).json({ message: "Post mis à jour" }))
+//           .catch((error) => res.status(401).json({ error }));
+//       } else {
+//         Post.update(
+//           { ...req.body, image: post.image },
+//           { where: { id: req.params.id } }
+//         )
+//           .then(() => res.status(200).json({ message: "Post mis à jour" }))
+//           .catch((error) => res.status(401).json({ error }));
+//       }
+//     } else {
+//       return res.status(403).json({
+//         error: new Error("Requête non autorisée !"),
+//       });
+//     }
+//   });
+// };
 
 // Mécanique de suppression d'un post
 
@@ -171,7 +193,7 @@ exports.likePost = (req, res, next) => {
               postId: req.params.id,
             })
               .then(() => res.status(201).json({ message: "post liké" }))
-              .catch((error) =>
+              .catch(() =>
                 res.status(401).json({ message: "impossible de liker le post" })
               )
           );
@@ -186,7 +208,7 @@ exports.likePost = (req, res, next) => {
               where: { userId: req.auth.userId, postId: req.params.id },
             })
               .then(() => res.status(201).json({ message: "like supprimé" }))
-              .catch((error) =>
+              .catch(() =>
                 res
                   .status(401)
                   .json({ message: "impossible de supprimer le like" })

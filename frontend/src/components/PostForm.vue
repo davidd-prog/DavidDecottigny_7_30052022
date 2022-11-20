@@ -57,7 +57,6 @@
 
 <script>
 import { postsService } from "@/_services";
-
 export default {
   name: "PostForm",
   data() {
@@ -77,37 +76,29 @@ export default {
     open: function () {
       this.success = true;
     },
-
     // getFile() {
     //   const file = this.$refs.file.files[0];
     //   this.post.image = file;
     // },
-
     imageSelection: function (event) {
       console.log(event);
       this.post.image = event.target.files[0] || event.dataTransfer.files;
     },
-
     createPost: function (event) {
       event.preventDefault();
       console.log(this.post);
-
       const formData = new FormData();
       formData.append("content", this.post.content);
       formData.append("image", this.post.image);
-
       // if (!this.post.image) {
       //   this.post.image = null;
       // }
-
       if (this.post.image == "") {
         this.post.image = null;
       }
-
       formData.forEach((value, key) => {
         console.log(key + " " + value);
       });
-
       if (this.post.content != "" || undefined) {
         postsService
           .createPost(this.post, formData)
@@ -142,54 +133,44 @@ export default {
   background: linear-gradient(#fd2b019c, #ffd7d7);
   box-shadow: 0px 3px 4px lightgray;
   position: relative;
-
   /* border-radius: 2.1em; */
 }
-
 .tchatBoxWrite button {
   background: white;
 }
-
 #postCreate {
   font-size: 1.25em;
   margin: auto;
   margin-bottom: 1em;
   cursor: pointer;
 }
-
 .fa-window-close {
   position: absolute;
   top: 20px;
   right: 5px;
   cursor: pointer;
 }
-
 .postWriting {
   display: flex;
   flex-direction: row;
   margin-bottom: 1em;
 }
-
 .postContainer {
   margin-right: 10%;
 }
-
 .addImage {
   border-radius: 2.1em;
   margin-left: 15%;
 }
-
 .imageToSend {
   display: flex;
   flex-direction: row;
 }
-
 .postValidate {
   display: flex;
   justify-content: space-around;
   margin-top: 1em;
 }
-
 .newPost {
   margin-top: 0.5em;
   background: linear-gradient(#4e5166a6, white);
@@ -200,7 +181,6 @@ export default {
   padding: 1em;
   box-shadow: 0px 3px 4px lightgray;
 }
-
 .postView {
   font-size: 1.25em;
   margin: auto;
