@@ -55,7 +55,7 @@ exports.updateOnePost = (req, res, next) => {
         error: new Error("Post non trouvé !"),
       });
     }
-    if (post.userId === req.auth.userId || req.auth.isAdmin) {
+    if (post.userId === req.auth.userId || req.auth.userAdmin) {
       console.log(req.file);
       if (req.file && !req.body.content) {
         if (post.image) {
@@ -156,7 +156,7 @@ exports.deleteOnePost = (req, res, next) => {
           error: new Error("Post non trouvé !"),
         });
       }
-      if (post.userId === req.auth.userId || req.auth.isAdmin) {
+      if (post.userId === req.auth.userId || req.auth.userAdmin) {
         if (post.image) {
           const filename = post.image.split("/images/")[1];
           fs.unlink(`images/${filename}`, () => {});
@@ -188,6 +188,7 @@ exports.likePost = (req, res, next) => {
             },
             { where: { id: req.params.id } }
           ).then(
+            console.log(post.likes),
             Like.create({
               userId: req.auth.userId,
               postId: req.params.id,
@@ -204,6 +205,7 @@ exports.likePost = (req, res, next) => {
             },
             { where: { id: req.params.id } }
           ).then(
+            console.log(post.likes),
             Like.destroy({
               where: { userId: req.auth.userId, postId: req.params.id },
             })
