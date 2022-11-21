@@ -31,11 +31,7 @@
                   placeholder="Email"
                   required
                 />
-                <small class="inputErrorMessage" v-if="emailErrorDisplay">
-                  {{ emailErrorMessage }}
-                </small>
 
-                <!-- <label for="password"></label> -->
                 <input
                   v-model="user.password"
                   @change="passwordInputChecking"
@@ -44,10 +40,6 @@
                   placeholder="Mot de passe"
                   required
                 />
-                <small class="inputErrorMessage" v-if="passwordErrorDisplay">
-                  {{ passwordErrorMessage }}
-                </small>
-                <!-- <label for="checkPassword"></label> -->
               </div>
             </div>
             <div class="connect__order__form__submit">
@@ -59,6 +51,9 @@
               >
                 <span>Connexion</span>
               </button>
+              <small class="connectionError" v-if="connectionErrorDisplay">{{
+                connectionErrorMessage
+              }}</small>
             </div>
 
             <p class="inscription">
@@ -89,32 +84,35 @@ export default {
         email: "",
         password: "",
       },
-      emailErrorMessage: "",
-      emailErrorDisplay: true,
-      passwordErrorMessage: "",
-      passwordErrorDisplay: true,
+      connectionErrorMessage: "",
+      connectionErrorDisplay: false,
     };
   },
 
   methods: {
+    // Process de connexion grâce au système de service account pour appeler l'API et transmettre la requête
     connectAction: function (event) {
       event.preventDefault();
       const $toast = useToast();
-      // let instance = $toast.success("Vous êtes connecté !");
 
       accountService
         .connectAction(this.user)
         .then((res) => {
-          // console.log(res.data);
-          $toast.success("Vous êtes connecté !");
           accountService.saveToken(res.data.token);
           accountService.saveUserId(res.data.userId);
           accountService.saveUserFirstname(res.data.firstname);
           accountService.saveUserIsAdmin(res.data.userAdmin);
 
           this.$router.push("/");
+          $toast.success("Vous êtes connecté !");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          this.connectionErrorDisplay = true;
+          this.connectionErrorMessage =
+            "L'email ou le mot de passe est incorrect";
+          $toast.error("Connexion impossible !");
+        });
     },
   },
   components: { AppFooter },
@@ -181,23 +179,20 @@ input[type="text"] {
   margin: 1em;
 }
 
-.signinFailure {
-  color: red;
-}
-
-.loginFailure {
-  color: red;
-}
-
 .signinLink {
   text-decoration: underline;
   cursor: pointer;
   color: blue;
 }
-
+.connect__order__form__submit {
+  display: flex;
+  flex-direction: column;
+}
 .connectionButton {
   padding: 0.9em 2em;
   background: white;
+  justify-content: center;
+  margin: auto;
 }
 
 @media only screen and (max-width: 315px) {

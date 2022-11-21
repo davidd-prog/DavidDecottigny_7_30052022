@@ -256,7 +256,12 @@ export default {
             $toast.success("Vous êtes enregistré !");
             this.$router.push("/login");
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            alert(
+              "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
+            );
+          });
 
         // this.$store
         //   .dispatch("registerAction", {

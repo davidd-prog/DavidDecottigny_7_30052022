@@ -106,7 +106,7 @@ export default {
             console.log(res);
             console.log("ça fonctionne");
             location.reload(false);
-            this.getAllPosts();
+            // this.getAllPosts();
           })
           // console.log(res))
           .catch((err) => console.log(err.message));
