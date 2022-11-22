@@ -59,8 +59,6 @@
                 <small class="inputErrorMessage" v-if="emailErrorDisplay">
                   {{ emailErrorMessage }}
                 </small>
-
-                <!-- <label for="password"></label> -->
                 <input
                   v-model="user.password"
                   @change="passwordInputChecking"
@@ -72,7 +70,6 @@
                 <small class="inputErrorMessage" v-if="passwordErrorDisplay">
                   {{ passwordErrorMessage }}
                 </small>
-                <!-- <label for="checkPassword"></label> -->
                 <input
                   v-model="checkPassword"
                   @change="checkPasswordInputChecking"
@@ -130,7 +127,6 @@
 import { useToast } from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
 import AppFooter from "@/components/AppFooter.vue";
-// import { mapState } from "vuex";
 import { accountService } from "@/_services";
 
 export default {
@@ -160,11 +156,8 @@ export default {
       checkConditionsErrorDisplay: false,
     };
   },
-  // computed: mapState([
-  //   // map this.count to store.state.count
-  //   "status",
-  // ]),
   methods: {
+    // Vérification des data transmises par les regex
     firstNameInputChecking: function () {
       const firstNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$";
       if (this.user.firstname.match(firstNameRegex)) {
@@ -204,7 +197,6 @@ export default {
     },
     checkPasswordInputChecking: function () {
       if (this.checkPassword === this.user.password) {
-        // (this.checkPasswordErrorMessage = "Mot de passe confirmé"),
         this.checkPasswordErrorDisplay = false;
       } else {
         this.checkPasswordErrorMessage = "Le mot de passe est différent";
@@ -212,7 +204,6 @@ export default {
       }
     },
     isBoxChecked: function () {
-      // console.log(this.generalConditions);
       if (this.generalConditions == true) {
         this.checkConditionsErrorDisplay = true;
         this.generalConditions = false;
@@ -224,6 +215,7 @@ export default {
       }
     },
 
+    // Appel à l'API pour requête d'enregistremant de l'utilisateur dans la bdd
     registerAction: function (event) {
       event.preventDefault();
       const $toast = useToast();
@@ -242,17 +234,10 @@ export default {
         !this.checkPasswordErrorDisplay &&
         !this.checkConditionsErrorDisplay
       ) {
-        console.log(
-          this.user.firstname,
-          this.user.lastname,
-          this.user.email,
-          this.user.password
-        );
-
         accountService
           .registerAction(this.user)
           .then((res) => {
-            console.log(res);
+            this.user = res;
             $toast.success("Vous êtes enregistré !");
             this.$router.push("/login");
           })
@@ -262,26 +247,6 @@ export default {
               "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
             );
           });
-
-        // this.$store
-        //   .dispatch("registerAction", {
-        //     user: this.user,
-        //   })
-        //   .then((response) => {
-        //     (response = response.ok), $toast.success("Vous êtes enregistré !");
-        //     this.login(),
-        //       (this.user.firstname = ""),
-        //       (this.user.lastname = ""),
-        //       (this.user.checkPassword = ""),
-        //       (this.user.email = ""),
-        //       (this.user.password = "");
-        //   })
-        //   .catch((error) => {
-        //     alert(
-        //       "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
-        //     );
-        //     console.log(error);
-        //   });
       }
     },
   },
@@ -336,7 +301,16 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
+.namesBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.connectionBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .connect__section__form__items input[type="email"],
 input[type="password"],
 input[type="text"] {
@@ -347,15 +321,6 @@ input[type="text"] {
   outline: none;
   margin: 1em;
 }
-
-.signinFailure {
-  color: red;
-}
-
-.loginFailure {
-  color: red;
-}
-
 .signinLink {
   text-decoration: underline;
   cursor: pointer;
