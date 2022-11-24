@@ -50,6 +50,7 @@
 
 <script>
 import { postsService } from "@/_services";
+// import router from "../router";
 export default {
   name: "PostForm",
   data() {
@@ -71,11 +72,10 @@ export default {
     },
 
     imageSelection: function (event) {
-      console.log(event);
       this.post.image = event.target.files[0] || event.dataTransfer.files;
     },
-    createPost: function () {
-      // event.preventDefault();
+    createPost: function (event) {
+      event.preventDefault();
       console.log(this.post);
       const formData = new FormData();
       formData.append("content", this.post.content);
@@ -84,17 +84,12 @@ export default {
       if (this.post.image == "") {
         this.post.image = null;
       }
-      // formData.forEach((value, key) => {
-      //   console.log(key + " " + value);
-      // });
       if (this.post.content != "" || undefined) {
         postsService
           .createPost(this.post, formData)
           .then(() => {
-            // console.log(res);
-            // console.log("ça fonctionne");
-            // location.reload(false);
-            // this.getAllPosts();
+            location.reload();
+            // router.push("/");
           })
           // console.log(res))
           .catch((err) => console.log(err.message));
