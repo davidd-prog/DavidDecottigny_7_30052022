@@ -3,7 +3,6 @@
     <div class="tchatBoxWrite">
       <h2 id="postCreate" @click="open">Créer un post</h2>
       <form class="hiddenPostForm" v-show="success">
-        <!-- <i class="far fa-window-close" @click="close"></i> -->
         <fa class="fa-window-close" icon="window-close" @click="close" />
         <div class="postWriting">
           <p class="postContainer">Contenu:</p>
@@ -17,7 +16,6 @@
           </textarea>
         </div>
         <div class="imageToSend">
-          <!-- <p>Image:</p> -->
           <label for="image" aria-label="Image:"></label>
           <input
             name="image"
@@ -42,11 +40,6 @@
         <div class="postDate">Aujourd'hui</div>
       </div>
       <div class="postContent">
-        <!-- <img
-                class="postPhoto"
-                src="/Groupomania_Logos_(update_2022)/running.jpg"
-                alt="Photo d'un joggeur"
-              /> -->
         <div class="postSentence">
           {{ post.content }}
         </div>
@@ -76,42 +69,37 @@ export default {
     open: function () {
       this.success = true;
     },
-    // getFile() {
-    //   const file = this.$refs.file.files[0];
-    //   this.post.image = file;
-    // },
+
     imageSelection: function (event) {
       console.log(event);
       this.post.image = event.target.files[0] || event.dataTransfer.files;
     },
-    createPost: function (event) {
-      event.preventDefault();
+    createPost: function () {
+      // event.preventDefault();
       console.log(this.post);
       const formData = new FormData();
       formData.append("content", this.post.content);
       formData.append("image", this.post.image);
-      // if (!this.post.image) {
-      //   this.post.image = null;
-      // }
+
       if (this.post.image == "") {
         this.post.image = null;
       }
-      formData.forEach((value, key) => {
-        console.log(key + " " + value);
-      });
+      // formData.forEach((value, key) => {
+      //   console.log(key + " " + value);
+      // });
       if (this.post.content != "" || undefined) {
         postsService
           .createPost(this.post, formData)
-          .then((res) => {
-            console.log(res);
-            console.log("ça fonctionne");
-            location.reload(false);
+          .then(() => {
+            // console.log(res);
+            // console.log("ça fonctionne");
+            // location.reload(false);
             // this.getAllPosts();
           })
           // console.log(res))
           .catch((err) => console.log(err.message));
-        location.reload(false);
-        console.log("ça ne fonctionne pas");
+        // location.reload(false);
+        // console.log("ça ne fonctionne pas");
       } else {
         alert("Votre publication ne peut pas être vide de contenu");
       }

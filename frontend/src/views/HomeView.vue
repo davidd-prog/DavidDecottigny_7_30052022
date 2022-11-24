@@ -3,50 +3,15 @@
     <div id="talkPage">
       <header>
         <AppHeader />
-        <!-- <a class="backLink" @click="backHome">
-          <i class="fas fa-angle-left"></i>
-          back
-        </a> -->
       </header>
       <section id="tchatSection">
         <h1>Bienvenue {{ userFirstname }} !</h1>
-        <!-- <div class="hiddenWrite">
-          <button class="hidePosting" >Cacher le champ</button
-          ><button class="showPosting" @click="open">Montrer le champ</button>
-        </div> -->
-
         <PostForm />
       </section>
       <section id="postsBoard">
         <h2 class="posts">Fil d'actualité</h2>
 
         <IndividualPost />
-
-        <!-- <div class="individualPost">
-          <div class="postInfos">
-            <div class="postUser">Aurélien Trouvet</div>
-            <div class="postDate">Le 25 Août 2022</div>
-          </div>
-          <div class="postContent">
-            <img
-              class="postPhoto"
-              src="../assets/running.jpg"
-              alt="Photo d'un joggeur"
-            />
-            <div class="postSentence">
-              Jogging matinal au milieu des couleurs de l'Automne
-            </div>
-          </div>
-          <div class="postStats">
-            <div class="postAdmin">
-              <button class="postUpdate">Modifier</button>
-              <button class="postDelete">Supprimer</button>
-            </div>
-            <div class="postLikes">
-              7 <fa class="fa-thumbs-up" icon="thumbs-up" />
-            </div>
-          </div>
-        </div> -->
       </section>
     </div>
     <AppFooter />
@@ -59,7 +24,7 @@ import PostForm from "@/components/PostForm.vue";
 import IndividualPost from "@/components/IndividualPost.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
-// import { mapState } from "vuex";
+
 import { accountService } from "@/_services";
 export default {
   name: "HomeView",

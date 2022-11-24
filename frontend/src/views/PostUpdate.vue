@@ -63,6 +63,7 @@ export default {
     Axios.get("/posts/" + this.$route.params.id)
       .then((res) => {
         this.post = res.data;
+        this.newPost.content = res.data.content;
         console.log(res);
       })
       .catch((err) => console.log(err));
