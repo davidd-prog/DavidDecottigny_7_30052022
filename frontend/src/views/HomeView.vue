@@ -14,7 +14,9 @@
         <IndividualPost />
       </section>
     </div>
-    <AppFooter />
+    <footer>
+      <AppFooter />
+    </footer>
   </body>
 </template>
 
@@ -35,17 +37,14 @@ export default {
       userIsAdmin: "",
     };
   },
-
+  // Récupération des données user connecté
   mounted() {
     let importUserId = () => {
       this.userId = accountService.getUserId();
-      // console.log(this.userId);
     };
-    // return importUserId();
 
     let importUserFirstname = () => {
       this.userFirstname = accountService.getUserFirstname();
-      // console.log(this.userFirstname, this.userId);
     };
 
     let importUserIsAdmin = () => {
@@ -88,7 +87,6 @@ export default {
   border: 1px solid #4e51669c;
 }
 .actionHeaderTalkSection a {
-  /* background: #4e5166; */
   color: black;
   padding: 0.2em;
   margin: 0.2em;
@@ -113,7 +111,6 @@ header li {
 }
 header li a {
   display: block;
-  /* padding: 0.5em; */
 }
 header li:hover .subTalkMenu {
   display: block;
@@ -161,16 +158,10 @@ header li:hover .subTalkMenu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* width: 100%; */
   padding: 1.5em;
-  /* border: 1px solid #fd2d01; */
   border-radius: 10px;
 }
-/* postLikes {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
+
 /* Responsive */
 @media only screen and (min-width: 540px) {
   #tchatSection {

@@ -119,7 +119,9 @@
         </div>
       </section>
     </div>
-    <AppFooter />
+    <footer>
+      <AppFooter />
+    </footer>
   </body>
 </template>
 
@@ -244,7 +246,7 @@ export default {
           .catch((err) => {
             console.log(err);
             alert(
-              "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
+              "Inscription impossible, veuillez vérifier les informations transmises"
             );
           });
       }
@@ -262,7 +264,6 @@ export default {
   width: 95%;
   margin: auto;
 }
-
 .headerSection {
   margin-top: 2em;
   display: flex;
@@ -276,17 +277,14 @@ export default {
   width: 310px;
   object-fit: cover;
 }
-
 #connectionBloc {
   margin-top: 2em;
 }
-
 #connect__section {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .connect__section__form {
   padding: 3% 6%;
   margin: 3em 0.5em;
@@ -326,7 +324,6 @@ input[type="text"] {
   cursor: pointer;
   color: blue;
 }
-
 .connectionButton {
   padding: 0.9em 2em;
   background: white;

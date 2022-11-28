@@ -1,19 +1,29 @@
 <template>
   <div class="usersNames">
-    <h1>Liste des utilisateurs</h1>
-    <h2>{{ usersNumber }}</h2>
-    <div class="userContainer">
-      <div class="identity" v-for="(user, index) in users" :key="user.id">
-        <div class="lastName">{{ user.lastname }}</div>
-        <div class="firstName">{{ user.firstname }}</div>
-        <button type="submit" @click="del(index)">Supprimer</button>
+    <div class="adminContainer">
+      <header>
+        <AppHeader />
+      </header>
+      <h1>Liste des utilisateurs</h1>
+      <h2>{{ usersNumber }}</h2>
+      <div class="userContainer">
+        <div class="identity" v-for="(user, index) in users" :key="user.id">
+          <div class="lastName">{{ user.lastname }}</div>
+          <div class="firstName">{{ user.firstname }}</div>
+          <button type="submit" @click="del(index)">Supprimer</button>
+        </div>
       </div>
     </div>
+    <footer>
+      <AppFooter />
+    </footer>
   </div>
 </template>
 <script>
 import { usersService } from "@/_services";
 import { accountService } from "@/_services";
+import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 // import axios from "axios";
 
 export default {
@@ -24,8 +34,10 @@ export default {
     };
   },
   mounted() {
+    // Récupération des membres pour affichage au chargement de la page
     this.getAllUsers();
 
+    // Récupération du statut admin permettant la gestion des membres
     let importUserIsAdmin = () => {
       this.userIsAdmin = accountService.getUserIsAdmin();
       console.log(this.userIsAdmin);
@@ -34,6 +46,7 @@ export default {
     return importUserIsAdmin();
   },
   methods: {
+    // Appel à l'API pour requêter tous les membres enregistrés dans la bdd
     getAllUsers() {
       usersService
         .getAllUsers()
@@ -44,7 +57,7 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-
+    // Appel à l'API requêtant la suppression d'un user
     del(index) {
       console.log(index);
       console.log(this.users[index].id);
@@ -63,7 +76,12 @@ export default {
       // this.users.splice(index);
     },
   },
+  components: {
+    AppHeader,
+    AppFooter,
+  },
   computed: {
+    // Affichage en temps réel du nombres de membres inscrits
     usersNumber() {
       if (this.users.length == 0) {
         return "Il n'y a aucun membre dans notre réseau social";
@@ -78,7 +96,11 @@ export default {
 </script>
 <style>
 .usersNames {
-  font-size: 1.3em;
+  font-size: 1.1em;
+}
+.adminContainer {
+  width: 95%;
+  margin: auto;
 }
 .userContainer {
   display: flex;

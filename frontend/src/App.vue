@@ -21,7 +21,7 @@ body {
   margin: auto;
   width: 100%;
   max-width: 1024px;
-  font-size: 1em;
+  font-size: 1.1em;
   font-family: "lato", Arial, serif;
   font-weight: 400;
 }
@@ -63,6 +63,8 @@ small {
 }
 
 footer {
+  position: absolute;
+  bottom: 0;
   width: 100%;
   background: black;
   display: flex;

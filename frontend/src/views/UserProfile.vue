@@ -1,23 +1,31 @@
 <template>
   <div id="profileList">
-    <h1>Profil utilisateur</h1>
-    <h2>Vous avez ici la possibilité de modifier votre adresse email</h2>
-    <form @submit.prevent="update" class="userUpdateForm">
-      <div class="dataContainer">
-        <label for="userEmail">email:</label>
-        <input type="text" id="userEmail" v-model="user.email" />
+    <div class="profileListContainer">
+      <header>
+        <AppHeader />
+      </header>
+      <h1>Profil utilisateur</h1>
+      <h2>Vous avez ici la possibilité de modifier votre adresse email</h2>
+      <form @submit.prevent="update" class="userUpdateForm">
+        <div class="dataContainer">
+          <label for="userEmail">email:</label>
+          <input type="text" id="userEmail" v-model="user.email" />
+        </div>
+        <div class="updateButtonContainer">
+          <button type="submit" class="updateSubmit">Modifier</button>
+        </div>
+      </form>
+      <p class="newMail">Votre mail est désormais : {{ newMail }}</p>
+      <div class="delAccountContainer">
+        <h2>Vous pouvez ici décider de supprimer votre compte</h2>
+        <button @click="delAccount" class="delAccount">
+          Supprimer mon compte
+        </button>
       </div>
-      <div class="updateButtonContainer">
-        <button type="submit" class="updateSubmit">Modifier</button>
-      </div>
-    </form>
-    <p class="newMail">Votre mail est désormais : {{ newMail }}</p>
-    <div class="delAccountContainer">
-      <h2>Vous pouvez ici décider de supprimer votre compte</h2>
-      <button @click="delAccount" class="delAccount">
-        Supprimer mon compte
-      </button>
     </div>
+    <footer>
+      <AppFooter />
+    </footer>
   </div>
 </template>
 >
@@ -26,6 +34,8 @@
 import Axios from "@/_services/caller.service";
 import { accountService } from "@/_services";
 import { usersService } from "@/_services";
+import AppHeader from "@/components/AppHeader.vue";
+import AppFooter from "@/components/AppFooter.vue";
 
 export default {
   name: "UserProfile",
@@ -41,24 +51,21 @@ export default {
     this.getOneUser();
   },
   methods: {
+    // Récupération du profil user corespondant à l'id contenu dans les params de l'url
     getOneUser() {
       Axios.get("/auth/" + this.$route.params.id)
         .then((res) => {
-          console.log(res);
           this.user = res.data;
         })
         .catch((err) => console.log(err));
     },
 
+    // Process de modification du user, ici de l'adrese email
     update() {
-      // console.log(this.user);
       usersService
         .updateUser(this.user)
-        .then((res) => {
-          console.log(res);
-          console.log(this.user.email);
+        .then(() => {
           this.newMail = this.user.email;
-          // console.log(newMail);
           alert(
             `Votre nouvelle adresse email ${this.newMail} est enregistrée !`
           );
@@ -66,27 +73,42 @@ export default {
         .catch((err) => console.log(err));
     },
 
+    // Process de suppression de compte user
     delAccount() {
-      console.log(this.user);
-      usersService.deleteUser(this.user.id).then((res) => {
-        console.log(res);
+      usersService.deleteUser(this.user.id).then(() => {
         alert("Votre compte vient d'être supprimé !");
         accountService.logOut();
         this.$router.push("/login");
       });
     },
   },
+  components: {
+    AppHeader,
+    AppFooter,
+  },
 };
 </script>
 
 <style>
+.profileList {
+  font-size: 1.1em;
+}
+.profileListContainer {
+  width: 95%;
+  margin: auto;
+}
 .userUpdateForm {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.dataContainer {
+  display: flex;
+  align-items: center;
+}
 #userEmail {
   margin: 1em;
+  border: 1px solid black;
 }
 .newMail {
   margin: 1em;
