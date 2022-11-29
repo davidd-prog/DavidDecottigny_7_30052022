@@ -14,9 +14,6 @@
         <IndividualPost />
       </section>
     </div>
-    <footer>
-      <AppFooter />
-    </footer>
   </body>
 </template>
 
@@ -25,7 +22,6 @@
 import PostForm from "@/components/PostForm.vue";
 import IndividualPost from "@/components/IndividualPost.vue";
 import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
 
 import { accountService } from "@/_services";
 export default {
@@ -60,7 +56,6 @@ export default {
     PostForm,
     IndividualPost,
     AppHeader,
-    AppFooter,
   },
 };
 </script>

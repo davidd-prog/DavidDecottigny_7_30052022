@@ -35,11 +35,12 @@
     </div>
     <div class="newPost" v-show="success">
       <h2 class="postView">Aperçu du post</h2>
-      <div class="postInfos">
-        <div class="postUser">David Decottigny</div>
-        <div class="postDate">Aujourd'hui</div>
-      </div>
       <div class="postContent">
+        <img
+          v-if="prePost.image != null || undefined"
+          class="postPhoto"
+          :src="`${prePost.image}`"
+        />
         <div class="postSentence">
           {{ post.content }}
         </div>
@@ -50,7 +51,7 @@
 
 <script>
 import { postsService } from "@/_services";
-// import router from "../router";
+
 export default {
   name: "PostForm",
   data() {
@@ -61,9 +62,14 @@ export default {
         image: "",
         likes: "",
       },
+      prePost: {
+        image: "",
+      },
     };
   },
+
   methods: {
+    // Ouverture et fermeture du formulaire pour les posts
     close: function () {
       this.success = false;
     },
@@ -71,12 +77,15 @@ export default {
       this.success = true;
     },
 
+    // Selection du fichier à joindre
     imageSelection: function (event) {
       this.post.image = event.target.files[0] || event.dataTransfer.files;
+      this.prePost.image = URL.createObjectURL(this.post.image);
     },
+
+    // Appel à l'API pour requêter une création de post à partir des données du formulaire
     createPost: function (event) {
       event.preventDefault();
-      console.log(this.post);
       const formData = new FormData();
       formData.append("content", this.post.content);
       formData.append("image", this.post.image);
@@ -89,12 +98,8 @@ export default {
           .createPost(this.post, formData)
           .then(() => {
             location.reload();
-            // router.push("/");
           })
-          // console.log(res))
           .catch((err) => console.log(err.message));
-        // location.reload(false);
-        // console.log("ça ne fonctionne pas");
       } else {
         alert("Votre publication ne peut pas être vide de contenu");
       }

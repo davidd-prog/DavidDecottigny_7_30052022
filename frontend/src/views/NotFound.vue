@@ -1,5 +1,5 @@
 <template>
-  <div>Page 404 introuvable !</div>
+  <div class="Content"><h1>Erreur 404 Ressource introuvable !</h1></div>
 </template>
 <script>
 export default {

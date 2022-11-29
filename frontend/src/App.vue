@@ -24,6 +24,7 @@ body {
   font-size: 1.1em;
   font-family: "lato", Arial, serif;
   font-weight: 400;
+  padding-bottom: 3em;
 }
 
 textarea {
@@ -63,8 +64,6 @@ small {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   background: black;
   display: flex;

@@ -119,16 +119,12 @@
         </div>
       </section>
     </div>
-    <footer>
-      <AppFooter />
-    </footer>
   </body>
 </template>
 
 <script>
 import { useToast } from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
-import AppFooter from "@/components/AppFooter.vue";
 import { accountService } from "@/_services";
 
 export default {
@@ -252,7 +248,6 @@ export default {
       }
     },
   },
-  components: { AppFooter },
 };
 </script>
 <style>
