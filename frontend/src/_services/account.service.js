@@ -1,5 +1,6 @@
 import Axios from "./caller.service";
 
+// Fonctions gérant les requêtes à l'API concernant l'inscription et la connexion
 let registerAction = (credentials) => {
   return Axios.post("/auth/signup", credentials);
 };
@@ -8,6 +9,7 @@ let connectAction = (credentials) => {
   return Axios.post("/auth/login", credentials);
 };
 
+// Et celles ayant trait au compte user
 let logOut = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("firstname");
@@ -47,11 +49,6 @@ let saveUserIsAdmin = (userAdmin) => {
   localStorage.setItem("userAdmin", userAdmin);
 };
 
-let islogged = () => {
-  let token = localStorage.getItem("token");
-  return !!token;
-};
-
 export const accountService = {
   connectAction,
   logOut,
@@ -63,6 +60,5 @@ export const accountService = {
   saveUserFirstname,
   saveUserIsAdmin,
   saveToken,
-  islogged,
   registerAction,
 };

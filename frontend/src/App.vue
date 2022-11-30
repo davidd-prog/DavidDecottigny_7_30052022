@@ -1,12 +1,12 @@
 <template>
   <div>
     <nav>
-      <router-link to="/">Accueil</router-link> |
+      <!-- <router-link to="/">Accueil</router-link> |
       <router-link to="/login">Connexion</router-link> |
-      <router-link to="/signup">Inscription</router-link> |
+      <router-link to="/signup">Inscription</router-link> | -->
       <router-link to="/users">Liste des utilisateurs</router-link> |
-      <router-link to="/users/:id">Profil Utilisateur</router-link> |
-      <router-link to="/postupdate/:id">Modification de post</router-link>
+      <!-- <router-link to="/users/:id">Profil Utilisateur</router-link> |
+      <router-link to="/postupdate/:id">Modification de post</router-link> -->
     </nav>
     <router-view />
   </div>

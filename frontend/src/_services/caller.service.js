@@ -2,13 +2,14 @@ import axios from "axios";
 import { accountService } from "./account.service";
 // import router from "../router";
 
+// Création de la relation avec l'API
 const Axios = axios.create({
   baseURL: "http://localhost:3000/api/",
 });
 
+// Interception de la requête, vérification du token enregistré dans le localStorage et insertion de ce dernier dans le header d'autorisation
 Axios.interceptors.request.use((request) => {
   let token = accountService.getToken();
-  // console.log(accountService.getToken());
 
   if (token) {
     request.headers.Authorization = "Bearer " + token;
@@ -16,20 +17,5 @@ Axios.interceptors.request.use((request) => {
 
   return request;
 });
-
-// Axios.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response.status == 401) {
-//       localStorage.removeItem("token");
-//       localStorage.removeItem("firstname");
-//       localStorage.removeItem("userid");
-//       localStorage.removeItem("userAdmin");
-//       router.push("/login");
-//     }
-//   }
-// );
 
 export default Axios;

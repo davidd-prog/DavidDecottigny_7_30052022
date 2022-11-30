@@ -65,6 +65,7 @@ export default {
   },
 
   mounted() {
+    // Récupération et affichage des données user connectées afin de personnaliser le header et le menu déroulant
     let importUserFirstname = () => {
       this.userFirstname = accountService.getUserFirstname();
       // console.log(this.userFirstname, this.userId);
@@ -84,16 +85,17 @@ export default {
   },
 
   methods: {
+    // Process de déconnexion user
     logout() {
       accountService.logOut();
       this.$router.push("/login");
     },
-
+    // Accès à la liste des membres inscrits pour l'administrateur
     admin(event) {
       event.preventDefault();
       this.$router.push("/users");
     },
-
+    // Accès à son propre profil pour le user connecté
     userProfile(userId) {
       console.log(userId);
       this.$router.push("/user/" + userId);

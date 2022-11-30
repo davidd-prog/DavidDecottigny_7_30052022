@@ -54,7 +54,7 @@ exports.login = (req, res, next) => {
             userAdmin: user.isadmin,
             token: jwt.sign(
               { userId: user.id, userAdmin: user.isadmin },
-              "RANDOM_TOKEN_SECRET",
+              `${process.env.RANDOM_TOKEN_SECRET}`,
               {
                 expiresIn: "24h",
               }

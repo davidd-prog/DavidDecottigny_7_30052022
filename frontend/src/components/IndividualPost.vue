@@ -56,23 +56,22 @@ export default {
   },
 
   mounted() {
+    // Récupération des data et affichage  des posts à configurer et des infos user connecté pour la gestion admin des posts
     this.getAllPosts();
 
     let importUserId = () => {
       this.userId = accountService.getUserId();
-      // console.log(this.userId);
     };
-    // return importUserId();
 
     let importUserIsAdmin = () => {
       this.userIsAdmin = accountService.getUserIsAdmin();
-      // console.log(this.userIsAdmin);
     };
 
     return importUserId(), importUserIsAdmin();
   },
 
   computed: {
+    // Formatage de la date de création de post
     dateFormat() {
       return this.posts.map((p) =>
         moment(p.createdAt).format("[le] DD MMMM YYYY [à] HH:mm")
@@ -81,6 +80,7 @@ export default {
   },
 
   methods: {
+    // Appel à l'API pour requêter les posts enregistrés dans la bdd
     getAllPosts() {
       postsService
         .getAllPosts()
@@ -89,11 +89,12 @@ export default {
         })
         .catch((err) => console.log(err.message));
     },
-
+    // Fonction permettant d'accéder à la section de modification de post
     modPage(index) {
       this.$router.push("/postupdate/" + this.posts[index].id);
     },
 
+    // Appel à l'API pour requêter la suppression de post
     deletion(index) {
       const $toast = useToast();
       if (
@@ -107,9 +108,6 @@ export default {
             $toast.info("Votre post est définitivement supprimé !");
 
             this.getAllPosts();
-            // this.postsService.getAllPosts();
-            // this.$router.push("/");
-            // Window.location.reload();
           })
           .catch(() =>
             alert(
@@ -122,24 +120,18 @@ export default {
         );
       }
     },
-
+    // Requête à l'API pour liker ou unliker un post
     postLike(index) {
-      // console.log("ça fonctionne");
       postsService
         .likePost(this.posts[index].id)
         .then(() => {
-          // console.log(res.data.message),
           this.getAllPosts();
         })
         .catch((err) => console.log(err));
-      // postsService
-      //   .likePost(this.posts[index].id)
-      //   .then(() => console.log(this.posts[index].id))
-      //   .catch((err) => console.log(err));
     },
 
+    // Process d'accession au profil user en cliquant sur le nom de l'auteur du post
     userProfile(index) {
-      // console.log(this.posts[index].user.id);
       console.log(this.userId, this.posts[index].user.id, this.userIsAdmin);
       if (this.userId == this.posts[index].user.id || this.userIsAdmin == 1) {
         this.$router.push("/user/" + this.posts[index].user.id);

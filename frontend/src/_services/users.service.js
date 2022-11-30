@@ -1,5 +1,6 @@
 import Axios from "./caller.service";
 
+// Organisation des requêtes à l'API concernant la gestions des users
 let getAllUsers = () => {
   return Axios.get("/auth");
 };

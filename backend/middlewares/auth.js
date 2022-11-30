@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
@@ -17,7 +19,10 @@ module.exports = (req, res, next) => {
           .json({ error: new Error("Le token est introuvable !") });
       } else {
         const token = tokenSplice[1];
-        const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+        const decodedToken = jwt.verify(
+          token,
+          `${process.env.RANDOM_TOKEN_SECRET}`
+        );
 
         req.auth = {
           userId: decodedToken.userId,

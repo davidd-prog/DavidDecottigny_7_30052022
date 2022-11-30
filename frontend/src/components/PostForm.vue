@@ -77,7 +77,7 @@ export default {
       this.success = true;
     },
 
-    // Selection du fichier à joindre
+    // Selection du fichier à joindre et prévisualisation de ce dernier
     imageSelection: function (event) {
       this.post.image = event.target.files[0] || event.dataTransfer.files;
       this.prePost.image = URL.createObjectURL(this.post.image);

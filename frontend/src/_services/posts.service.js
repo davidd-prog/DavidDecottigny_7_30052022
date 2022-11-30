@@ -3,6 +3,7 @@ import { accountService } from "./account.service";
 
 let token = accountService.getToken();
 
+// Gestion des requêtes à l'API concernant les posts
 let getAllPosts = () => {
   return Axios.get("/posts");
 };
