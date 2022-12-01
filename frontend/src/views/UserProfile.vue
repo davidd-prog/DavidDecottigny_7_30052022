@@ -23,9 +23,6 @@
         </button>
       </div>
     </div>
-    <footer>
-      <AppFooter />
-    </footer>
   </div>
 </template>
 >
@@ -35,7 +32,6 @@ import Axios from "@/_services/caller.service";
 import { accountService } from "@/_services";
 import { usersService } from "@/_services";
 import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
 
 export default {
   name: "UserProfile",
@@ -84,7 +80,6 @@ export default {
   },
   components: {
     AppHeader,
-    AppFooter,
   },
 };
 </script>

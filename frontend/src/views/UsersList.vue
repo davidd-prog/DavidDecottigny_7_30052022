@@ -14,16 +14,12 @@
         </div>
       </div>
     </div>
-    <footer>
-      <AppFooter />
-    </footer>
   </div>
 </template>
 <script>
 import { usersService } from "@/_services";
 import { accountService } from "@/_services";
 import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
 // import axios from "axios";
 
 export default {
@@ -78,7 +74,6 @@ export default {
   },
   components: {
     AppHeader,
-    AppFooter,
   },
   computed: {
     // Affichage en temps réel du nombres de membres inscrits
