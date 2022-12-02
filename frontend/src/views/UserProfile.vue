@@ -71,11 +71,17 @@ export default {
 
     // Process de suppression de compte user
     delAccount() {
-      usersService.deleteUser(this.user.id).then(() => {
-        alert("Votre compte vient d'être supprimé !");
-        accountService.logOut();
-        this.$router.push("/login");
-      });
+      if (
+        window.confirm(
+          "Etes-vous sûr de vouloir supprimer ce compte ? Toutes les publications associées seront également supprimées"
+        )
+      ) {
+        usersService.deleteUser(this.user.id).then(() => {
+          alert("Votre compte vient d'être supprimé !");
+          accountService.logOut();
+          this.$router.push("/login");
+        });
+      }
     },
   },
   components: {
