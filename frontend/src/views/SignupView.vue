@@ -242,7 +242,7 @@ export default {
           .catch((err) => {
             console.log(err);
             alert(
-              "Inscription impossible, veuillez vérifier les informations transmises"
+              "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
             );
           });
       }
