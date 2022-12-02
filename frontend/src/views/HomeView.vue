@@ -149,6 +149,9 @@ header li:hover .subTalkMenu {
   width: 100%;
   height: 60px;
 }
+.posts {
+  margin-top: 2em;
+}
 #allPosts {
   display: flex;
   flex-direction: column;

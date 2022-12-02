@@ -1,8 +1,9 @@
 <template>
   <div id="tchatBox">
-    <div class="tchatBoxWrite">
-      <h2 id="postCreate" @click="open">Créer un post</h2>
-      <form class="hiddenPostForm" v-show="success">
+    <h2 class="formLink" @click="open">Créer un post</h2>
+    <div class="tchatBoxWrite" v-show="success">
+      <h3 id="postCreate">Exprimez-vous</h3>
+      <form class="hiddenPostForm">
         <fa class="fa-window-close" icon="window-close" @click="close" />
         <div class="postWriting">
           <p class="postContainer">Contenu:</p>
@@ -34,7 +35,7 @@
       </form>
     </div>
     <div class="newPost" v-show="success">
-      <h2 class="postView">Aperçu du post</h2>
+      <h3 class="postView">Aperçu du post</h3>
       <div class="postContent">
         <img
           v-if="prePost.image != null || undefined"
@@ -109,6 +110,10 @@ export default {
 </script>
 
 <style>
+.formLink {
+  color: #fd2b019c;
+  text-decoration: underline;
+}
 .tchatBoxWrite {
   /* width: 100%; */
   /* margin: 1em; */
