@@ -113,6 +113,7 @@ export default {
 .formLink {
   color: #fd2b019c;
   text-decoration: underline;
+  cursor: pointer;
 }
 .tchatBoxWrite {
   /* width: 100%; */
