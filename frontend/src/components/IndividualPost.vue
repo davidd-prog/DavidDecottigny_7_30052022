@@ -159,7 +159,7 @@ export default {
   justify-content: space-between;
 }
 .postUser {
-  font-size: 1.2em;
+  /* font-size: 1.2em; */
   font-weight: bold;
   cursor: pointer;
 }

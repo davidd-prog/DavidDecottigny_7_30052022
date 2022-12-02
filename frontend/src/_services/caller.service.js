@@ -1,6 +1,5 @@
 import axios from "axios";
 import { accountService } from "./account.service";
-// import router from "../router";
 
 // Création de la relation avec l'API
 const Axios = axios.create({
