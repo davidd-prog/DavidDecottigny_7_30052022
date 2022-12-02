@@ -18,7 +18,7 @@
 </template>
 
 <script>
-// // @ is an alias to /src
+// @ est un alias à /src
 import PostForm from "@/components/PostForm.vue";
 import IndividualPost from "@/components/IndividualPost.vue";
 import AppHeader from "@/components/AppHeader.vue";

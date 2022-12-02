@@ -67,7 +67,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  // redirect to login page if not logged in and trying to access a restricted page
+  // redirection vers la page login si l'utilisateur n'est pas connecté, seules les pages login et signup sont alors accessibles.
   const publicPages = ["/login", "/signup"];
   const authRequired = !publicPages.includes(to.path);
   const token = accountService.getToken();

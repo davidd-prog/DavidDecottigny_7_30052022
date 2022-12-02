@@ -108,7 +108,7 @@ export default {
           console.log(err);
           this.connectionErrorDisplay = true;
           this.connectionErrorMessage =
-            "L'email ou le mot de passe est incorrect";
+            "Connexion impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement";
           $toast.error("Connexion impossible !");
         });
     },
