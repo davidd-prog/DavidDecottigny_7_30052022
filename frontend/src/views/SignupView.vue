@@ -189,7 +189,8 @@ export default {
       if (this.user.password.match(passwordRegex)) {
         this.passwordErrorDisplay = false;
       } else {
-        this.passwordErrorMessage = "Veuillez saisir votre mot de passe";
+        this.passwordErrorMessage =
+          "Veuillez saisir un mot de passe de 6 caratères minimum avec au moins 1 majuscule et 1 chiffre";
         this.passwordErrorDisplay = true;
       }
     },
