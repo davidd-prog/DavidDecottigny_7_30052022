@@ -108,6 +108,9 @@
               >
                 <span>S'inscrire</span>
               </button>
+              <small class="inputErrorMessage" v-if="signupErrorDisplay">
+                {{ signupErrorMessage }}
+              </small>
             </div>
             <p class="inscription">
               J'ai déjà un compte,
@@ -152,6 +155,8 @@ export default {
       checkPasswordErrorDisplay: true,
       conditionsErrorMessage: "",
       checkConditionsErrorDisplay: false,
+      signupErrorDisplay: false,
+      signupErrorMessage: "",
     };
   },
   methods: {
@@ -241,10 +246,15 @@ export default {
             this.$router.push("/login");
           })
           .catch((err) => {
-            console.log(err);
-            alert(
-              "Inscription impossible, veuillez vérifier les informations transmises ou réessayer ultérieurement"
-            );
+            if (err.response.status == 400) {
+              this.signupErrorDisplay = true;
+              this.signupErrorMessage = "Email déjà utilisé";
+            } else {
+              console.log(err);
+              this.signupErrorDisplay = true;
+              this.signupErrorMessage =
+                "Inscription impossible, veuillez reessayer ultérieurement";
+            }
           });
       }
     },
@@ -295,6 +305,10 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.connect__order__form__submit {
+  display: flex;
+  flex-direction: column;
+}
 .namesBox {
   display: flex;
   flex-direction: column;
@@ -323,6 +337,7 @@ input[type="text"] {
 .connectionButton {
   padding: 0.9em 2em;
   background: white;
+  margin: auto;
 }
 
 @media only screen and (max-width: 315px) {
