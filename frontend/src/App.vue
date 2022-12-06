@@ -1,13 +1,13 @@
 <template>
   <div>
-    <nav>
-      <!-- <router-link to="/">Accueil</router-link> |
+    <!-- <nav> -->
+    <!-- <router-link to="/">Accueil</router-link> |
       <router-link to="/login">Connexion</router-link> |
       <router-link to="/signup">Inscription</router-link> | -->
-      <!-- <router-link to="/users">Liste des utilisateurs</router-link> | -->
-      <!-- <router-link to="/users/:id">Profil Utilisateur</router-link> |
+    <!-- <router-link to="/users">Liste des utilisateurs</router-link> | -->
+    <!-- <router-link to="/users/:id">Profil Utilisateur</router-link> |
       <router-link to="/postupdate/:id">Modification de post</router-link> -->
-    </nav>
+    <!-- </nav> -->
     <router-view />
   </div>
 </template>
@@ -21,7 +21,7 @@ body {
   margin: auto;
   width: 100%;
   max-width: 1024px;
-  font-size: 1.1em;
+  font-size: 1em;
   font-family: "lato", Arial, serif;
   font-weight: 400;
   padding-bottom: 3em;
@@ -47,7 +47,7 @@ button {
 }
 
 h1 {
-  font-size: 2em;
+  /* font-size: 2em; */
   display: block;
   text-align: center;
   font-family: "lato", Arial, serif;

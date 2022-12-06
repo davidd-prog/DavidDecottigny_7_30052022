@@ -283,9 +283,9 @@ export default {
   width: 310px;
   object-fit: cover;
 }
-#connectionBloc {
+/* #connectionBloc {
   margin-top: 2em;
-}
+} */
 #connect__section {
   display: flex;
   justify-content: center;

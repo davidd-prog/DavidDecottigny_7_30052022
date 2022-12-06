@@ -92,7 +92,7 @@ export default {
 
 <style>
 .profileList {
-  font-size: 1.1em;
+  font-size: 1em;
 }
 .profileListContainer {
   width: 95%;
