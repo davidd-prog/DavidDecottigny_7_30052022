@@ -1,48 +1,54 @@
 <template>
-  <div id="modtchatBox">
-    <div class="tchatBoxWrite">
-      <h2 id="postCreate">Modifier ce post</h2>
-      <p>Contenu actuel :</p>
-      <p class="oldContent">{{ post.content }}</p>
-      <div class="actualImageContainer">
-        Image actuelle :
-        <img
-          v-if="post.image != null || undefined"
-          class="postPhoto"
-          :src="`${post.image}`"
-        />
-        <p v-else>Votre post ne contenait pas d'image.</p>
-      </div>
-      <form @submit.prevent="updatePost">
-        <p class="postContainer">Nouveau contenu:</p>
-        <textarea
-          id="text"
-          name="post"
-          rows="5"
-          cols="33"
-          v-model="newPost.content"
-        >
-        </textarea>
-        <div class="newImageToSend">
-          <label for="image" aria-label="Image:"></label>
-          <input
-            name="image"
-            type="file"
-            class="addNewImage"
-            accept="image/jpg, image/jpeg, image/png, image/gif, image.webp"
-            @change="imageSelection"
+  <div class="postUpdatePage">
+    <header>
+      <AppHeader />
+    </header>
+    <div id="modtchatBox">
+      <div class="tchatBoxWrite">
+        <h2 id="postCreate">Modifier ce post</h2>
+        <p>Contenu actuel :</p>
+        <p class="oldContent">{{ post.content }}</p>
+        <div class="actualImageContainer">
+          Image actuelle :
+          <img
+            v-if="post.image != null || undefined"
+            class="postPhoto"
+            :src="`${post.image}`"
           />
+          <p v-else>Votre post ne contenait pas d'image.</p>
         </div>
-        <div class="postValidate">
-          <button type="submit" class="postSubmit">Soumettre</button>
-          <button @click="cancel" class="postCancel">Annuler</button>
-        </div>
-      </form>
+        <form class="postUpdateForm" @submit.prevent="updatePost">
+          <p class="postContainer">Nouveau contenu:</p>
+          <textarea
+            id="newText"
+            name="post"
+            rows="5"
+            cols="33"
+            v-model="newPost.content"
+          >
+          </textarea>
+          <div class="newImageToSend">
+            <label for="image" aria-label="Image:"></label>
+            <input
+              name="image"
+              type="file"
+              class="addNewImage"
+              accept="image/jpg, image/jpeg, image/png, image/gif, image.webp"
+              @change="imageSelection"
+            />
+          </div>
+          <div class="postValidate">
+            <button type="submit" class="postSubmit">Soumettre</button>
+            <button @click="cancel" class="postCancel">Annuler</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import Axios from "@/_services/caller.service";
+import AppHeader from "@/components/AppHeader.vue";
 
 export default {
   name: "PostUpdate",
@@ -109,19 +115,28 @@ export default {
       this.$router.push("/");
     },
   },
+  components: {
+    AppHeader,
+  },
 };
 </script>
 <style>
-#modtchatBox {
-  width: 45%;
+.postUpdatePage {
+  width: 95%;
   margin: auto;
-  margin-top: 2em;
 }
 
+#modtchatBox {
+  width: 45%;
+  /* display: flex; */
+  margin: auto;
+  /* margin-top: 2em; */
+}
 .oldContent {
+  /* margin: auto; */
   border: 1px solid grey;
   background: lightgrey;
-  margin-right: 11em;
+  /* width: 80%; */
   padding-bottom: 3em;
   border-radius: 10px;
   box-shadow: 0px 3px 4px grey;
@@ -131,5 +146,33 @@ export default {
   object-fit: cover;
   width: 100%;
   margin-top: 1em;
+}
+.postUpdateForm {
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (min-width: 750px) {
+  .postUpdateForm {
+    width: 80%;
+  }
+  .oldContent {
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #modtchatBox {
+    width: 60%;
+  }
+}
+@media only screen and (max-width: 450px) {
+  #modtchatBox {
+    width: 100%;
+  }
+  .postUpdateForm {
+    width: 80%;
+  }
+  .oldContent {
+    width: 80%;
+  }
 }
 </style>
