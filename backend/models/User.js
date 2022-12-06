@@ -21,7 +21,7 @@ const User = database.define("user", {
     validate: {
       notNull: true,
       notEmpty: true,
-      len: [2, 20],
+      len: [1, 25],
       isAlpha: true,
     },
   },

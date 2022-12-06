@@ -114,10 +114,6 @@ export default {
               "Votre post n'a pu être supprimé, veuillez réessayer ultérieurement "
             )
           );
-      } else {
-        alert(
-          "Votre requête n'a pas pu aboutir, veuillez réessayer ultérieurement"
-        );
       }
     },
     // Requête à l'API pour liker ou unliker un post

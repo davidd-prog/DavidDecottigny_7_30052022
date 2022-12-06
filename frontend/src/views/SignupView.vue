@@ -162,11 +162,11 @@ export default {
   methods: {
     // Vérification des data transmises par les regex
     firstNameInputChecking: function () {
-      const firstNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{3,15}$";
+      const firstNameRegex = "^[a-zA-Zàâäéèêëïîôöùûüç' ,.'-]{2,20}$";
       if (this.user.firstname.match(firstNameRegex)) {
         this.firstnameErrorDisplay = false;
       } else {
-        this.firstNameErrorMessage = "Veuillez saisir votre prénom";
+        this.firstNameErrorMessage = "Veuillez saisir un prénom valide";
         this.firstnameErrorDisplay = true;
       }
     },
@@ -175,7 +175,7 @@ export default {
       if (this.user.lastname.match(lastNameRegex)) {
         this.lastnameErrorDisplay = false;
       } else {
-        this.lastNameErrorMessage = "Veuillez saisir votre Nom";
+        this.lastNameErrorMessage = "Veuillez saisir un nom valide";
         this.lastnameErrorDisplay = true;
       }
     },
@@ -185,7 +185,8 @@ export default {
       if (this.user.email.match(emailRegex)) {
         this.emailErrorDisplay = false;
       } else {
-        this.emailErrorMessage = "Veuillez saisir votre email";
+        this.emailErrorMessage =
+          "Veuillez saisir le format email standard. ex: john@domain.com";
         this.emailErrorDisplay = true;
       }
     },
