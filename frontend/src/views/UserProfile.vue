@@ -13,6 +13,7 @@
         </div>
         <div class="updateButtonContainer">
           <button type="submit" class="updateSubmit">Modifier</button>
+          <button @click="cancel" class="postCancel">Annuler</button>
         </div>
       </form>
       <p class="newMail">Votre mail est désormais : {{ newMail }}</p>
@@ -67,6 +68,11 @@ export default {
           );
         })
         .catch((err) => console.log(err));
+    },
+
+    // Retour à la homePage si annulation de la modification
+    cancel() {
+      this.$router.push("/");
     },
 
     // Process de suppression de compte user
