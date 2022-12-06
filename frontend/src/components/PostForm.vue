@@ -116,14 +116,11 @@ export default {
   cursor: pointer;
 }
 .tchatBoxWrite {
-  /* width: 100%; */
-  /* margin: 1em; */
   padding: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border-radius: 10px;
-  /* border: 1px solid green; */
   background: linear-gradient(#fd2b019c, #ffd7d7);
   box-shadow: 0px 3px 4px lightgray;
   position: relative;
