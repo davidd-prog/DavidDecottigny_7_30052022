@@ -90,9 +90,6 @@ export default {
 };
 </script>
 <style>
-.usersNames {
-  font-size: 1.1em;
-}
 .adminContainer {
   width: 95%;
   margin: auto;

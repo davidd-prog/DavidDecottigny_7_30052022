@@ -97,9 +97,6 @@ export default {
 </script>
 
 <style>
-.profileList {
-  font-size: 1em;
-}
 .profileListContainer {
   width: 95%;
   margin: auto;
