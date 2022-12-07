@@ -8,8 +8,6 @@ const Post = database.define("post", {
   likes: { type: Sequelize.INTEGER, allowNull: false, default: 0 },
 });
 module.exports = Post;
-// User.hasMany(Post);
-// Post.belongsTo(User, { onDelete: "CASCADE" });
 
 User.hasMany(Post, { onDelete: "CASCADE", foreignKey: "userId" });
 Post.belongsTo(User, { onDelete: "CASCADE" });
