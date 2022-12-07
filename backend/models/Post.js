@@ -1,3 +1,5 @@
+// Modèle pour la table Post
+
 const User = require("../models/User");
 const Sequelize = require("sequelize");
 const database = require("../config/database");
@@ -9,5 +11,6 @@ const Post = database.define("post", {
 });
 module.exports = Post;
 
+// Relations avec la table User
 User.hasMany(Post, { onDelete: "CASCADE", foreignKey: "userId" });
 Post.belongsTo(User, { onDelete: "CASCADE" });

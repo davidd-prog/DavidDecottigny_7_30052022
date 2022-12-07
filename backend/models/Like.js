@@ -8,6 +8,7 @@ const Post = require("../models/Post");
 const Like = database.define("postLike", {});
 module.exports = Like;
 
+// Relations avec les tables User et Post
 Like.belongsTo(User, { onDelete: "CASCADE" });
 Like.belongsTo(Post, { onDelete: "CASCADE" });
 Post.hasMany(Like);
