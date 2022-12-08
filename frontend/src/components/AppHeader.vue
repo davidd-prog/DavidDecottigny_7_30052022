@@ -13,7 +13,11 @@
       <nav id="talkMenu">
         <ul>
           <li class="talkUserMenu">
-            <a class="profileAvatar" href="profile.html">
+            <a
+              class="profileAvatar"
+              aria-label="lien vers profil de l'utilisateur"
+              href="profile.html"
+            >
               <fa icon="user" />
             </a>
             <ul class="subTalkMenu">

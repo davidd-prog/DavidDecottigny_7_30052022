@@ -111,7 +111,7 @@ export default {
 
 <style>
 .formLink {
-  color: #fd2b019c;
+  color: #fd2d01;
   text-decoration: underline;
   cursor: pointer;
 }
