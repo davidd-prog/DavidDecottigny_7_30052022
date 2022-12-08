@@ -55,16 +55,22 @@ export default {
     },
     // Appel à l'API requêtant la suppression d'un user
     del(index) {
-      console.log(index);
-      console.log(this.users[index].id);
+      // console.log(index);
+      // console.log(this.users[index].id);
       if (this.userIsAdmin == 1) {
-        usersService
-          .deleteUser(this.users[index].id)
-          .then(() => {
-            this.getAllUsers();
-          })
+        if (
+          window.confirm(
+            "Etes-vous sûr de vouloir supprimer ce compte ? Toutes les publications associées seront également supprimées"
+          )
+        ) {
+          usersService
+            .deleteUser(this.users[index].id)
+            .then(() => {
+              this.getAllUsers();
+            })
 
-          .catch((err) => console.log(err));
+            .catch((err) => console.log(err));
+        }
       } else {
         alert("Vous n'êtes pas autorisé à effectuer cette action !");
       }
