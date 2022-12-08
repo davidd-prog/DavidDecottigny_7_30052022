@@ -26,8 +26,9 @@
                 <input
                   v-model="user.firstname"
                   @change="firstNameInputChecking"
-                  class="firstnameField"
+                  id="prenom"
                   type="text"
+                  aria-label="prénom"
                   placeholder="Prénom"
                   required
                 />
@@ -38,8 +39,9 @@
                 <input
                   v-model="user.lastname"
                   @change="lastNameInputChecking"
-                  class="lastnameField"
+                  id="nom"
                   type="text"
+                  aria-label="nom"
                   placeholder="Nom"
                   required
                 />
@@ -51,8 +53,9 @@
                 <input
                   v-model="user.email"
                   @change="emailInputChecking"
-                  class="emailField"
+                  id="email"
                   type="email"
+                  aria-label="email"
                   placeholder="Email"
                   required
                 />
@@ -62,8 +65,9 @@
                 <input
                   v-model="user.password"
                   @change="passwordInputChecking"
-                  class="passwordField"
+                  id="mot-de-passe"
                   type="password"
+                  aria-label="mot de passe"
                   placeholder="Mot de passe"
                   required
                 />
@@ -73,8 +77,9 @@
                 <input
                   v-model="checkPassword"
                   @change="checkPasswordInputChecking"
-                  class="checkPasswordField"
+                  id="confirmation-mot-de-passe"
                   type="password"
+                  aria-label="vérification du mot de passe"
                   placeholder="Vérifier mot de passe"
                   required
                 />
@@ -92,6 +97,8 @@
                   @click="isBoxChecked"
                   v-model="generalConditions"
                   type="checkbox"
+                  aria-label="conditions d'utilisation"
+                  id="conditions-generales"
                 />J'ai lu et j'accepte les conditions générales d'utilisation.
               </p>
               <small
@@ -103,8 +110,9 @@
               <button
                 @click="registerAction"
                 type="submit"
+                aria-label="bouton de soumission du formulaire"
                 value="Signin"
-                class="connectionButton"
+                id="soumission-formulaire"
               >
                 <span>S'inscrire</span>
               </button>
@@ -335,7 +343,7 @@ input[type="text"] {
   cursor: pointer;
   color: blue;
 }
-.connectionButton {
+#soumission-formulaire {
   padding: 0.9em 2em;
   background: white;
   margin: auto;
