@@ -20,7 +20,6 @@
 import { usersService } from "@/_services";
 import { accountService } from "@/_services";
 import AppHeader from "@/components/AppHeader.vue";
-// import axios from "axios";
 
 export default {
   name: "UsersList",
@@ -53,10 +52,9 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
     // Appel à l'API requêtant la suppression d'un user
     del(index) {
-      // console.log(index);
-      // console.log(this.users[index].id);
       if (this.userIsAdmin == 1) {
         if (
           window.confirm(
@@ -74,8 +72,6 @@ export default {
       } else {
         alert("Vous n'êtes pas autorisé à effectuer cette action !");
       }
-
-      // this.users.splice(index);
     },
   },
   components: {
