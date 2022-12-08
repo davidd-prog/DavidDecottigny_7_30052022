@@ -56,7 +56,6 @@ exports.updateOnePost = (req, res, next) => {
       });
     }
     if (post.userId === req.auth.userId || req.auth.userAdmin) {
-      console.log(req.file);
       if (req.file && !req.body.content) {
         if (post.image) {
           const filename = post.image.split("/images/")[1];
