@@ -25,18 +25,18 @@
               <div class="connectionBox">
                 <input
                   v-model="user.email"
-                  @change="emailInputChecking"
-                  class="emailField"
+                  id="email"
                   type="email"
+                  aria-label="email"
                   placeholder="Email"
                   required
                 />
 
                 <input
                   v-model="user.password"
-                  @change="passwordInputChecking"
-                  class="passwordField"
+                  id="mot-de-passe"
                   type="password"
+                  aria-label="mot de passe"
                   placeholder="Mot de passe"
                   required
                 />
@@ -47,7 +47,7 @@
                 @click="connectAction"
                 type="submit"
                 value="Login"
-                class="connectionButton"
+                id="soumission-formulaire"
               >
                 <span>Connexion</span>
               </button>
@@ -185,7 +185,7 @@ input[type="text"] {
   display: flex;
   flex-direction: column;
 }
-.connectionButton {
+#soumission-formulaire {
   padding: 0.9em 2em;
   background: white;
   justify-content: center;

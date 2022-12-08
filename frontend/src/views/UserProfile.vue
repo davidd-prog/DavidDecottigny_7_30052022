@@ -124,7 +124,7 @@ export default {
 }
 .delAccount {
   background: red;
-  color: white;
+  color: black;
   justify-content: center;
   padding: 1em;
   margin: auto;
