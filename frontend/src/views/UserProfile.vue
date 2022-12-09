@@ -116,7 +116,8 @@ export default {
   border: 1px solid black;
 }
 .newMail {
-  margin: 1em;
+  width: 90%;
+  margin: auto;
 }
 .delAccountContainer {
   display: flex;
