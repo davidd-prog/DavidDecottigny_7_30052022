@@ -214,8 +214,5 @@ header li:hover .subTalkMenu {
   .headerTalkSection {
     width: 100%;
   }
-  ul {
-    padding-inline-start: 30px;
-  }
 }
 </style>
