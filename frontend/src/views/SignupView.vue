@@ -199,12 +199,12 @@ export default {
       }
     },
     passwordInputChecking: function () {
-      const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]){2,}(?=.{6,})";
+      const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]{2,})(?=.{6,})";
       if (this.user.password.match(passwordRegex)) {
         this.passwordErrorDisplay = false;
       } else {
         this.passwordErrorMessage =
-          "Veuillez saisir un mot de passe de 6 caratères minimum avec au moins 1 majuscule et 1 chiffre";
+          "Veuillez saisir un mot de passe de 6 caratères minimum avec au moins 1 majuscule et 2 chiffres";
         this.passwordErrorDisplay = true;
       }
     },
