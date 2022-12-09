@@ -51,6 +51,8 @@ Run `npm start` from within the project directory.
 
 Open the frontend folder `cd frontend`
 
+Modify if necessary the api contact base url in the `caller.service.js` file inside the `_services` folder.
+
 Run `npm install` from within the project directory.
 
 Run `npm run serve` from within the project directory.

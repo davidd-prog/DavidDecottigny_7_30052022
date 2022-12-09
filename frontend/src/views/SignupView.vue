@@ -1,7 +1,7 @@
 <template>
   <body>
     <div id="page">
-      <!--Entête du site avec le logo et le menu-->
+      <!--Entête-->
       <header>
         <div class="headerSection">
           <div id="logo">
@@ -17,7 +17,7 @@
       </header>
 
       <section id="connectionBloc">
-        <!--Formulaire d'inscription ou de connexion-->
+        <!--Formulaire d'inscription-->
         <div id="connect__section">
           <form method="get" class="connect__section__form">
             <h1>S'inscrire</h1>

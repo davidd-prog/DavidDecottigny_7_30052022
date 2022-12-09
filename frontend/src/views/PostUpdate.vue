@@ -28,7 +28,7 @@
           >
           </textarea>
           <div class="newImageToSend">
-            <label for="image" aria-label="Image:"></label>
+            <label for="image" aria-label="Image"></label>
             <input
               name="image"
               type="file"
