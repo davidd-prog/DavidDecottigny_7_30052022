@@ -157,6 +157,7 @@ export default {
 .postUser {
   font-weight: bold;
   cursor: pointer;
+  margin-right: 1em;
 }
 .postContent {
   display: flex;
