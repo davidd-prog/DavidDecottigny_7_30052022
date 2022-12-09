@@ -77,6 +77,16 @@ export default {
 }
 
 /* Responsive */
+@media only screen and (min-width: 360px) {
+  #tchatSection {
+    width: 70%;
+    margin: auto;
+  }
+  #postsBoard {
+    width: 70%;
+    margin: auto;
+  }
+}
 @media only screen and (min-width: 540px) {
   #tchatSection {
     width: 60%;
@@ -87,7 +97,7 @@ export default {
     margin: auto;
   }
 }
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 650px) {
   #tchatSection {
     width: 45%;
     margin: auto;

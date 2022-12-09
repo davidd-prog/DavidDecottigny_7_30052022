@@ -2,9 +2,9 @@
   <div id="tchatBox">
     <h2 class="formLink" @click="open">Créer un post</h2>
     <div class="tchatBoxWrite" v-show="success">
+      <fa class="fa-window-close" icon="window-close" @click="close" />
       <h3 id="postCreate">Exprimez-vous</h3>
       <form class="hiddenPostForm">
-        <fa class="fa-window-close" icon="window-close" @click="close" />
         <div class="postWriting">
           <p class="postContainer">Contenu:</p>
           <textarea

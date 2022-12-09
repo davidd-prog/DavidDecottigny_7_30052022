@@ -4,7 +4,7 @@
       <AppHeader />
     </header>
     <div id="modtchatBox">
-      <div class="tchatBoxWrite">
+      <div class="updateBoxWrite">
         <h2 id="postCreate">Modifier ce post</h2>
         <p>Contenu actuel :</p>
         <p class="oldContent">{{ post.content }}</p>
@@ -132,6 +132,18 @@ export default {
   margin: auto;
   /* margin-top: 2em; */
 }
+.updateBoxWrite {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(#fd2b019c, #ffd7d7);
+  box-shadow: 0px 3px 4px lightgray;
+}
+.updateBoxWrite button {
+  background: white;
+}
 .oldContent {
   /* margin: auto; */
   border: 1px solid grey;
@@ -152,12 +164,15 @@ export default {
   flex-direction: column;
 }
 @media only screen and (min-width: 750px) {
-  .postUpdateForm {
+  .updateBoxWrite {
     width: 80%;
   }
-  .oldContent {
+  /* .postUpdateForm {
     width: 80%;
-  }
+  } */
+  /* .oldContent {
+    width: 80%;
+  } */
 }
 @media only screen and (max-width: 600px) {
   #modtchatBox {
@@ -168,11 +183,11 @@ export default {
   #modtchatBox {
     width: 100%;
   }
-  .postUpdateForm {
+  /* .postUpdateForm {
     width: 80%;
-  }
-  .oldContent {
+  } */
+  /* .oldContent {
     width: 80%;
-  }
+  } */
 }
 </style>
