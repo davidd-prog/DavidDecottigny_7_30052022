@@ -59,15 +59,20 @@ export default {
 
     // Process de modification du user, ici de l'adrese email
     update() {
-      usersService
-        .updateUser(this.user)
-        .then(() => {
+      const emailRegex =
+        "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$";
+      if (this.user.email.match(emailRegex)) {
+        usersService.updateUser(this.user).then(() => {
           this.newMail = this.user.email;
           alert(
             `Votre nouvelle adresse email ${this.newMail} est enregistrée !`
           );
-        })
-        .catch((err) => console.log(err));
+        });
+      } else {
+        alert(
+          "L'adresse indiquée n'est pas valide, veuillez utiliser un mail correspondant par exemple à nom@domaine.com"
+        );
+      }
     },
 
     // Retour à la homePage si annulation de la modification

@@ -116,7 +116,7 @@
               >
                 <span>S'inscrire</span>
               </button>
-              <small class="inputErrorMessage" v-if="signupErrorDisplay">
+              <small class="signupError" v-if="signupErrorDisplay">
                 {{ signupErrorMessage }}
               </small>
             </div>
@@ -348,7 +348,9 @@ input[type="text"] {
   background: white;
   margin: auto;
 }
-
+.signupError {
+  margin-top: 0.5em;
+}
 @media only screen and (max-width: 315px) {
   #page {
     width: 90%;
