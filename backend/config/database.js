@@ -1,7 +1,7 @@
 // Configuration de la base de données
 const Sequelize = require("sequelize");
 
-const { post } = require("../routes/user");
+// const { post } = require("../routes/user");
 
 // Chargement des variables d'environnement
 require("dotenv").config();

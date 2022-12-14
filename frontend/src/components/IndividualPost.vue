@@ -129,7 +129,7 @@ export default {
     // Process d'accession au profil user en cliquant sur le nom de l'auteur du post
     userProfile(index) {
       console.log(this.userId, this.posts[index].user.id, this.userIsAdmin);
-      if (this.userId == this.posts[index].user.id || this.userIsAdmin == 1) {
+      if (this.userId == this.posts[index].user.id) {
         this.$router.push("/user/" + this.posts[index].user.id);
       }
     },
