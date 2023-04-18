@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 const User = require("../models/User");
+const Post = require("../models/Post");
 
 // mécanique d'enregistrement d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
@@ -121,17 +123,48 @@ exports.deleteUser = (req, res, next) => {
           error: new Error("user non trouvé"),
         });
       }
-      User.destroy({ where: { id: req.params.id } })
-        .then(() =>
-          res.status(200).json({
-            message: "Utilisateur supprimé !",
+      Post.findAll({ where: { userId: req.params.id } }).then((posts) => {
+        // Pour chaque publication, supprime l'image du dossier s'il y en a une
+        posts.forEach((post) => {
+          // console.log(post);
+          if (post.image) {
+            const filename = post.image.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {});
+          }
+        });
+        // User.destroy();
+        // Supprime l'utilisateur et ses publications
+        User.destroy({ where: { id: req.params.id } })
+          .then(() => {
+            res
+              .status(200)
+              .json({ message: "Utilisateur et ses publications supprimées" });
           })
-        )
-        .catch((error) =>
-          res.status(400).json({
-            error,
-          })
-        );
+          .catch((error) => res.status(400).json({ error }));
+      });
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+// exports.deleteUser = (req, res, next) => {
+//   User.findOne({ where: { id: req.params.id } })
+//     .then((user) => {
+//       if (!user) {
+//         return res.status(404).json({
+//           error: new Error("user non trouvé"),
+//         });
+//       }
+//       User.destroy({ where: { id: req.params.id } })
+//         .then(() =>
+//           res.status(200).json({
+//             message: "Utilisateur supprimé !",
+//           })
+//         )
+//         .catch((error) =>
+//           res.status(400).json({
+//             error,
+//           })
+//         );
+//     })
+//     .catch((error) => res.status(500).json({ error }));
+// };
